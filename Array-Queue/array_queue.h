@@ -29,6 +29,9 @@ class ArrayQueue {
    */
   ~ArrayQueue(void);
 
+  //! enqueue(data)
+   /* \return
+
   //! empty()
   /* \return bool
    * retorna true caso fila esteja vazia, caso contrário retorna false.
