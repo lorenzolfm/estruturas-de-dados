@@ -29,6 +29,21 @@ class ArrayQueue {
    */
   ~ArrayQueue(void);
 
+  //! size()
+  /* \return std::size_t, tamanho atual da fila.
+  *
+  * Getter do atributo size_
+  */
+  std::size_t size(void);
+
+  //! max_size()
+  /* \return std::size_t, tamanho máximo da fila
+   *
+   * Getter do atributo max_size_
+   */
+  std::size_t max_size(void);
+
+  T * contents;   // Ponteiro para tipo genérico, armazena elementos
   int size_;      // Tamanho atual da fila
   int max_size_;  // Tamanho máximo da fila
 
@@ -40,16 +55,29 @@ class ArrayQueue {
 
 template <typename T>
 structures::ArrayQueue<T>::ArrayQueue(void) {
-   ArrayQueue<T>(DEFAULT_SIZE);
+  max_size_ = DEFAULT_SIZE;
+  size_ = -1;
+  contents = new T[max_size_];
 }
 
 template <typename T>
 structures::ArrayQueue<T>::ArrayQueue(std::size_t max_size) {
-  max_size_ = DEFAULT_SIZE;
+  max_size_ = max_size;
   size_ = -1;
+  contents = new T[max_size_];
 }
 
 template <typename T>
 structures::ArrayQueue<T>::~ArrayQueue(void) {
+   delete [] contents;
+}
 
+template<typename T>
+std::size_t structures::ArrayQueue<T>::size(void) {
+   return size_;
+}
+
+template<typename T>
+std::size_t structures::ArrayQueue<T>::max_size(void) {
+   return max_size_;
 }

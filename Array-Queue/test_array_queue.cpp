@@ -25,3 +25,14 @@ TEST_F(ArrayQueueTest, ConstructorSetsCorrectSize) {
   ASSERT_EQ(-1, default_queue.size_);
   ASSERT_EQ(-1, queue.size_);
 }
+
+TEST_F(ArrayQueueTest, MaxSizeReturnCorrectValue) {
+  ASSERT_EQ(20u, queue.max_size());
+}
+
+TEST_F(ArrayQueueTest, SizeReturnsCorrectValue) {
+  ASSERT_EQ(-1, queue.size());
+
+  queue.size_ = 10;
+  ASSERT_EQ(10, queue.size());
+}
