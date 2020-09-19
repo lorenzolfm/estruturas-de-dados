@@ -29,11 +29,24 @@ class ArrayQueue {
    */
   ~ArrayQueue(void);
 
+  //! empty()
+  /* \return bool
+   * retorna true caso fila esteja vazia, caso contrário retorna false.
+   */
+  bool empty(void);
+
+  //! full()
+  /* \return bool
+   *
+   * Retorna true quando a fila está cheia, caso contrário retorna falso.
+   */
+  bool full(void);
+
   //! size()
   /* \return std::size_t, tamanho atual da fila.
-  *
-  * Getter do atributo size_
-  */
+   *
+   * Getter do atributo size_
+   */
   std::size_t size(void);
 
   //! max_size()
@@ -43,7 +56,7 @@ class ArrayQueue {
    */
   std::size_t max_size(void);
 
-  T * contents;   // Ponteiro para tipo genérico, armazena elementos
+  T* contents;    // Ponteiro para tipo genérico, armazena elementos
   int size_;      // Tamanho atual da fila
   int max_size_;  // Tamanho máximo da fila
 
@@ -69,15 +82,25 @@ structures::ArrayQueue<T>::ArrayQueue(std::size_t max_size) {
 
 template <typename T>
 structures::ArrayQueue<T>::~ArrayQueue(void) {
-   delete [] contents;
+  delete[] contents;
 }
 
 template<typename T>
+bool structures::ArrayQueue<T>::empty(void) {
+   return (size_ == -1);
+}
+
+template<typename T>
+bool structures::ArrayQueue<T>::full(void) {
+   return (size() == max_size_);
+}
+
+template <typename T>
 std::size_t structures::ArrayQueue<T>::size(void) {
-   return size_;
+  return (size_ + 1);
 }
 
-template<typename T>
+template <typename T>
 std::size_t structures::ArrayQueue<T>::max_size(void) {
-   return max_size_;
+  return max_size_;
 }
