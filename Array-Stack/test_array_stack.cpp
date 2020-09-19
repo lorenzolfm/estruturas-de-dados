@@ -117,3 +117,9 @@ TEST_F(ArrayStackTest, TopReturnsTopElement) {
 TEST_F(ArrayStackTest, TopOnEmptyThrowsError) {
   ASSERT_THROW(stack.top(), std::out_of_range);
 }
+
+TEST_F(ArrayStackTest, TopAsLhsWorks) {
+  fill();
+  stack.top() = -2;
+  ASSERT_EQ(-2, stack.top());
+}
