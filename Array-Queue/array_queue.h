@@ -103,7 +103,7 @@ structures::ArrayQueue<T>::~ArrayQueue(void) {
 template<typename T>
 void structures::ArrayQueue<T>::enqueue(const T & data) {
    if (full()) {
-      throw(std::out_of_range("Full queue"));
+      throw(std::out_of_range("Cannot enqueue on full queue"));
    } else {
       contents[++size_] = data;
    }
@@ -111,7 +111,12 @@ void structures::ArrayQueue<T>::enqueue(const T & data) {
 
 template<typename T>
 T structures::ArrayQueue<T>::dequeue(void) {
+   if(empty()) {
+      throw(std::out_of_range("Cannot dequeue an empty queue"));
+   }
+   T data = contents[size_];
    size_--;
+   return data;
 }
 
 template <typename T>

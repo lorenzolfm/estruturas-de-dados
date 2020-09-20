@@ -68,7 +68,7 @@ TEST_F(ArrayQueueTest, EnqueueIncreasesSize) {
   ASSERT_EQ(2, queue.size());
 }
 
-TEST_F(ArrayQueueTest, EnqueueThrowErrorWhenFull) {
+TEST_F(ArrayQueueTest, EnqueueThrowsErrorWhenFull) {
   fill();
 
   ASSERT_THROW(queue.enqueue(5), std::out_of_range);
@@ -86,5 +86,16 @@ TEST_F(ArrayQueueTest, DequeueDecreasesSize){
   for (auto i = 19; i >= 0; i--) {
     queue.dequeue();
     ASSERT_EQ(i, queue.size());
+  }
+}
+
+TEST_F(ArrayQueueTest, DequeueThrowsErrorWhenEmpty) {
+  ASSERT_THROW(queue.dequeue(), std::out_of_range);
+}
+
+TEST_F(ArrayQueueTest, DequeueReturnsCorrectElement) {
+  fill();
+  for (auto i = 19; i >= 0; i--) {
+    ASSERT_EQ(i, queue.dequeue());
   }
 }
