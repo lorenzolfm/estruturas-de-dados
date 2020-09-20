@@ -2,7 +2,6 @@
   #define STRUCTURES_ARRAY_QUEUE_H_
 
   #include <cstdint>
-  #include <iostream>
   #include <stdexcept>
 
 namespace structures {
