@@ -133,7 +133,7 @@ void structures::CircularArrayQueue<T>::enqueue(const T& data) {
 template <typename T>
 T structures::CircularArrayQueue<T>::dequeue(void) {
   if (empty()) {
-    throw(std::out_of_range("Cannot dequeue from empty qeueu"));
+    throw(std::out_of_range("Cannot dequeue from empty queue"));
   } else {
     T data = contents[begin_];
     begin_ = (begin_ + 1) % max_size_;
