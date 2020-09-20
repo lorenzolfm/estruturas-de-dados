@@ -12,6 +12,16 @@ int main(int argc, char* argv[]) {
 
 class ArrayListTest : public ::testing::Test {
  protected:
-  //structures::ArrayList<int> circular_queue{20};
-  //structures::ArrayList<int> default_circular_queue{};
+  structures::ArrayList<int> list{20};
+  structures::ArrayList<int> default_list{};
 };
+
+TEST_F(ArrayListTest, ConstructorInitializesSizeToMinusOne) {
+  ASSERT_EQ(-1, list.size_);
+  ASSERT_EQ(-1, list.size_);
+}
+
+TEST_F(ArrayListTest, ConstructorInitializesCorrectMaxSize) {
+  ASSERT_EQ(20, list.max_size_);
+  ASSERT_EQ(10, default_list.max_size_);
+}
