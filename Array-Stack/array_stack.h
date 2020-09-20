@@ -82,7 +82,7 @@ class ArrayStack {
  private:
   T* contents;    // Ponteiro para tipo genérico, armazena elementos
   int top_;       // Tamanho atual da pilha
-  int max_size_;  // Tamanho máximo da pilha
+  std::size_t max_size_;  // Tamanho máximo da pilha
 
   static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da pilha
 };
