@@ -2,8 +2,8 @@
   #define STRUCTURES_ARRAY_QUEUE_H_
 
   #include <cstdint>
-  #include <stdexcept>
   #include <iostream>
+  #include <stdexcept>
 
 namespace structures {
 template <typename T>
@@ -31,43 +31,56 @@ class ArrayQueue {
   ~ArrayQueue(void);
 
   //! enqueue(data)
-  /* \param  Constante local data, tipo genérico T. Elemento a ser inserido no
-   * final da fila Insere elemento no topo da fila
+  /* final da fila Insere elemento no topo da fila
+   *
+   * \param  Constante local data, tipo genérico T. Elemento a ser inserido no
    */
   void enqueue(const T& data);
 
   //! dequeue()
-  /* \return elemento de tipo genérico T
+  /* Desenfilera o elemento no início da fila
    *
-   * Desenfilera o elemento no início da fila
+   * \return elemento de tipo genérico T
    */
   T dequeue(void);
 
-  //! empty()
-  /* \return bool
+  //! back()
+  /* Retorna por referência o elemento no final da fila
    *
-   * Retorna true caso fila esteja vazia, caso contrário retorna false.
+   * \return referência ao elemento do tipo genérico T.
+   */
+  T& back(void);
+
+  //! clear()
+  /* Limpa a fila
+   */
+  void clear(void);
+
+  //! empty()
+  /* Retorna true caso fila esteja vazia, caso contrário retorna false.
+   *
+   * \return bool
    */
   bool empty(void);
 
   //! full()
-  /* \return bool
+  /* Retorna true quando a fila está cheia, caso contrário retorna falso.
    *
-   * Retorna true quando a fila está cheia, caso contrário retorna falso.
+   * \return bool
    */
   bool full(void);
 
   //! size()
-  /* \return std::size_t, tamanho atual da fila.
+  /* Getter do atributo size_
    *
-   * Getter do atributo size_
+   * \return std::size_t, tamanho atual da fila.
    */
   std::size_t size(void);
 
   //! max_size()
-  /* \return std::size_t, tamanho máximo da fila
+  /* Getter do atributo max_size_
    *
-   * Getter do atributo max_size_
+   * \return std::size_t, tamanho máximo da fila
    */
   std::size_t max_size(void);
 
@@ -76,6 +89,12 @@ class ArrayQueue {
   int max_size_;  // Tamanho máximo da fila
 
   static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da fila
+
+ private:
+  //! move_forward()
+  /* Copies data at contents[i + i] to contents[i]
+   */
+  void move_forward(void);
 };
 }  // namespace structures
 
@@ -100,23 +119,37 @@ structures::ArrayQueue<T>::~ArrayQueue(void) {
   delete[] contents;
 }
 
-template<typename T>
-void structures::ArrayQueue<T>::enqueue(const T & data) {
-   if (full()) {
-      throw(std::out_of_range("Cannot enqueue on full queue"));
-   } else {
-      contents[++size_] = data;
-   }
+template <typename T>
+void structures::ArrayQueue<T>::enqueue(const T& data) {
+  if (full()) {
+    throw(std::out_of_range("Cannot enqueue on full queue"));
+  } else {
+    contents[++size_] = data;
+  }
 }
 
-template<typename T>
+template <typename T>
 T structures::ArrayQueue<T>::dequeue(void) {
-   if(empty()) {
-      throw(std::out_of_range("Cannot dequeue an empty queue"));
-   }
-   T data = contents[size_];
-   size_--;
-   return data;
+  if (empty()) {
+    throw(std::out_of_range("Cannot dequeue an empty queue"));
+  }
+  T data = contents[0];
+  size_--;
+  move_forward();
+  return data;
+}
+
+template <typename T>
+T& structures::ArrayQueue<T>::back(void) {
+  if (empty()) {
+    throw(std::out_of_range("Empty queue"));
+  }
+  return contents[size_];
+}
+
+template <typename T>
+void structures::ArrayQueue<T>::clear(void) {
+  size_ = -1;
 }
 
 template <typename T>
@@ -137,4 +170,11 @@ std::size_t structures::ArrayQueue<T>::size(void) {
 template <typename T>
 std::size_t structures::ArrayQueue<T>::max_size(void) {
   return max_size_;
+}
+
+template <typename T>
+void structures::ArrayQueue<T>::move_forward(void) {
+  for (auto i = 0; i != size(); i++) {
+    contents[i] = contents[i + 1];
+  }
 }

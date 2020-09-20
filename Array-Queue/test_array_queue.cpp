@@ -81,6 +81,30 @@ TEST_F(ArrayQueueTest, EnqueuesDataOnContents) {
   }
 }
 
+
+TEST_F(ArrayQueueTest, BackReturnCorrectElement) {
+  for(auto i = 0; i < queue.max_size(); i++) {
+    queue.enqueue(i);
+    ASSERT_EQ(i, queue.back());
+  }
+}
+
+TEST_F(ArrayQueueTest, BackThrowsErrorOnEmptyQueue) {
+  ASSERT_THROW(queue.back(), std::out_of_range);
+}
+
+TEST_F(ArrayQueueTest, BackWorksAsLhs) {
+  fill();
+  queue.back() = -2;
+  ASSERT_EQ(-2, queue.back());
+}
+
+TEST_F(ArrayQueueTest, ClearSetsSizeToMinusOne) {
+  fill();
+  queue.clear();
+  ASSERT_EQ(0, queue.size());
+}
+
 TEST_F(ArrayQueueTest, DequeueDecreasesSize){
   fill();
   for (auto i = 19; i >= 0; i--) {
@@ -95,7 +119,9 @@ TEST_F(ArrayQueueTest, DequeueThrowsErrorWhenEmpty) {
 
 TEST_F(ArrayQueueTest, DequeueReturnsCorrectElement) {
   fill();
-  for (auto i = 19; i >= 0; i--) {
+
+  for(auto i = 0; i < queue.max_size(); i++) {
     ASSERT_EQ(i, queue.dequeue());
   }
+
 }
