@@ -7,9 +7,9 @@
 namespace structures {
 template <typename T>
 //! Classe ArrayQueue
-/* Classe fila em vetor com tipo genérico, sem movimentação de dados.
+/* Classe fila em vetor com tipo genérico, com movimentação de dados.
  *
- * Classe fila em vetor, com tipo génerico, sem movimentação de dados,
+ * Classe fila em vetor, com tipo génerico, com movimentação de dados,
  * implementada utilizando um vetor estático.
  */
 class ArrayQueue {
