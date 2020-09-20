@@ -30,7 +30,7 @@ class ArrayQueue {
   ~ArrayQueue(void);
 
   //! enqueue(data)
-  /* final da fila Insere elemento no topo da fila
+  /* Insere elemento no final da fila
    *
    * \param  Constante local data, tipo genérico T. Elemento a ser inserido no
    */
@@ -90,8 +90,8 @@ class ArrayQueue {
   void move_forward(void);
 
   T* contents;    // Ponteiro para tipo genérico, armazena elementos
-  int size_;      // Tamanho atual da fila
-  int max_size_;  // Tamanho máximo da fila
+  std::size_t size_;      // Tamanho atual da fila
+  std::size_t max_size_;  // Tamanho máximo da fila
 
   static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da fila
 };
