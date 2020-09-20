@@ -3,6 +3,7 @@
 
   #include <cstdint>
   #include <stdexcept>
+  #include <iostream>
 
 namespace structures {
 template <typename T>
@@ -30,11 +31,22 @@ class ArrayQueue {
   ~ArrayQueue(void);
 
   //! enqueue(data)
-   /* \return
+  /* \param  Constante local data, tipo genérico T. Elemento a ser inserido no
+   * final da fila Insere elemento no topo da fila
+   */
+  void enqueue(const T& data);
+
+  //! dequeue()
+  /* \return elemento de tipo genérico T
+   *
+   * Desenfilera o elemento no início da fila
+   */
+  T dequeue(void);
 
   //! empty()
   /* \return bool
-   * retorna true caso fila esteja vazia, caso contrário retorna false.
+   *
+   * Retorna true caso fila esteja vazia, caso contrário retorna false.
    */
   bool empty(void);
 
@@ -89,13 +101,27 @@ structures::ArrayQueue<T>::~ArrayQueue(void) {
 }
 
 template<typename T>
-bool structures::ArrayQueue<T>::empty(void) {
-   return (size_ == -1);
+void structures::ArrayQueue<T>::enqueue(const T & data) {
+   if (full()) {
+      throw(std::out_of_range("Full queue"));
+   } else {
+      contents[++size_] = data;
+   }
 }
 
 template<typename T>
+T structures::ArrayQueue<T>::dequeue(void) {
+   size_--;
+}
+
+template <typename T>
+bool structures::ArrayQueue<T>::empty(void) {
+  return (size_ == -1);
+}
+
+template <typename T>
 bool structures::ArrayQueue<T>::full(void) {
-   return (size() == max_size_);
+  return (size() == max_size_);
 }
 
 template <typename T>

@@ -14,6 +14,12 @@ class ArrayQueueTest : public ::testing::Test {
  protected:
   structures::ArrayQueue<int> queue{20};
   structures::ArrayQueue<int> default_queue{};
+
+  void fill(void) {
+    for (auto i = 0; i < queue.max_size(); i++) {
+      queue.enqueue(i);
+    }
+  }
 };
 
 TEST_F(ArrayQueueTest, ConstructorSetsCorrectMaxSize) {
@@ -53,4 +59,32 @@ TEST_F(ArrayQueueTest, FullReturnsTrueWhenFull) {
 
 TEST_F(ArrayQueueTest, FullReturnsFalseWhenNotFull) {
   ASSERT_FALSE(queue.full());
+}
+
+TEST_F(ArrayQueueTest, EnqueueIncreasesSize) {
+  queue.enqueue(1);
+  ASSERT_EQ(1, queue.size());
+  queue.enqueue(1);
+  ASSERT_EQ(2, queue.size());
+}
+
+TEST_F(ArrayQueueTest, EnqueueThrowErrorWhenFull) {
+  fill();
+
+  ASSERT_THROW(queue.enqueue(5), std::out_of_range);
+}
+
+TEST_F(ArrayQueueTest, EnqueuesDataOnContents) {
+  for (auto i = 0; i < queue.max_size(); i ++) {
+    queue.enqueue(i);
+    ASSERT_EQ(i, queue.contents[i]);
+  }
+}
+
+TEST_F(ArrayQueueTest, DequeueDecreasesSize){
+  fill();
+  for (auto i = 19; i >= 0; i--) {
+    queue.dequeue();
+    ASSERT_EQ(i, queue.size());
+  }
 }
