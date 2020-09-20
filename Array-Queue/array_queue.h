@@ -84,17 +84,17 @@ class ArrayQueue {
    */
   std::size_t max_size(void);
 
-  T* contents;    // Ponteiro para tipo genérico, armazena elementos
-  int size_;      // Tamanho atual da fila
-  int max_size_;  // Tamanho máximo da fila
-
-  static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da fila
-
  private:
   //! move_forward()
   /* Copies data at contents[i + i] to contents[i]
    */
   void move_forward(void);
+
+  T* contents;    // Ponteiro para tipo genérico, armazena elementos
+  int size_;      // Tamanho atual da fila
+  int max_size_;  // Tamanho máximo da fila
+
+  static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da fila
 };
 }  // namespace structures
 
