@@ -24,7 +24,7 @@ class ArrayList {
   /*
    * \param max_size, tipo std::size_t, tamanho máximo da fila
    */
-  ArrayList(std::size_t max_size);
+  explicit ArrayList(std::size_t max_size);
 
   //! ~ArrayList()
   /* Destrutor padrão
@@ -149,7 +149,10 @@ class ArrayList {
   T* contents;
   std::size_t size_;      // Posição do último elemento da lista.
   std::size_t max_size_;  // Tamanho máximo da lista
-  const static auto DEFAULT_MAX_SIZE = 10u;  // Tamanho máximo padrão
+  static const auto DEFAULT_MAX_SIZE = 10u;  // Tamanho máximo padrão
+
+  void move_forward(std::size_t index);
+  void move_backward(std::size_t index);
 };
 }  // namespace structures
 
@@ -191,11 +194,11 @@ template <typename T>
 void structures::ArrayList<T>::push_front(const T& data) {
   if (full()) {
     throw(std::out_of_range("Cannot push front to a full list"));
+  } else if (empty()) {
+    contents[++size_] = data;
   } else {
+    move_backward(0);
     size_++;
-    for (std::size_t i = size_; i > 0; i--) {
-      contents[i] = contents[i - 1];
-    }
     contents[0] = data;
   }
 }
@@ -360,4 +363,18 @@ const T& structures::ArrayList<T>::operator[](std::size_t index) const {
     throw(std::out_of_range("Error: invalid index"));
   }
   return contents[index];
+}
+
+template <typename T>
+void structures::ArrayList<T>::move_forward(std::size_t index) {
+  for (std::size_t i = index; i != size(); i++) {
+    contents[i] = contents[i + 1];
+  }
+}
+
+template <typename T>
+void structures::ArrayList<T>::move_backward(std::size_t index) {
+  for (std::size_t i = size(); i != index; i--) {
+    contents[i] = contents[i - 1];
+  }
 }
