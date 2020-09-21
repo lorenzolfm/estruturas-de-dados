@@ -329,7 +329,7 @@ std::size_t structures::ArrayList<T>::max_size(void) const {
 
 template <typename T>
 T& structures::ArrayList<T>::at(std::size_t index) {
-  if (index < 0 || index >= size()) {
+  if (index < 0 || index >= size_ + 1) {
     throw(std::out_of_range("Error: invalid index"));
   }
   return contents[index];
@@ -337,7 +337,7 @@ T& structures::ArrayList<T>::at(std::size_t index) {
 
 template <typename T>
 T& structures::ArrayList<T>::operator[](std::size_t index) {
-  if (index < 0 || index >= size()) {
+  if (index < 0 || index >= size_ + 1) {
     throw(std::out_of_range("Error: invalid index"));
   }
   return contents[index];
@@ -345,7 +345,7 @@ T& structures::ArrayList<T>::operator[](std::size_t index) {
 
 template <typename T>
 const T& structures::ArrayList<T>::at(std::size_t index) const {
-  if (index < 0 || index >= size()) {
+  if (index < 0 || index >= size_ + 1) {
     throw(std::out_of_range("Error: invalid index"));
   }
   return contents[index];
@@ -353,7 +353,7 @@ const T& structures::ArrayList<T>::at(std::size_t index) const {
 
 template <typename T>
 const T& structures::ArrayList<T>::operator[](std::size_t index) const {
-  if (index < 0 || index >= size()) {
+  if (index < 0 || index >= size_ + 1) {
     throw(std::out_of_range("Error: invalid index"));
   }
   return contents[index];
@@ -361,14 +361,14 @@ const T& structures::ArrayList<T>::operator[](std::size_t index) const {
 
 template <typename T>
 void structures::ArrayList<T>::move_forward(std::size_t index) {
-  for (std::size_t i = index; i != size(); i++) {
+  for (std::size_t i = index; i != size_ + 1; i++) {
     contents[i] = contents[i + 1];
   }
 }
 
 template <typename T>
 void structures::ArrayList<T>::move_backward(std::size_t index) {
-  for (std::size_t i = size(); i != index; i--) {
+  for (std::size_t i = size_ + 1; i != index; i--) {
     contents[i] = contents[i - 1];
   }
 }
