@@ -43,6 +43,13 @@ class ArrayList {
    */
   void push_back(const T& data);
 
+  //! void push_front(const T& data);
+  /* Adiciona data no início da lista
+   *
+   * \param const T& data, referência a data de tipo genérico T constante
+   */
+  void push_front(const T& data);
+
   //! T pop_back(void)
   /* Remover e retorna elemento no final da lista
    *
@@ -50,6 +57,13 @@ class ArrayList {
    */
   //! empty()
   T pop_back(void);
+
+  //! T pop_front(void);
+  /* Retorna e retira elemento no início da lista
+   *
+   * \return T, elemento de tipo genérico T
+   */
+  T pop_front(void);
 
   /* Retorna true se lista estiver vazia, caso contrário retorna false
    *
@@ -120,11 +134,38 @@ void structures::ArrayList<T>::push_back(const T& data) {
 }
 
 template <typename T>
+void structures::ArrayList<T>::push_front(const T& data) {
+  if (full()) {
+    throw(std::out_of_range("Cannot push front to a full list"));
+  } else {
+    size_++;
+    for (std::size_t i = size_; i > 0; i--) {
+      contents[i] = contents[i - 1];
+    }
+    contents[0] = data;
+  }
+}
+
+template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop back from empty list"));
   }
   return contents[size_--];
+}
+
+template<typename T>
+T structures::ArrayList<T>::pop_front(void) {
+  if (empty()) {
+    throw(std::out_of_range("Cannot pop front from empty list"));
+  } else {
+    size_--;
+    T data = contents[0];
+    for (std::size_t i = 0; i != size(); i++) {
+      contents[i] = contents[i + 1];
+    }
+    return data;
+  }
 }
 
 template <typename T>

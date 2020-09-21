@@ -106,3 +106,41 @@ TEST_F(ArrayListTest, PopBackReturnsLastElement) {
     ASSERT_EQ(i, list.pop_back());
   }
 }
+
+TEST_F(ArrayListTest, PushFrontIncreasesSize) {
+  ASSERT_EQ(0, list.size());
+  list.push_front(1);
+  ASSERT_EQ(1, list.size());
+}
+
+TEST_F(ArrayListTest, PushFrontThrowsErrorWhenFull) {
+  push_back_fill();
+  ASSERT_THROW(list.push_front(10), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, PushFrontMovesBackwards) {
+  push_back_fill();
+  list.pop_back();
+  list.push_front(666);
+  for (auto i = 0; i < list.max_size() - 1; i++) {
+    ASSERT_EQ(i, list.contents[i + 1]);
+  }
+}
+
+TEST_F(ArrayListTest, PushFrontInsertsDataInAtIndex0) {
+  for (auto i = 0; i < list.max_size(); i++) {
+    list.push_front(i);
+    ASSERT_EQ(i, list.contents[0]);
+  }
+}
+
+TEST_F(ArrayListTest, PopFrontDecreasesSize) {
+  push_back_fill();
+  ASSERT_EQ(list.size(), list.max_size());
+  list.pop_front();
+  ASSERT_EQ(list.size(), list.max_size() - 1);
+}
+
+TEST_F(ArrayListTest, PopFrontThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.pop_front(), std::out_of_range);
+}
