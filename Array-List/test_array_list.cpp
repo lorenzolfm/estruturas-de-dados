@@ -144,3 +144,32 @@ TEST_F(ArrayListTest, PopFrontDecreasesSize) {
 TEST_F(ArrayListTest, PopFrontThrowsErrorWhenEmpty) {
   ASSERT_THROW(list.pop_front(), std::out_of_range);
 }
+
+TEST_F(ArrayListTest, PopFrontRemovesFrontElement) {
+  push_back_fill();
+  for (auto i = 0; i < list.max_size(); i++) {
+    ASSERT_EQ(i, list.pop_front());
+  }
+}
+
+TEST_F(ArrayListTest, InsertThrowsErrorWhenFull) {
+  push_back_fill();
+  ASSERT_THROW(list.insert(1, 1), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, InsertThrowsErrorWhenInvalidIndex) {
+  ASSERT_THROW(list.insert(1, -1), std::out_of_range);
+  ASSERT_THROW(list.insert(1, 20), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, InsertsAtTheRightPlace) {
+  for (auto i = 0; i < list.max_size() - 1; i++) {
+    list.push_back(i);
+  }
+
+  list.insert(10, 5);
+  ASSERT_EQ(list.size(), 20);
+  ASSERT_EQ(list.contents[4], 4);
+  ASSERT_EQ(list.contents[5], 10);
+  ASSERT_EQ(list.contents[6], 5);
+}

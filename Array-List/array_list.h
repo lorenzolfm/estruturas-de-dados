@@ -50,6 +50,14 @@ class ArrayList {
    */
   void push_front(const T& data);
 
+  //! void insert(const T& data, std::size_t index);
+  /* Insere data na posição index.
+   * \param const T& data: parâmetro data constante, de tipo genérico. Dado a
+   * ser inserido \param std::size_t index: parâmetro index de tipo size_t,
+   * posição para inserir data.
+   */
+  void insert(const T& data, std::size_t index);
+
   //! T pop_back(void)
   /* Remover e retorna elemento no final da lista
    *
@@ -147,6 +155,21 @@ void structures::ArrayList<T>::push_front(const T& data) {
 }
 
 template <typename T>
+void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
+  if (full()) {
+    throw(std::out_of_range("Cannot insert on full list"));
+  } else if ((index < 0) || (index > size_ + 1)) {
+    throw(std::out_of_range("Invalid index"));
+  } else {
+    size_++;
+    for(std::size_t i = size_; i > index; i--) {
+      contents[i] = contents[i - 1];
+    }
+    contents[index] = data;
+  }
+}
+
+template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop back from empty list"));
@@ -154,7 +177,7 @@ T structures::ArrayList<T>::pop_back(void) {
   return contents[size_--];
 }
 
-template<typename T>
+template <typename T>
 T structures::ArrayList<T>::pop_front(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop front from empty list"));
