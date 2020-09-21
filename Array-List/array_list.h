@@ -58,6 +58,14 @@ class ArrayList {
    */
   void insert(const T& data, std::size_t index);
 
+  //! void insert_sorted(const T& data)
+  /* Insere data em ordem
+   *
+   * \param const T& data: referência a elemento de tipo genérico data a ser
+   * inserido
+   */
+  void insert_sorted(const T& data);
+
   //! T pop_back(void)
   /* Remover e retorna elemento no final da lista
    *
@@ -80,6 +88,13 @@ class ArrayList {
    */
   T pop(std::size_t index);
 
+  //! void remove(const T& data);
+  /* Remove elemento data específico, se estiver presente na lista
+   *
+   * \param const T& data: Elemento a ser removido
+   */
+  void remove(const T& data);
+
   /* Retorna true se lista estiver vazia, caso contrário retorna false
    *
    * \return bool
@@ -93,19 +108,42 @@ class ArrayList {
    */
   bool full(void);
 
+  //! bool contains(const T& data) const
+  /* Retorna true se data estiver presente, caso contrário retorna false
+   *
+   * \param const T& data: referência a elemento de tipo genérico data
+   * \return bool: true se data pertencer a lista, caso contrário false
+   */
+  bool contains(const T& data) const;
+
+  //! std::size_t find(const T& data) const
+  /* Retorna índice de data, se estiver na lista
+   * \param const T& data: parâmetro de tipo genérico constante.
+   * \return std::size_t: Índice de data, retorna -1 se não estiver presente
+   */
+  std::size_t find(const T& data) const;
+
   //! size()
   /* Retorna tamanho atual da lista
    *
    * \return std::size_t, tamanho atual da lista
    */
-  std::size_t size(void);
+  std::size_t size(void) const ;
 
   //! max_size()
   /* Getter do atributo max_size_
    *
    * \return std::size_t, tamanho máximo da lista
    */
-  std::size_t max_size(void);
+  std::size_t max_size(void) const;
+
+  T& at(std::size_t index);
+
+  T& operator[](std::size_t index);
+
+  const T& at(std::size_t index) const;
+
+  const T& operator[](std::size_t index) const;
 
   T* contents;
   std::size_t size_;      // Posição do último elemento da lista.
@@ -177,6 +215,25 @@ void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
 }
 
 template <typename T>
+void structures::ArrayList<T>::insert_sorted(const T& data) {
+  if (full()) {
+    throw(std::out_of_range("Cannot insert in full list"));
+  } else if (empty()) {
+    contents[++size_] = data;
+  } else {
+    std::size_t i = 0;
+    while (i != size() && contents[i] < data) {
+      i++;
+    }
+    if (i == size()) {
+      push_back(data);
+    } else {
+      insert(data, i);
+    }
+  }
+}
+
+template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop back from empty list"));
@@ -215,6 +272,20 @@ T structures::ArrayList<T>::pop(std::size_t index) {
 }
 
 template <typename T>
+void structures::ArrayList<T>::remove(const T& data) {
+  if (empty()) {
+    throw(std::out_of_range("Cannot remove from empty list"));
+  } else {
+    std::size_t index = find(data);
+    if (index < 0) {
+      throw(std::invalid_argument("List does not contain the argument"));
+    } else {
+      pop(index);
+    }
+  }
+}
+
+template <typename T>
 bool structures::ArrayList<T>::empty(void) {
   return size_ == -1;
 }
@@ -225,11 +296,67 @@ bool structures::ArrayList<T>::full(void) {
 }
 
 template <typename T>
-std::size_t structures::ArrayList<T>::size(void) {
+bool structures::ArrayList<T>::contains(const T& data) const {
+  std::size_t index = 0;
+  for (index; index < size_ + 1; index++) {
+    if (data == contents[index]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+template <typename T>
+std::size_t structures::ArrayList<T>::find(const T& data) const {
+  std::size_t index = 0;
+  while (index <= size_ && !(data == contents[index])) {
+    index++;
+  }
+  if (index > size_) {
+    throw(std::invalid_argument("Element not found!"));
+  } else {
+    return index;
+  }
+}
+
+template <typename T>
+std::size_t structures::ArrayList<T>::size(void) const {
   return size_ + 1;
 }
 
 template <typename T>
-std::size_t structures::ArrayList<T>::max_size(void) {
+std::size_t structures::ArrayList<T>::max_size(void) const {
   return max_size_;
+}
+
+template<typename T>
+T& structures::ArrayList<T>::at(std::size_t index){
+    if(index < 0 || index >= size()){
+        throw(std::out_of_range("Error: invalid index"));
+    }
+    return contents[index];
+}
+
+template<typename T>
+T& structures::ArrayList<T>::operator[](std::size_t index){
+    if(index < 0 || index >= size()){
+        throw(std::out_of_range("Error: invalid index"));
+    }
+    return contents[index];
+}
+
+template<typename T>
+const T& structures::ArrayList<T>::at(std::size_t index) const{
+    if(index < 0 || index >= size()){
+        throw(std::out_of_range("Error: invalid index"));
+    }
+    return contents[index];
+}
+
+template<typename T>
+const T& structures::ArrayList<T>::operator[](std::size_t index) const{
+    if(index < 0 || index >= size()){
+        throw(std::out_of_range("Error: invalid index"));
+    }
+    return contents[index];
 }

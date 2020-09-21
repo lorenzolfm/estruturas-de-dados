@@ -194,3 +194,104 @@ TEST_F(ArrayListTest, PopsTheCorrectElement) {
   ASSERT_EQ(6, list.pop(5));
   ASSERT_EQ(0, list.pop(0));
 }
+
+TEST_F(ArrayListTest, InsertSortedThrowsErrorWhenFull) {
+  push_back_fill();
+  ASSERT_THROW(list.insert_sorted(5), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, InsertInOrderIncreasesSize) {
+  for (auto i = 0; i < list.max_size(); i++) {
+    list.insert_sorted(i);
+    ASSERT_EQ(i + 1, list.size());
+  }
+}
+
+TEST_F(ArrayListTest, InsertInOrder) {
+  for (auto i = 19; i >= 0; --i) {
+    list.insert_sorted(i);
+  }
+
+  for (auto i = 0; i < list.max_size(); ++i) {
+    ASSERT_EQ(i, list.contents[i]);
+  }
+
+  list.clear();
+
+  list.insert_sorted(10);
+  list.insert_sorted(-10);
+  list.insert_sorted(42);
+  list.insert_sorted(0);
+  ASSERT_EQ(-10, list.contents[0]);
+  ASSERT_EQ(0, list.contents[1]);
+  ASSERT_EQ(10, list.contents[2]);
+  ASSERT_EQ(42, list.contents[3]);
+}
+
+TEST_F(ArrayListTest, ContainsReturnsTrueWhenContainsData) {
+  push_back_fill();
+  for (auto i = 0; i < list.max_size(); i++) {
+    ASSERT_TRUE(list.contains(i));
+  }
+}
+
+TEST_F(ArrayListTest, ContainsReturnsFalseWhenDoesntContainsData) {
+  push_back_fill();
+
+  ASSERT_FALSE(list.contains(500));
+  ASSERT_FALSE(list.contains(-1));
+}
+
+TEST_F(ArrayListTest, FindThrowsErrorWhenElementNotFound) {
+  push_back_fill();
+  ASSERT_THROW(list.find(500), std::invalid_argument);
+}
+
+TEST_F(ArrayListTest, FindReturnsTheIndexOfData) {
+  push_back_fill();
+  for (auto i = 0; i < list.max_size(); i++) {
+    ASSERT_EQ(i, list.find(i));
+  }
+}
+
+TEST_F(ArrayListTest, RemoveThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.remove(10), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, RemoveElementNotContainedThrowsError) {
+  push_back_fill();
+  ASSERT_THROW(list.remove(500), std::invalid_argument);
+}
+
+TEST_F(ArrayListTest, RemoveElementReturnsTheCorrectElement) {
+  push_back_fill();
+
+  list.remove(3);
+  ASSERT_EQ(19, list.size());
+  ASSERT_FALSE(list.contains(3));
+}
+
+TEST_F(ArrayListTest, AccessOnIndexGreaterThenSize) {
+  ASSERT_THROW(list[0], std::out_of_range);
+  ASSERT_THROW(list.at(0), std::out_of_range);
+
+  list.push_back(0);
+  ASSERT_THROW(list[1], std::out_of_range);
+  ASSERT_THROW(list.at(1), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, AccessOnNegativeIndex) {
+  ASSERT_THROW(list[-1], std::out_of_range);
+  ASSERT_THROW(list.at(-2), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, IndexAccess) {
+  for (auto i = 0; i < list.max_size(); i++) {
+    list.push_back(i);
+  }
+
+  for (auto i = 0; i < list.max_size(); i++) {
+    ASSERT_EQ(list.at(i), i);
+    ASSERT_EQ(list[i], i);
+  }
+}
