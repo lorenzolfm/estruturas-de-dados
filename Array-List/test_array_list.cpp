@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include <stdio.h>
+
+#include <stdexcept>
 
 #include "array_list.h"
 #include "gtest/gtest.h"
@@ -51,9 +52,7 @@ TEST_F(ArrayListTest, SizeReturnsCorrectValue) {
   ASSERT_EQ(2, list.size());
 }
 
-TEST_F(ArrayListTest, EmptyReturnsTrueWhenEmpty) {
-  ASSERT_TRUE(list.empty());
-}
+TEST_F(ArrayListTest, EmptyReturnsTrueWhenEmpty) { ASSERT_TRUE(list.empty()); }
 
 TEST_F(ArrayListTest, EmptyReturnsFalseWhenNotEmpty) {
   list.size_ = 5;
@@ -86,5 +85,24 @@ TEST_F(ArrayListTest, PushBackAddDataToEndOfList) {
   push_back_fill();
   for (auto i = 0; i < list.max_size(); i++) {
     ASSERT_EQ(i, list.contents[i]);
+  }
+}
+
+TEST_F(ArrayListTest, PopBackDecreasesSize) {
+  push_back_fill();
+  list.pop_back();
+  ASSERT_EQ(19, list.size());
+  list.pop_back();
+  ASSERT_EQ(18, list.size());
+}
+
+TEST_F(ArrayListTest, PopBackThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.pop_back(), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, PopBackReturnsLastElement) {
+  push_back_fill();
+  for (auto i = 19; i >= 0; i--) {
+    ASSERT_EQ(i, list.pop_back());
   }
 }

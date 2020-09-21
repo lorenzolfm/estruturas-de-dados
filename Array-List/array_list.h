@@ -35,12 +35,19 @@ class ArrayList {
 
   //! void push_back(const T& data)
   /* Adiciona data no final da lista
-    *
-    * \param const T& data, parâmetro constante, referência a T, data
-    */
+   *
+   * \param const T& data, parâmetro constante, referência a T, data
+   */
   void push_back(const T& data);
 
+  //! T pop_back(void)
+  /* Remover e retorna elemento no final da lista
+   *
+   * \return tipo genérico T, ultimo elemento da lista
+   */
   //! empty()
+  T pop_back(void);
+
   /* Retorna true se lista estiver vazia, caso contrário retorna false
    *
    * \return bool
@@ -101,12 +108,20 @@ void structures::ArrayList<T>::clear(void) {
   size_ = -1;
 }
 
-template<typename T>
+template <typename T>
 void structures::ArrayList<T>::push_back(const T& data) {
   if (full()) {
     throw(std::out_of_range("Cannot push back on full list"));
   }
   contents[++size_] = data;
+}
+
+template<typename T>
+T structures::ArrayList<T>::pop_back(void) {
+  if (empty()) {
+    throw(std::out_of_range("Cannot pop back from empty list"));
+  }
+  return contents[size_--];
 }
 
 template <typename T>
