@@ -210,11 +210,14 @@ void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
   } else if ((index < 0) || (index > size_ + 1)) {
     throw(std::out_of_range("Invalid index"));
   } else {
+    move_backward(index);
     size_++;
-    for (std::size_t i = size_; i > index; i--) {
-      contents[i] = contents[i - 1];
-    }
     contents[index] = data;
+    //size_++;
+    //for (std::size_t i = size_; i > index; i--) {
+      //contents[i] = contents[i - 1];
+    //}
+    //contents[index] = data;
   }
 }
 
@@ -317,7 +320,7 @@ std::size_t structures::ArrayList<T>::find(const T& data) const {
     index++;
   }
   if (index > size_) {
-    throw(std::invalid_argument("Element not found!"));
+    return size_ + 1;
   } else {
     return index;
   }
