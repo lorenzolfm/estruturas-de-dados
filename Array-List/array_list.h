@@ -1,3 +1,4 @@
+// Copyright [2020] <Lorenzo Lima Franco Maturano>
 #ifndef STRUCTURES_ARRAY_LIST_H_
   #define STRUCTURES_ARRAY_LIST_H_
 
@@ -95,6 +96,7 @@ class ArrayList {
    */
   void remove(const T& data);
 
+  //! bool empty(void);
   /* Retorna true se lista estiver vazia, caso contrário retorna false
    *
    * \return bool
@@ -137,12 +139,36 @@ class ArrayList {
    */
   std::size_t max_size(void) const;
 
+  //! T& at(std::size_ index)
+  /* Retorna referência a elemento em index
+   *
+   * \param std::size_t index: índice do elemento a ser retornado
+   * \return T&: referência à elemento de tipo genérico
+   */
   T& at(std::size_t index);
 
+  //! T& operator[](std::size_ index)
+  /*  Overload do operador []
+   *
+   * \param std::size_t index: índice do elemento a ser retornado
+   * \return T&: referência à elemento de tipo genérico
+   */
   T& operator[](std::size_t index);
 
+  //! const T& operator[](std::size_ index)
+  /*  Retorna referência constante a elemento em index
+   *
+   * \param std::size_t index: índice do elemento a ser retornado
+   * \return T&: referência à elemento de tipo genérico
+   */
   const T& at(std::size_t index) const;
 
+  //! const T& operator[](std::size_ index)
+  /*  Overload do operador []
+   *
+   * \param std::size_t index: índice do elemento a ser retornado
+   * \return const t&: referência constante à elemento de tipo genérico
+   */
   const T& operator[](std::size_t index) const;
 
  private:
@@ -295,8 +321,7 @@ bool structures::ArrayList<T>::full(void) {
 
 template <typename T>
 bool structures::ArrayList<T>::contains(const T& data) const {
-  std::size_t index = 0;
-  for (index; index < size_ + 1; index++) {
+  for (std::size_t index = 0; index < size_ + 1; index++) {
     if (data == contents[index]) {
       return true;
     }
