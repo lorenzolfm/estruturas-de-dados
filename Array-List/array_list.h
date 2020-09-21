@@ -213,11 +213,6 @@ void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
     move_backward(index);
     size_++;
     contents[index] = data;
-    //size_++;
-    //for (std::size_t i = size_; i > index; i--) {
-      //contents[i] = contents[i - 1];
-    //}
-    //contents[index] = data;
   }
 }
 
@@ -253,11 +248,9 @@ T structures::ArrayList<T>::pop_front(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop front from empty list"));
   } else {
-    size_--;
     T data = contents[0];
-    for (std::size_t i = 0; i != size(); i++) {
-      contents[i] = contents[i + 1];
-    }
+    size_--;
+    move_forward(0);
     return data;
   }
 }
