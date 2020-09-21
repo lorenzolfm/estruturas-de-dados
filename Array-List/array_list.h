@@ -19,15 +19,18 @@ class ArrayList {
    * max_size_
    */
   ArrayList(void);
+
   //! Construtor com parâmetro max_size
   /*
    * \param max_size, tipo std::size_t, tamanho máximo da fila
    */
   ArrayList(std::size_t max_size);
+
   //! ~ArrayList()
   /* Destrutor padrão
    */
   ~ArrayList(void);
+
   //! clear()
   /* Limpa a lista
    */
@@ -116,7 +119,7 @@ void structures::ArrayList<T>::push_back(const T& data) {
   contents[++size_] = data;
 }
 
-template<typename T>
+template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
   if (empty()) {
     throw(std::out_of_range("Cannot pop back from empty list"));
