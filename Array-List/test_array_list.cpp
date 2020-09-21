@@ -159,6 +159,10 @@ TEST_F(ArrayListTest, InsertThrowsErrorWhenFull) {
 
 TEST_F(ArrayListTest, InsertThrowsErrorWhenInvalidIndex) {
   ASSERT_THROW(list.insert(1, -1), std::out_of_range);
+  ASSERT_THROW(list.insert(1, 1), std::out_of_range);
+
+  push_back_fill();
+  ASSERT_TRUE(list.full());
   ASSERT_THROW(list.insert(1, 20), std::out_of_range);
 }
 
@@ -172,4 +176,21 @@ TEST_F(ArrayListTest, InsertsAtTheRightPlace) {
   ASSERT_EQ(list.contents[4], 4);
   ASSERT_EQ(list.contents[5], 10);
   ASSERT_EQ(list.contents[6], 5);
+}
+
+TEST_F(ArrayListTest, PopThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.pop(10), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, PopThowsErrorWhenInvalidIndex) {
+  push_back_fill();
+  ASSERT_THROW(list.pop(-1), std::out_of_range);
+  ASSERT_THROW(list.pop(20), std::out_of_range);
+}
+
+TEST_F(ArrayListTest, PopsTheCorrectElement) {
+  push_back_fill();
+  ASSERT_EQ(5, list.pop(5));
+  ASSERT_EQ(6, list.pop(5));
+  ASSERT_EQ(0, list.pop(0));
 }

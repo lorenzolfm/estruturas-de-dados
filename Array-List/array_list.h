@@ -73,6 +73,13 @@ class ArrayList {
    */
   T pop_front(void);
 
+  //! T pop(std::size_t index)
+  /* Retorna e retirna elemento na posição index
+   *
+   * \param size_t index: posição do elemento a ser removido
+   */
+  T pop(std::size_t index);
+
   /* Retorna true se lista estiver vazia, caso contrário retorna false
    *
    * \return bool
@@ -162,7 +169,7 @@ void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
     throw(std::out_of_range("Invalid index"));
   } else {
     size_++;
-    for(std::size_t i = size_; i > index; i--) {
+    for (std::size_t i = size_; i > index; i--) {
       contents[i] = contents[i - 1];
     }
     contents[index] = data;
@@ -185,6 +192,22 @@ T structures::ArrayList<T>::pop_front(void) {
     size_--;
     T data = contents[0];
     for (std::size_t i = 0; i != size(); i++) {
+      contents[i] = contents[i + 1];
+    }
+    return data;
+  }
+}
+
+template <typename T>
+T structures::ArrayList<T>::pop(std::size_t index) {
+  if ((index < 0) || (index > size_)) {
+    throw(std::out_of_range("Invalid index"));
+  } else if (empty()) {
+    throw(std::out_of_range("Cannot pop from empty list"));
+  } else {
+    size_--;
+    T data = contents[index];
+    for (std::size_t i = index; i <= size_; i++) {
       contents[i] = contents[i + 1];
     }
     return data;
