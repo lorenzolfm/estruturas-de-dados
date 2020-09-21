@@ -33,10 +33,45 @@ class ArrayList {
    */
   void clear(void);
 
-  T * contents;
+  //! void push_back(const T& data)
+  /* Adiciona data no final da lista
+    *
+    * \param const T& data, parâmetro constante, referência a T, data
+    */
+  void push_back(const T& data);
+
+  //! empty()
+  /* Retorna true se lista estiver vazia, caso contrário retorna false
+   *
+   * \return bool
+   */
+  bool empty(void);
+
+  //! full()
+  /* Retorna true caso a lista esteja cheia, caso contrário retorna false
+   *
+   * \return bool
+   */
+  bool full(void);
+
+  //! size()
+  /* Retorna tamanho atual da lista
+   *
+   * \return std::size_t, tamanho atual da lista
+   */
+  std::size_t size(void);
+
+  //! max_size()
+  /* Getter do atributo max_size_
+   *
+   * \return std::size_t, tamanho máximo da lista
+   */
+  std::size_t max_size(void);
+
+  T* contents;
   std::size_t size_;      // Posição do último elemento da lista.
   std::size_t max_size_;  // Tamanho máximo da lista
-  const static auto DEFAULT_MAX_SIZE = 10u;   // Tamanho máximo padrão
+  const static auto DEFAULT_MAX_SIZE = 10u;  // Tamanho máximo padrão
 };
 }  // namespace structures
 
@@ -58,5 +93,38 @@ structures::ArrayList<T>::ArrayList(std::size_t max_size) {
 
 template <typename T>
 structures::ArrayList<T>::~ArrayList(void) {
+  delete[] contents;
+}
 
+template <typename T>
+void structures::ArrayList<T>::clear(void) {
+  size_ = -1;
+}
+
+template<typename T>
+void structures::ArrayList<T>::push_back(const T& data) {
+  if (full()) {
+    throw(std::out_of_range("Cannot push back on full list"));
+  }
+  contents[++size_] = data;
+}
+
+template <typename T>
+bool structures::ArrayList<T>::empty(void) {
+  return size_ == -1;
+}
+
+template <typename T>
+bool structures::ArrayList<T>::full(void) {
+  return size_ == max_size_ - 1;
+}
+
+template <typename T>
+std::size_t structures::ArrayList<T>::size(void) {
+  return size_ + 1;
+}
+
+template <typename T>
+std::size_t structures::ArrayList<T>::max_size(void) {
+  return max_size_;
 }
