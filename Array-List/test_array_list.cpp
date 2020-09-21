@@ -253,10 +253,10 @@ TEST_F(ArrayListTest, RemoveThrowsErrorWhenEmpty) {
   ASSERT_THROW(list.remove(10), std::out_of_range);
 }
 
-//TEST_F(ArrayListTest, RemoveElementNotContainedReturnsSize) {
-  //push_back_fill();
-  //ASSERT_EQ(list.remove(500), list.size());
-//}
+TEST_F(ArrayListTest, RemoveElementNotContainedReturnsSize) {
+  push_back_fill();
+  ASSERT_THROW(list.remove(500), std::invalid_argument);
+}
 
 TEST_F(ArrayListTest, RemoveElementReturnsTheCorrectElement) {
   push_back_fill();

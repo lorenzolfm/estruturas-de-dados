@@ -262,11 +262,9 @@ T structures::ArrayList<T>::pop(std::size_t index) {
   } else if (empty()) {
     throw(std::out_of_range("Cannot pop from empty list"));
   } else {
-    size_--;
     T data = contents[index];
-    for (std::size_t i = index; i <= size_; i++) {
-      contents[i] = contents[i + 1];
-    }
+    size_--;
+    move_forward(index);
     return data;
   }
 }
@@ -277,7 +275,7 @@ void structures::ArrayList<T>::remove(const T& data) {
     throw(std::out_of_range("Cannot remove from empty list"));
   } else {
     std::size_t index = find(data);
-    if (index < 0) {
+    if (index == size()) {
       throw(std::invalid_argument("List does not contain the argument"));
     } else {
       pop(index);
