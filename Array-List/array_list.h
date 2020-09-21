@@ -128,7 +128,7 @@ class ArrayList {
    *
    * \return std::size_t, tamanho atual da lista
    */
-  std::size_t size(void) const ;
+  std::size_t size(void) const;
 
   //! max_size()
   /* Getter do atributo max_size_
@@ -145,6 +145,7 @@ class ArrayList {
 
   const T& operator[](std::size_t index) const;
 
+ private:
   T* contents;
   std::size_t size_;      // Posição do último elemento da lista.
   std::size_t max_size_;  // Tamanho máximo da lista
@@ -329,34 +330,34 @@ std::size_t structures::ArrayList<T>::max_size(void) const {
   return max_size_;
 }
 
-template<typename T>
-T& structures::ArrayList<T>::at(std::size_t index){
-    if(index < 0 || index >= size()){
-        throw(std::out_of_range("Error: invalid index"));
-    }
-    return contents[index];
+template <typename T>
+T& structures::ArrayList<T>::at(std::size_t index) {
+  if (index < 0 || index >= size()) {
+    throw(std::out_of_range("Error: invalid index"));
+  }
+  return contents[index];
 }
 
-template<typename T>
-T& structures::ArrayList<T>::operator[](std::size_t index){
-    if(index < 0 || index >= size()){
-        throw(std::out_of_range("Error: invalid index"));
-    }
-    return contents[index];
+template <typename T>
+T& structures::ArrayList<T>::operator[](std::size_t index) {
+  if (index < 0 || index >= size()) {
+    throw(std::out_of_range("Error: invalid index"));
+  }
+  return contents[index];
 }
 
-template<typename T>
-const T& structures::ArrayList<T>::at(std::size_t index) const{
-    if(index < 0 || index >= size()){
-        throw(std::out_of_range("Error: invalid index"));
-    }
-    return contents[index];
+template <typename T>
+const T& structures::ArrayList<T>::at(std::size_t index) const {
+  if (index < 0 || index >= size()) {
+    throw(std::out_of_range("Error: invalid index"));
+  }
+  return contents[index];
 }
 
-template<typename T>
-const T& structures::ArrayList<T>::operator[](std::size_t index) const{
-    if(index < 0 || index >= size()){
-        throw(std::out_of_range("Error: invalid index"));
-    }
-    return contents[index];
+template <typename T>
+const T& structures::ArrayList<T>::operator[](std::size_t index) const {
+  if (index < 0 || index >= size()) {
+    throw(std::out_of_range("Error: invalid index"));
+  }
+  return contents[index];
 }

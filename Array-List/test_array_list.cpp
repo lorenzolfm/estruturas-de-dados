@@ -25,20 +25,20 @@ class ArrayListTest : public ::testing::Test {
 };
 
 TEST_F(ArrayListTest, ConstructorInitializesSizeToMinusOne) {
-  ASSERT_EQ(-1, list.size_);
-  ASSERT_EQ(-1, list.size_);
+  ASSERT_EQ(0, list.size());
+  ASSERT_EQ(0, list.size());
 }
 
 TEST_F(ArrayListTest, ConstructorInitializesCorrectMaxSize) {
-  ASSERT_EQ(20, list.max_size_);
-  ASSERT_EQ(10, default_list.max_size_);
+  ASSERT_EQ(20, list.max_size());
+  ASSERT_EQ(10, default_list.max_size());
 }
 
 TEST_F(ArrayListTest, ClearSetsSizeToMinusOne) {
-  list.size_ = 10;
-  ASSERT_EQ(10, list.size_);
+  push_back_fill();
+  ASSERT_EQ(20, list.size());
   list.clear();
-  ASSERT_EQ(-1, list.size_);
+  ASSERT_EQ(0, list.size());
 }
 
 TEST_F(ArrayListTest, MaxSizeReturnCorrectValue) {
@@ -48,25 +48,26 @@ TEST_F(ArrayListTest, MaxSizeReturnCorrectValue) {
 
 TEST_F(ArrayListTest, SizeReturnsCorrectValue) {
   ASSERT_EQ(0, list.size());
-  list.size_ = 1;
-  ASSERT_EQ(2, list.size());
+  push_back_fill();
+  ASSERT_EQ(20, list.size());
 }
 
 TEST_F(ArrayListTest, EmptyReturnsTrueWhenEmpty) { ASSERT_TRUE(list.empty()); }
 
 TEST_F(ArrayListTest, EmptyReturnsFalseWhenNotEmpty) {
-  list.size_ = 5;
+  list.push_back(1);
   ASSERT_FALSE(list.empty());
 }
 
 TEST_F(ArrayListTest, FullReturnsTrueWhenFull) {
-  list.size_ = 19;
+  push_back_fill();
   ASSERT_TRUE(list.full());
 }
 
 TEST_F(ArrayListTest, FullReturnsFalseWhenNotFull) {
   ASSERT_FALSE(list.full());
-  list.size_ = 18;
+  push_back_fill();
+  list.pop_back();
   ASSERT_FALSE(list.full());
 }
 
@@ -77,14 +78,14 @@ TEST_F(ArrayListTest, PushBackIncreasesSize) {
 }
 
 TEST_F(ArrayListTest, PushBackThrowsErrorWhenFull) {
-  list.size_ = 19;
+  push_back_fill();
   ASSERT_THROW(list.push_back(10), std::out_of_range);
 }
 
 TEST_F(ArrayListTest, PushBackAddDataToEndOfList) {
   push_back_fill();
   for (auto i = 0; i < list.max_size(); i++) {
-    ASSERT_EQ(i, list.contents[i]);
+    ASSERT_EQ(i, list[i]);
   }
 }
 
@@ -92,8 +93,6 @@ TEST_F(ArrayListTest, PopBackDecreasesSize) {
   push_back_fill();
   list.pop_back();
   ASSERT_EQ(19, list.size());
-  list.pop_back();
-  ASSERT_EQ(18, list.size());
 }
 
 TEST_F(ArrayListTest, PopBackThrowsErrorWhenEmpty) {
@@ -123,14 +122,14 @@ TEST_F(ArrayListTest, PushFrontMovesBackwards) {
   list.pop_back();
   list.push_front(666);
   for (auto i = 0; i < list.max_size() - 1; i++) {
-    ASSERT_EQ(i, list.contents[i + 1]);
+    ASSERT_EQ(i, list[i + 1]);
   }
 }
 
 TEST_F(ArrayListTest, PushFrontInsertsDataInAtIndex0) {
   for (auto i = 0; i < list.max_size(); i++) {
     list.push_front(i);
-    ASSERT_EQ(i, list.contents[0]);
+    ASSERT_EQ(i, list[0]);
   }
 }
 
@@ -160,10 +159,6 @@ TEST_F(ArrayListTest, InsertThrowsErrorWhenFull) {
 TEST_F(ArrayListTest, InsertThrowsErrorWhenInvalidIndex) {
   ASSERT_THROW(list.insert(1, -1), std::out_of_range);
   ASSERT_THROW(list.insert(1, 1), std::out_of_range);
-
-  push_back_fill();
-  ASSERT_TRUE(list.full());
-  ASSERT_THROW(list.insert(1, 20), std::out_of_range);
 }
 
 TEST_F(ArrayListTest, InsertsAtTheRightPlace) {
@@ -173,9 +168,9 @@ TEST_F(ArrayListTest, InsertsAtTheRightPlace) {
 
   list.insert(10, 5);
   ASSERT_EQ(list.size(), 20);
-  ASSERT_EQ(list.contents[4], 4);
-  ASSERT_EQ(list.contents[5], 10);
-  ASSERT_EQ(list.contents[6], 5);
+  ASSERT_EQ(list[4], 4);
+  ASSERT_EQ(list[5], 10);
+  ASSERT_EQ(list[6], 5);
 }
 
 TEST_F(ArrayListTest, PopThrowsErrorWhenEmpty) {
@@ -213,7 +208,7 @@ TEST_F(ArrayListTest, InsertInOrder) {
   }
 
   for (auto i = 0; i < list.max_size(); ++i) {
-    ASSERT_EQ(i, list.contents[i]);
+    ASSERT_EQ(i, list[i]);
   }
 
   list.clear();
@@ -222,10 +217,10 @@ TEST_F(ArrayListTest, InsertInOrder) {
   list.insert_sorted(-10);
   list.insert_sorted(42);
   list.insert_sorted(0);
-  ASSERT_EQ(-10, list.contents[0]);
-  ASSERT_EQ(0, list.contents[1]);
-  ASSERT_EQ(10, list.contents[2]);
-  ASSERT_EQ(42, list.contents[3]);
+  ASSERT_EQ(-10, list[0]);
+  ASSERT_EQ(0, list[1]);
+  ASSERT_EQ(10, list[2]);
+  ASSERT_EQ(42, list[3]);
 }
 
 TEST_F(ArrayListTest, ContainsReturnsTrueWhenContainsData) {
