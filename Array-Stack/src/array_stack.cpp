@@ -1,5 +1,8 @@
 #include "array_stack.h"
 
+#include <cstdint>    // std::size_t
+#include <stdexcept>  // C++ exceptions
+
 template <typename T>
 structures::ArrayStack<T>::ArrayStack(void) {
   max_size_ = DEFAULT_SIZE;

@@ -1,8 +1,6 @@
 #ifndef STRUCTURES_ARRAY_STACK_H_
 #define STRUCTURES_ARRAY_STACK_H_
 
-#include <cstdint>    // std::size_t
-#include <stdexcept>  // C++ exceptions
 
 namespace structures {
 template <typename T>
