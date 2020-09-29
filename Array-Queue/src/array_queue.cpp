@@ -1,7 +1,5 @@
 #include "array_queue.h"
 
-#include <cstdint>
-#include <stdexcept>
 
 template <typename T>
 structures::ArrayQueue<T>::ArrayQueue(void) {

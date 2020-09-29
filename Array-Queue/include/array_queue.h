@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_ARRAY_QUEUE_H_
   #define STRUCTURES_ARRAY_QUEUE_H_
 
+#include <cstdint>
+#include <stdexcept>
 
 namespace structures {
 template <typename T>
