@@ -1,8 +1,7 @@
-**/build/
 *.txt
 !CMakeLists.txt
-*.cmake
+
+**/build
+**/CMakeFiles
+
 */.clang-format
-Makefile
-**test
-*/Makefile
