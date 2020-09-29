@@ -22,7 +22,6 @@ class CircularArrayQueueTest : public ::testing::Test {
   }
 };
 
-
 TEST_F(CircularArrayQueueTest, ConstructorSetsCorrectMaxSize) {
   ASSERT_EQ(10u, default_circular_queue.max_size());
   ASSERT_EQ(20u, circular_queue.max_size());

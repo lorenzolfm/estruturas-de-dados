@@ -1,5 +1,5 @@
 #ifndef STRUCTURES_ARRAY_QUEUE_H_
-  #define STRUCTURES_ARRAY_QUEUE_H_
+#define STRUCTURES_ARRAY_QUEUE_H_
 
 #include <cstdint>
 #include <stdexcept>
@@ -89,7 +89,7 @@ class ArrayQueue {
    */
   void move_forward(void);
 
-  T* contents;    // Ponteiro para tipo genérico, armazena elementos
+  T* contents;            // Ponteiro para tipo genérico, armazena elementos
   std::size_t size_;      // Tamanho atual da fila
   std::size_t max_size_;  // Tamanho máximo da fila
 
