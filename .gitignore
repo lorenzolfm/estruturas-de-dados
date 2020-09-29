@@ -1,4 +1,5 @@
 */CMakeFiles
+*/build
 *.txt
 !CMakeLists.txt
 *.cmake
@@ -6,4 +7,3 @@
 Makefile
 **test
 */Makefile
-*/build

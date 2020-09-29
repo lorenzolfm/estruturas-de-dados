@@ -6,13 +6,3 @@
 
 #IncludeRegexTransform: 
 
-../include/array_stack.h
-cstdint
--
-stdexcept
--
-
-/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/src/array_stack.cpp
-array_stack.h
-/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/src/array_stack.h
-

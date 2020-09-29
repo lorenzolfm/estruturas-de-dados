@@ -11,5 +11,9 @@ include_directories(
   src
   )
 
-add_executable(test tests/test_array_stack.cpp include/array_stack.h src/array_stack.cpp)
+set(test_SOURCES tests/test_array_stack.cpp)
+set(include_SOURCES include/array_stack.h)
+set(src_SOURCES src/array_stack.cpp)
+
+add_executable(test ${test_SOURCES} ${include_SOURCES} ${src_SOURCES})
 target_link_libraries(test ${GTEST_LIBRARIES} pthread)
