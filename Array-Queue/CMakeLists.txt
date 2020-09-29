@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(ArrayStack)
+project(ArrayQueue)
 
 # Locate GTest
 find_package(GTest REQUIRED)
