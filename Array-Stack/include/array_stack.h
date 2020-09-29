@@ -1,21 +1,23 @@
 #ifndef STRUCTURES_ARRAY_STACK_H_
 #define STRUCTURES_ARRAY_STACK_H_
 
+#include <cstdint>    // std::size_t
+#include <stdexcept>  // C++ exceptions
 
 namespace structures {
 template <typename T>
 //! Classe ArrayStack
 /* Classe pilha em vetor com tipo genérico.
- *
- * Classe pilha em vetor, com tipo genérico, implementada utilizando um vetor
- * estático.
+
+   Classe pilha em vetor, com tipo genérico, implementada utilizando um vetor
+   estático.
  */
 class ArrayStack {
  public:
   //! Construtor padrão
   /* Cria uma pilha utilizando o atributo DEFAULT_SIZE como max_size_
    */
-   ArrayStack(void);
+  ArrayStack(void);
 
   //! Construtor com parâmetro max_size
   /* \param max_size, tipo std::size_t, tamanho máximo da pilha
@@ -32,44 +34,44 @@ class ArrayStack {
    * \param  Constante local data, tipo genérico T. Elemento a ser inserido no
    * topo da pilha
    */
-   void push(const T& data);
+  void push(const T& data);
 
   //! Método pop()
   /* Remove dado no topo da pilha e retorna.
    * \return T
    */
-   T pop(void);
+  T pop(void);
 
   //! Método top()
   /* Retorna por referência o elemento no topo
    * \return T&
    */
-   T& top(void);
+  T& top(void);
 
   //! Método empty()
   /* Verifica se a pilha está vazia
    *
    * \return bool
    */
-   bool empty(void);
+  bool empty(void);
 
   //! Método full()
   /* Verifica se pilha está cheia
    *
    * \return bool
    */
-   bool full(void);
+  bool full(void);
 
   //! Método clear()
   /* Limpa a pilha
    */
-   void clear(void);
+  void clear(void);
 
   //! Método size()
   /* Método getter. Retorna o tamanho atual da pilha
    * \return std::size_t
    */
-   std::size_t size(void);
+  std::size_t size(void);
 
   //! Método max_size()
   /* Método retorna o tamanho máximo da pilha
