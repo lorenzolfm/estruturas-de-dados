@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/array_stack.h
+cstdint
+-
+stdexcept
+-
+
+/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/src/array_stack.cpp
+array_stack.h
+/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/src/array_stack.h
+
+/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/tests/test_array_stack.cpp
+stdexcept
+-
+array_stack.h
+/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/tests/array_stack.h
+gtest/gtest.h
+/home/lorenzo/Projects/estruturas-de-dados/Array-Stack/tests/gtest/gtest.h
+

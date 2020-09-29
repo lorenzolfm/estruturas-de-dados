@@ -1,8 +1,9 @@
-*/CMakeFiles
+# Ignore all txt files except CMakeLists.txt
 *.txt
 !CMakeLists.txt
-*.cmake
+
+# Ignore all build related directories
+**/build
+**/CMakeFiles
+
 */.clang-format
-Makefile
-**test
-*/Makefile
