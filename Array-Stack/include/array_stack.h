@@ -34,44 +34,44 @@ class ArrayStack {
    * \param  Constante local data, tipo genérico T. Elemento a ser inserido no
    * topo da pilha
    */
-  // void push(const T& data);
+   void push(const T& data);
 
   //! Método pop()
   /* Remove dado no topo da pilha e retorna.
    * \return T
    */
-  // T pop(void);
+   T pop(void);
 
   //! Método top()
   /* Retorna por referência o elemento no topo
    * \return T&
    */
-  // T& top(void);
+   T& top(void);
 
   //! Método empty()
   /* Verifica se a pilha está vazia
    *
    * \return bool
    */
-  // bool empty(void);
+   bool empty(void);
 
   //! Método full()
   /* Verifica se pilha está cheia
    *
    * \return bool
    */
-  // bool full(void);
+   bool full(void);
 
   //! Método clear()
   /* Limpa a pilha
    */
-  // void clear(void);
+   void clear(void);
 
   //! Método size()
   /* Método getter. Retorna o tamanho atual da pilha
    * \return std::size_t
    */
-  // std::size_t size(void);
+   std::size_t size(void);
 
   //! Método max_size()
   /* Método retorna o tamanho máximo da pilha
