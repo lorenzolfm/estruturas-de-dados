@@ -1,6 +1,8 @@
+# Ignore all txt files except CMakeLists.txt
 *.txt
 !CMakeLists.txt
 
+# Ignore all build related directories
 **/build
 **/CMakeFiles
 
