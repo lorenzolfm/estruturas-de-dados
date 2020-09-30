@@ -24,7 +24,8 @@ class ArrayStack {
   /*!
       Cria uma pilha utilizando o parâmetro max_size como tamanho máximo da
       pilha.
-     \param max_size: Tamanho máximo da pilha.
+
+     \param max_size: Tamanho máximo da pilha (size_t)
    */
   explicit ArrayStack(std::size_t max_size);
 
@@ -36,22 +37,25 @@ class ArrayStack {
 
   //! Método empilha
   /*!
-     Empilha elemento no topo da pilha, se houver espaço.
-     \param data: Referência constante para o elemento a ser empilhado.
+     Empilha elemento no topo da pilha, se houver espaço. Se não houver espaço, lança erro (out_of_range).
+
+     \param data: Referência constante para o elemento a ser empilhado (const T&)
    */
   void push(const T& data);
 
   //! Método desempilha.
   /*!
      Remove dado no topo da pilha o retorna, se houver elementos na pilha.
-     \return Elemento removido.
+
+     \return Elemento removido (T).
    */
   T pop(void);
 
   //! Método topo.
   /*!
     Retorna por referência o elemento no topo.
-    \return Referência ao elemento no topo.
+
+    \return Referência ao elemento no topo (T&).
    */
   T& top(void);
 
@@ -59,8 +63,9 @@ class ArrayStack {
   /*!
     Verifica se a pilha está vazia. Retorna verdadeiro se a pilha estiver vazia,
     caso contrário retorna falso.
-    \return true: Se a pilha estiver vazia.
-    \return false: Se a pilha não estiver vazia.
+
+    \return true: Pilha vazia (bool).
+    \return false: Pilha contém elementos (bool).
    */
   bool empty(void);
 
@@ -68,8 +73,9 @@ class ArrayStack {
   /*!
     Verifica se pilha está cheia. Retorna verdadeiro se a pilha estiver cheia,
     caso contrário retorna falso.
-    \return true: Se a pilha estiver cheia.
-    \return false: Se a pilha não estiver cheia.
+
+    \return true: Pilha cheia (bool)
+    \return false: Pilha não está cheia (bool).
    */
   bool full(void);
 
@@ -81,7 +87,8 @@ class ArrayStack {
 
   //! Método tamanho
   /*!
-    Getter do atributo size_, Retorna o tamanho atual da pilha.
+    Getter do atributo size_, retorna o tamanho atual da pilha.
+
     \return Tamanho da pilha (size_t).
    */
   std::size_t size(void);
@@ -89,6 +96,7 @@ class ArrayStack {
   //! Método tamanho máximo.
   /*!
     Getter do atributo max_size_, retorna tamanho máximo da pilha.
+
     \return tamanho máximo da pilha (size_t)
    */
   std::size_t max_size(void);
