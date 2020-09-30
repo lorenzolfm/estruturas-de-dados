@@ -1,5 +1,7 @@
 #include "array_queue.h"
 
+#include <stdexcept>
+
 template <typename T>
 structures::ArrayQueue<T>::ArrayQueue(void) {
   max_size_ = DEFAULT_SIZE;
