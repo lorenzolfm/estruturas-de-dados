@@ -53,3 +53,4 @@ format:
 # Clean build and docs directories
 clean:
 	rm -rf build
+	rm -rf docs
