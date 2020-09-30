@@ -41,7 +41,7 @@ export DOXYGEN_HTML_OUTPUT = .
 
 doc:
 	@doxygen
-	@echo "Documentation @ ${DOCS_OUT_DIR}"
+	@echo "Documentation @ ${DOCS_OUT_DIR}/index.html"
 
 format:
 	find \
