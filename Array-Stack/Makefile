@@ -36,5 +36,5 @@ BUILD_OUTPUT = -o build/$(COMPONENT_NAME)
 
 test:
 	mkdir -p build
-	$(CC) -g -Wall $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
+	$(CC) -g -Werror $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
 	./build/$(COMPONENT_NAME)
