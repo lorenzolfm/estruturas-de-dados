@@ -1,25 +1,11 @@
-#ifndef SILENCE
-	#SILENCE = @
-#endif
-
-#COMPONENT_NAME = ArrayStack
-
-CC = g++
-#CFLAGS = -g -Wall
-
-#SRC_DIRS = src
-
-#TEST_SRC_DIRS = tests
-
-#INCLUDE_DIRS = include
-
-#LD_FLAGS = -L /usr/local/lib -l $(GOOGLE_TEST_LIB) pthread
-
-#GTEST = /usr/src/gtest/include
-#LIBGTEST = /usr/lib/libgtest_main.a
-#TESTDIR = tests
-
+# Name of the component, used for the executable
 COMPONENT_NAME = ArrayStack
+
+# Compiler
+CC = g++
+
+# Compiler flags
+C_FLAGS = -g -Werror
 
 TESTS_DIR = tests
 
@@ -27,17 +13,22 @@ SRCS_DIR = src
 
 INCLUDE_DIRS = include
 
+# Gtest stuff
 GTEST_LIB = /usr/lib/
 GTEST = gtest
 
+# Linker flags
 LD_FLAGS = -L $(GTEST_LIB) -l $(GTEST) -l pthread
 
+# Binary output option
 BUILD_OUTPUT = -o build/$(COMPONENT_NAME)
 
+# Build and execute tests
 test:
 	mkdir -p build
-	$(CC) -g -Werror $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
+	$(CC) $(C_FLAGS) $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
 	./build/$(COMPONENT_NAME)
 
+# Clean build and docs directories
 clean:
 	rm -rf build
