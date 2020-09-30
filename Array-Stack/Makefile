@@ -38,3 +38,6 @@ test:
 	mkdir -p build
 	$(CC) -g -Werror $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
 	./build/$(COMPONENT_NAME)
+
+clean:
+	rm -rf build
