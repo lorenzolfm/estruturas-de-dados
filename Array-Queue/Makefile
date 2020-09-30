@@ -26,8 +26,15 @@ BUILD_OUTPUT = -o build/$(COMPONENT_NAME)
 # Build and execute tests
 test:
 	mkdir -p build
-	$(CC) $(C_FLAGS) $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
+	$(CC) $(C_FLAGS) $(TESTS_DIR)/test_array_queue.cpp $(SRCS_DIR)/array_queue.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
 	./build/$(COMPONENT_NAME)
+
+#test-circ-queue:
+	#mkdir -p build
+	#$(CC) $(C_FLAGS) $(SRCS_DIR)/circular_array_queue.cpp -I $(INCLUDE_DIRS) -o build/CircularArrayQueue.o
+	#$(CC) $(C_FLAGS) $(TESTS_DIR)/test_circular_array_queue.cpp $(SRCS_DIR)/circular_array_queue.cpp $(SRCS_DIR)/array_queue.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) -o build/CircularArrayQueue
+	#./build/CircularArrayQueue
+
 
 # Clean build and docs directories
 clean:
