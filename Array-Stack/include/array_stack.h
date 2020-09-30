@@ -7,84 +7,116 @@
 namespace structures {
 template <typename T>
 //! Classe ArrayStack
-/* Classe pilha em vetor com tipo genérico.
-
-   Classe pilha em vetor, com tipo genérico, implementada utilizando um vetor
-   estático.
+/*!
+    Classe pilha em vetor, com tipo genérico, implementada utilizando um vetor
+    estático.
  */
 class ArrayStack {
  public:
   //! Construtor padrão
-  /* Cria uma pilha utilizando o atributo DEFAULT_SIZE como max_size_
+  /*!
+      Cria uma pilha utilizando o atributo de tamanho padrão como tamanho máximo
+     da pilha
    */
   ArrayStack(void);
 
-  //! Construtor com parâmetro max_size
-  /* \param max_size, tipo std::size_t, tamanho máximo da pilha
+  //! Construtor com parâmetro de tamanho máximo
+  /*!
+      Cria uma pilha utilizando o parâmetro max_size como tamanho máximo da
+      pilha.
+     \param max_size: Tamanho máximo da pilha.
    */
   explicit ArrayStack(std::size_t max_size);
 
   //! Destrutor
-  /* Usado para destruir o objeto quando não for mais utilizado
+  /*!
+    Usado para destruir o objeto quando não for mais utilizado
    */
   ~ArrayStack(void);
 
-  //! Método push()
-  /* Insere elemento no topo da pilha
-   * \param  Constante local data, tipo genérico T. Elemento a ser inserido no
-   * topo da pilha
+  //! Método empilha
+  /*!
+     Empilha elemento no topo da pilha, se houver espaço.
+     \param data: Referência constante para o elemento a ser empilhado.
    */
   void push(const T& data);
 
-  //! Método pop()
-  /* Remove dado no topo da pilha e retorna.
-   * \return T
+  //! Método desempilha.
+  /*!
+     Remove dado no topo da pilha o retorna, se houver elementos na pilha.
+     \return Elemento removido.
    */
   T pop(void);
 
-  //! Método top()
-  /* Retorna por referência o elemento no topo
-   * \return T&
+  //! Método topo.
+  /*!
+    Retorna por referência o elemento no topo.
+    \return Referência ao elemento no topo.
    */
   T& top(void);
 
-  //! Método empty()
-  /* Verifica se a pilha está vazia
-   *
-   * \return bool
+  //! Método vazio
+  /*!
+    Verifica se a pilha está vazia. Retorna verdadeiro se a pilha estiver vazia,
+    caso contrário retorna falso.
+    \return true: Se a pilha estiver vazia.
+    \return false: Se a pilha não estiver vazia.
    */
   bool empty(void);
 
-  //! Método full()
-  /* Verifica se pilha está cheia
-   *
-   * \return bool
+  //! Método cheio
+  /*!
+    Verifica se pilha está cheia. Retorna verdadeiro se a pilha estiver cheia,
+    caso contrário retorna falso.
+    \return true: Se a pilha estiver cheia.
+    \return false: Se a pilha não estiver cheia.
    */
   bool full(void);
 
-  //! Método clear()
-  /* Limpa a pilha
+  //! Método limpar.
+  /*!
+     Limpa a pilha. Atribui -1 para o tamanho da pilha.
    */
   void clear(void);
 
-  //! Método size()
-  /* Método getter. Retorna o tamanho atual da pilha
-   * \return std::size_t
+  //! Método tamanho
+  /*!
+    Getter do atributo size_, Retorna o tamanho atual da pilha.
+    \return Tamanho da pilha (size_t).
    */
   std::size_t size(void);
 
-  //! Método max_size()
-  /* Método retorna o tamanho máximo da pilha
-   * \return std::size_t
+  //! Método tamanho máximo.
+  /*!
+    Getter do atributo max_size_, retorna tamanho máximo da pilha.
+    \return tamanho máximo da pilha (size_t)
    */
   std::size_t max_size(void);
 
  private:
-  T* contents;            // Ponteiro para tipo genérico, armazena elementos
-  int top_;               // Tamanho atual da pilha
-  std::size_t max_size_;  // Tamanho máximo da pilha
+  //! Conteúdo
+  /*!
+     Ponteiro para tipo genérico, armazena elementos.
+  */
+  T* contents;
 
-  static const auto DEFAULT_SIZE = 10u;  // Tamanho padrão da pilha
+  //! Topo
+  /*!
+     Tamanho atual da pilha. Inicializado em -1.
+  */
+  int top_;
+
+  //! Tamanho máximo
+  /*!
+     Capacidade máxima da pilha.
+  */
+  std::size_t max_size_;
+
+  //! Tamanho máximo padrão
+  /*!
+     Capacida máxima da pilha, usada pelo construtor padrão.
+  */
+  static const auto DEFAULT_SIZE = 10u;
 };
 }  // namespace structures
 
