@@ -37,15 +37,18 @@ class ArrayStack {
 
   //! Método empilha
   /*!
-     Empilha elemento no topo da pilha, se houver espaço. Se não houver espaço, lança erro (out_of_range).
+     Empilha elemento no topo da pilha, se houver espaço. Se não houver espaço,
+     lança exceção (out_of_range).
 
-     \param data: Referência constante para o elemento a ser empilhado (const T&)
+     \param data: Referência constante para o elemento a ser empilhado (const
+     T&)
    */
   void push(const T& data);
 
   //! Método desempilha.
   /*!
-     Remove dado no topo da pilha o retorna, se houver elementos na pilha.
+     Remove dado no topo da pilha o retorna, se houver elementos na pilha. Se
+     não houver elementos, lança exceção (out_of_range).
 
      \return Elemento removido (T).
    */
