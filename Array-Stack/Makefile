@@ -1,5 +1,9 @@
+ifndef VERBOSE
+.SILENT:
+endif
+
 # Name of the component, used for the executable
-COMPONENT_NAME = ArrayStack
+COMPONENT_NAME = TestArrayStack
 
 # Compiler
 CC = g++
@@ -13,6 +17,8 @@ SRCS_DIR = src
 
 INCLUDE_DIRS = include
 
+BUILD_DIR = build
+
 # Gtest stuff
 GTEST_LIB = /usr/lib/
 GTEST = gtest
@@ -20,15 +26,27 @@ GTEST = gtest
 # Linker flags
 LD_FLAGS = -L $(GTEST_LIB) -l $(GTEST) -l pthread
 
+OBJECTS = $(BUILD_DIR)/array_stack.o $(BUILD_DIR)/test_array_stack.o
+
+OBJECT_SOURCES = $(SRCS_DIR)/array_stack.cpp $(INCLUDE_DIRS)/array_stack.h
+TEST_OBJECT_SOURCES = $(TESTS_DIR)/test_array_stack.cpp $(INCLUDE_DIRS)/array_stack.h
+
 # Binary output option
-BUILD_OUTPUT = -o build/$(COMPONENT_NAME)
+BUILD_OUTPUT = -o $(BUILD_DIR)/$(COMPONENT_NAME)
 
 # Build and execute tests
-test:
-	mkdir -p build
-	$(CC) $(C_FLAGS) $(TESTS_DIR)/*.cpp $(SRCS_DIR)/*.cpp -I $(INCLUDE_DIRS) $(LD_FLAGS) $(BUILD_OUTPUT)
-	./build/$(COMPONENT_NAME)
+test: $(OBJECTS)
+	$(CC) $(C_FLAGS) $? $(LD_FLAGS) $(BUILD_OUTPUT)
+	./$(BUILD_DIR)/$(COMPONENT_NAME)
+
+build/array_stack.o: $(OBJECT_SOURCES)
+	mkdir -p $(BUILD_DIR)
+	$(CC) -c $(SRCS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
+
+build/test_array_stack.o: $(TEST_OBJECT_SOURCES)
+	mkdir -p $(BUILD_DIR)
+	$(CC) -c $(TESTS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
 
 # Clean build and docs directories
 clean:
-	rm -rf build
+	rm -rf $(BUILD_DIR)
