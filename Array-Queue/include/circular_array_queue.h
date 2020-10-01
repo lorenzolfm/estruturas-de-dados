@@ -1,14 +1,14 @@
 #ifndef STRUCTURES_CIRCULAR_ARRAY_QUEUE_H_
 #define STRUCTURES_CIRCULAR_ARRAY_QUEUE_H_
 
-#include "array_list.h"
+#include "array_queue.h"
 #include <cstdint>
 #include <stdexcept>
 
 namespace structures {
 template <typename T>
 
-class CircularArrayQueue : public ArrayList<T> {
+class CircularArrayQueue : public ArrayQueue<T> {
  public:
 
   CircularArrayQueue(void);
