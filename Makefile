@@ -22,11 +22,7 @@ ARRAY_STACK_TESTS_DIR = Array-Stack/tests
 ARRAY_STACK_SRC_DIR = Array-Stack/src
 ARRAY_STACK_INCLUDE_DIR = Array-Stack/include
 
-# Build and execute tests
-test:
-	mkdir -p build
-	$(CC) $(C_FLAGS) $(ARRAY_STACK_TESTS_DIR)/*.cpp $(ARRAY_STACK_SRC_DIR)/*.cpp -I $(ARRAY_STACK_INCLUDE_DIR) $(LD_FLAGS) $(BUILD_OUTPUT)
-	./build/$(COMPONENT_NAME)
+# Build and execute tests (TBD)
 
 DOCS_OUT_DIR = docs
 
