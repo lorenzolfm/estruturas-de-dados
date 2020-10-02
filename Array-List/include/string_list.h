@@ -7,13 +7,10 @@
 
 namespace structures {
 class ArrayListString : public ArrayList<char *> {
-  /*! \brief Classe ArrayListString
-   *            Classe é derivada da classe base ArrayList.
-   *
-   * Essa classe armazena vetores do tipo char.
-     Cada elemento da lista é do tipo ponteiro para vetor de caracteres.
-  */
  public:
+   ArrayListString() : ArrayList() {}
+
+   explicit ArrayListString(std::size_t max_size) : ArrayList(max_size) {}
 };
 }  // namespace structures
 
