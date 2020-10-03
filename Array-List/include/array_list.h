@@ -130,7 +130,7 @@ class ArrayList {
      \return true: Lista vazia (bool).
      \return false: Lista contém elementos (bool).
    */
-  bool empty(void);
+  bool empty(void) const;
 
   //! Método cheio
   /*!
@@ -140,7 +140,7 @@ class ArrayList {
      \return true: Lista cheia (bool).
      \return false: Lista não está cheia (bool).
    */
-  bool full(void);
+  bool full(void) const;
 
   //! Método contém
   /*!

@@ -1,4 +1,5 @@
 #include "array_list.h"
+#include <stdio.h>
 
 template <typename T>
 structures::ArrayList<T>::ArrayList(void) {
@@ -126,12 +127,12 @@ void structures::ArrayList<T>::remove(const T& data) {
 }
 
 template <typename T>
-bool structures::ArrayList<T>::empty(void) {
+bool structures::ArrayList<T>::empty(void) const {
   return size_ == -1;
 }
 
 template <typename T>
-bool structures::ArrayList<T>::full(void) {
+bool structures::ArrayList<T>::full(void) const {
   return size_ == max_size_ - 1;
 }
 
@@ -147,6 +148,9 @@ bool structures::ArrayList<T>::contains(const T& data) const {
 
 template <typename T>
 std::size_t structures::ArrayList<T>::find(const T& data) const {
+  if (empty()) {
+    throw(std::out_of_range("Cannot find an element in an empty list"));
+  }
   std::size_t index = 0;
   while (index <= size_ && !(data == contents[index])) {
     index++;
@@ -215,3 +219,4 @@ void structures::ArrayList<T>::move_backward(std::size_t index) {
 }
 
 template class structures::ArrayList<int>;
+template class structures::ArrayList<char*>;
