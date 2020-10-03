@@ -24,7 +24,7 @@ class ArrayList {
   /*!
      Cria uma lista utilizando o parâmetro max_size como tamanho máximo da lista
 
-     \param max_size: Tamanho máximo da pilha.
+     \param max_size: Tamanho máximo da lista.
   */
   explicit ArrayList(std::size_t max_size);
 
