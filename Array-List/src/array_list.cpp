@@ -28,7 +28,7 @@ void structures::ArrayList<T>::clear(void) {
 template <typename T>
 void structures::ArrayList<T>::push_back(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Cannot push back on full list"));
+    throw std::out_of_range("Cannot push back on full list");
   }
   contents[++size_] = data;
 }
@@ -36,7 +36,7 @@ void structures::ArrayList<T>::push_back(const T& data) {
 template <typename T>
 void structures::ArrayList<T>::push_front(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Cannot push front to a full list"));
+    throw std::out_of_range("Cannot push front to a full list");
   } else if (empty()) {
     contents[++size_] = data;
   } else {
@@ -49,9 +49,9 @@ void structures::ArrayList<T>::push_front(const T& data) {
 template <typename T>
 void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
   if (full()) {
-    throw(std::out_of_range("Cannot insert on full list"));
+    throw std::out_of_range("Cannot insert on full list");
   } else if ((index < 0) || (index > size_ + 1)) {
-    throw(std::out_of_range("Invalid index"));
+    throw std::out_of_range("Invalid index");
   } else {
     move_backward(index);
     size_++;
@@ -62,7 +62,7 @@ void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
 template <typename T>
 void structures::ArrayList<T>::insert_sorted(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Cannot insert in full list"));
+    throw std::out_of_range("Cannot insert in full list");
   } else if (empty()) {
     contents[++size_] = data;
   } else {
@@ -80,30 +80,20 @@ void structures::ArrayList<T>::insert_sorted(const T& data) {
 
 template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
-  if (empty()) {
-    throw(std::out_of_range("Cannot pop back from empty list"));
-  }
-  return contents[size_--];
+  return pop(size_);
 }
 
 template <typename T>
 T structures::ArrayList<T>::pop_front(void) {
-  if (empty()) {
-    throw(std::out_of_range("Cannot pop front from empty list"));
-  } else {
-    T data = contents[0];
-    size_--;
-    move_forward(0);
-    return data;
-  }
+  return pop(0);
 }
 
 template <typename T>
 T structures::ArrayList<T>::pop(std::size_t index) {
   if ((index < 0) || (index > size_)) {
-    throw(std::out_of_range("Invalid index"));
+    throw std::out_of_range("Invalid index");
   } else if (empty()) {
-    throw(std::out_of_range("Cannot pop from empty list"));
+    throw std::out_of_range("Cannot pop from empty list");
   } else {
     T data = contents[index];
     size_--;
@@ -115,11 +105,11 @@ T structures::ArrayList<T>::pop(std::size_t index) {
 template <typename T>
 void structures::ArrayList<T>::remove(const T& data) {
   if (empty()) {
-    throw(std::out_of_range("Cannot remove from empty list"));
+    throw std::out_of_range("Cannot remove from empty list");
   } else {
     std::size_t index = find(data);
     if (index == size()) {
-      throw(std::invalid_argument("List does not contain the argument"));
+      throw std::invalid_argument("List does not contain the argument");
     } else {
       pop(index);
     }
@@ -138,18 +128,13 @@ bool structures::ArrayList<T>::full(void) const {
 
 template <typename T>
 bool structures::ArrayList<T>::contains(const T& data) const {
-  for (std::size_t index = 0; index < size_ + 1; index++) {
-    if (data == contents[index]) {
-      return true;
-    }
-  }
-  return false;
+  return !(find(data) == size_ + 1);
 }
 
 template <typename T>
 std::size_t structures::ArrayList<T>::find(const T& data) const {
   if (empty()) {
-    throw(std::out_of_range("Cannot find an element in an empty list"));
+    throw std::out_of_range("Cannot find an element in an empty list");
   }
   std::size_t index = 0;
   while (index <= size_ && !(data == contents[index])) {
@@ -175,33 +160,27 @@ std::size_t structures::ArrayList<T>::max_size(void) const {
 template <typename T>
 T& structures::ArrayList<T>::at(std::size_t index) {
   if (index < 0 || index >= size_ + 1) {
-    throw(std::out_of_range("Error: invalid index"));
+    throw std::out_of_range("Error: invalid index");
   }
   return contents[index];
 }
 
 template <typename T>
 T& structures::ArrayList<T>::operator[](std::size_t index) {
-  if (index < 0 || index >= size_ + 1) {
-    throw(std::out_of_range("Error: invalid index"));
-  }
-  return contents[index];
+  return at(index);
 }
 
 template <typename T>
 const T& structures::ArrayList<T>::at(std::size_t index) const {
   if (index < 0 || index >= size_ + 1) {
-    throw(std::out_of_range("Error: invalid index"));
+    throw std::out_of_range("Error: invalid index");
   }
   return contents[index];
 }
 
 template <typename T>
 const T& structures::ArrayList<T>::operator[](std::size_t index) const {
-  if (index < 0 || index >= size_ + 1) {
-    throw(std::out_of_range("Error: invalid index"));
-  }
-  return contents[index];
+  return at(index);
 }
 
 template <typename T>

@@ -1,46 +1,33 @@
 #include <cstring>
 #include "string_list.h"
 
-structures::ArrayListString::~ArrayListString(void) {
-
-}
-
 void structures::ArrayListString::clear(void) {
-  ArrayList<char *>::clear();
+  ArrayList::clear();
 }
 
-void structures::ArrayListString::push_back(const char * data) {
-  char * new_data = new char[strlen(data) + 1];
-  snprintf(new_data, strlen(data)+1, "%s", data);
-
-  ArrayList::push_back(new_data);
+void structures::ArrayListString::push_back(const char * data_ptr) {
+  ArrayList::push_back(alloc_data_ptr(data_ptr));
 }
 
-void structures::ArrayListString::push_front(const char * data) {
-  char * new_data = new char[strlen(data) + 1];
-  snprintf(new_data, strlen(data) + 1, "%s", data);
-
-  ArrayList::push_front(new_data);
+void structures::ArrayListString::push_front(const char * data_ptr) {
+  ArrayList::push_front(alloc_data_ptr(data_ptr));
 }
 
-void structures::ArrayListString::insert(const char * data, std::size_t index) {
-  char * new_data = new char[strlen(data) + 1];
-  snprintf(new_data, strlen(data) + 1, "%s", data);
-
-  ArrayList::insert(new_data, index);
+void structures::ArrayListString::insert(const char * data_ptr, std::size_t index) {
+  ArrayList::insert(alloc_data_ptr(data_ptr), index);
 }
 
-void structures::ArrayListString::insert_sorted(const char * data) {
+void structures::ArrayListString::insert_sorted(const char * data_ptr) {
   if (full()) {
     throw(std::out_of_range("Cannot insert in full list"));
   } else if (empty()) {
-    push_back(data);
+    push_back(data_ptr);
   } else {
     std::size_t i = 0;
-    while (i <= size() - 1 && strcmp(data, at(i)) > 0){
+    while (i <= size() - 1 && strcmp(data_ptr, at(i)) > 0){
       i++;
     }
-    insert(data, i);
+    insert(data_ptr, i);
   }
 
 }
@@ -53,11 +40,11 @@ char * structures::ArrayListString::pop_front(void) {
   return ArrayList::pop_front();
 }
 
-void structures::ArrayListString::remove(const char * data) {
+void structures::ArrayListString::remove(const char * data_ptr) {
   if (empty()) {
     throw(std::out_of_range("Cannot remove from empty list"));
   } else {
-    std::size_t index = find(data);
+    std::size_t index = find(data_ptr);
     if (index == size()) {
       throw(std::invalid_argument("List does not contain the argument"));
     } else {
@@ -66,12 +53,12 @@ void structures::ArrayListString::remove(const char * data) {
   }
 }
 
-std::size_t structures::ArrayListString::find(const char * data) const {
+std::size_t structures::ArrayListString::find(const char * data_ptr) const {
   if (empty()) {
     throw(std::out_of_range("Cannot find an element on an empty list"));
   }
   std::size_t index = 0;
-  while (index <= size() - 1 && !(strcmp(data, at(index)) == 0)) {
+  while (index <= size() - 1 && !(strcmp(data_ptr, at(index)) == 0)) {
     index++;
   }
   if (index > size() - 1) {
@@ -81,11 +68,18 @@ std::size_t structures::ArrayListString::find(const char * data) const {
   }
 }
 
-bool structures::ArrayListString::contains(const char * data) const {
+bool structures::ArrayListString::contains(const char * data_ptr) const {
   for (std::size_t index = 0; index < size(); index++) {
-    if (strcmp(data, at(index)) == 0) {
+    if (strcmp(data_ptr, at(index)) == 0) {
       return true;
     }
   }
   return false;
+}
+
+char * structures::ArrayListString::alloc_data_ptr(const char * data_ptr) {
+  char * new_data_ptr = new char[strlen(data_ptr) + 1];
+  snprintf(new_data_ptr, strlen(data_ptr)+1, "%s", data_ptr);
+
+  return new_data_ptr;
 }
