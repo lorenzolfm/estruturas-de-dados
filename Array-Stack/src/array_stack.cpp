@@ -39,7 +39,7 @@ T structures::ArrayStack<T>::pop(void) {
 }
 
 template <typename T>
-T& structures::ArrayStack<T>::top() {
+T& structures::ArrayStack<T>::top(void) {
   if (empty()) {
     throw(std::out_of_range("Can't pop from empty stack"));
   }
@@ -53,7 +53,7 @@ bool structures::ArrayStack<T>::empty(void) const {
 
 template <typename T>
 bool structures::ArrayStack<T>::full(void) const {
-  return (size() == max_size_);
+  return size() == max_size_;
 }
 
 template <typename T>
