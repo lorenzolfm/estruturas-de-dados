@@ -64,12 +64,12 @@ void structures::CircularArrayQueue<T>::clear(void) {
 
 template <typename T>
 bool structures::CircularArrayQueue<T>::empty(void) const {
-  return (size_ == 0);
+  return size_ == 0;
 }
 
 template <typename T>
 bool structures::CircularArrayQueue<T>::full(void) const {
-  return (size_ == max_size_);
+  return size_ == max_size_;
 }
 
 template <typename T>
