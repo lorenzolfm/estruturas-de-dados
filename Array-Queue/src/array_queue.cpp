@@ -24,7 +24,7 @@ structures::ArrayQueue<T>::~ArrayQueue(void) {
 template <typename T>
 void structures::ArrayQueue<T>::enqueue(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Cannot enqueue on full queue"));
+    throw std::out_of_range("Cannot enqueue on full queue");
   } else {
     contents[++size_] = data;
   }
@@ -33,7 +33,7 @@ void structures::ArrayQueue<T>::enqueue(const T& data) {
 template <typename T>
 T structures::ArrayQueue<T>::dequeue(void) {
   if (empty()) {
-    throw(std::out_of_range("Cannot dequeue an empty queue"));
+    throw std::out_of_range("Cannot dequeue an empty queue");
   }
   T data = contents[0];
   size_--;
@@ -44,7 +44,7 @@ T structures::ArrayQueue<T>::dequeue(void) {
 template <typename T>
 T& structures::ArrayQueue<T>::back(void) {
   if (empty()) {
-    throw(std::out_of_range("Empty queue"));
+    throw std::out_of_range("Empty queue");
   }
   return contents[size_];
 }
@@ -55,22 +55,22 @@ void structures::ArrayQueue<T>::clear(void) {
 }
 
 template <typename T>
-bool structures::ArrayQueue<T>::empty(void) {
-  return (size_ == -1);
+bool structures::ArrayQueue<T>::empty(void) const {
+  return size() == 0;
 }
 
 template <typename T>
-bool structures::ArrayQueue<T>::full(void) {
-  return (size() == max_size_);
+bool structures::ArrayQueue<T>::full(void) const {
+  return size() == max_size_;
 }
 
 template <typename T>
-std::size_t structures::ArrayQueue<T>::size(void) {
-  return (size_ + 1);
+std::size_t structures::ArrayQueue<T>::size(void) const {
+  return size_ + 1;
 }
 
 template <typename T>
-std::size_t structures::ArrayQueue<T>::max_size(void) {
+std::size_t structures::ArrayQueue<T>::max_size(void) const {
   return max_size_;
 }
 

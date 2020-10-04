@@ -74,7 +74,7 @@ class ArrayQueue {
      \return true: Fila vazia (bool).
      \return false: Fila contém elementos (bool).
    */
-  bool empty(void);
+  bool empty(void) const;
 
   //! Método cheio
   /*!
@@ -84,7 +84,7 @@ class ArrayQueue {
      \return true: Fila cheia (bool).
      \return false: Fila não está cheia (bool).
    */
-  bool full(void);
+  bool full(void) const;
 
   //! Método tamanho
   /*!
@@ -92,7 +92,7 @@ class ArrayQueue {
 
      \return tamanho máximo da fila (size_t)
    */
-  std::size_t size(void);
+  std::size_t size(void) const;
 
   //! Método tamanho máximo
   /*!
@@ -100,7 +100,7 @@ class ArrayQueue {
 
      \return tamanho máximo da fila (size_t).
    */
-  std::size_t max_size(void);
+  std::size_t max_size(void) const;
 
  private:
   //! Método move para frente
