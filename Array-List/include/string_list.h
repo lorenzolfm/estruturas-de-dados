@@ -27,12 +27,6 @@ class ArrayListString : public ArrayList<char *> {
    */
   explicit ArrayListString(std::size_t max_size) : ArrayList(max_size) {}
 
-  //! Destrutor
-  /*!
-     Usado para destruir o objeto quando este sai de escopo.
-   */
-  ~ArrayListString(void);
-
   //! Método limpa
   /*!
       Limpa a lista.
@@ -129,6 +123,13 @@ class ArrayListString : public ArrayList<char *> {
      \return índice do elemento (size_t), ou tamanho da lista.
    */
   std::size_t find(const char *data_ptr) const;
+
+ private:
+  //! Método aloca ponteiro data
+  /*!
+     Aloca memória e copia conteúdo de data_ptr
+   */
+  char * alloc_data_ptr(const char * data_ptr);
 };
 }  // namespace structures
 

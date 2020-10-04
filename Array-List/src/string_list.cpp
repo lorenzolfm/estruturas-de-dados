@@ -1,33 +1,20 @@
 #include <cstring>
 #include "string_list.h"
 
-structures::ArrayListString::~ArrayListString(void) {
-
-}
-
 void structures::ArrayListString::clear(void) {
-  ArrayList<char *>::clear();
+  ArrayList::clear();
 }
 
 void structures::ArrayListString::push_back(const char * data_ptr) {
-  char * new_data_ptr = new char[strlen(data_ptr) + 1];
-  snprintf(new_data_ptr, strlen(data_ptr)+1, "%s", data_ptr);
-
-  ArrayList::push_back(new_data_ptr);
+  ArrayList::push_back(alloc_data_ptr(data_ptr));
 }
 
 void structures::ArrayListString::push_front(const char * data_ptr) {
-  char * new_data_ptr = new char[strlen(data_ptr) + 1];
-  snprintf(new_data_ptr, strlen(data_ptr) + 1, "%s", data_ptr);
-
-  ArrayList::push_front(new_data_ptr);
+  ArrayList::push_front(alloc_data_ptr(data_ptr));
 }
 
 void structures::ArrayListString::insert(const char * data_ptr, std::size_t index) {
-  char * new_data_ptr = new char[strlen(data_ptr) + 1];
-  snprintf(new_data_ptr, strlen(data_ptr) + 1, "%s", data_ptr);
-
-  ArrayList::insert(new_data_ptr, index);
+  ArrayList::insert(alloc_data_ptr(data_ptr), index);
 }
 
 void structures::ArrayListString::insert_sorted(const char * data_ptr) {
@@ -88,4 +75,11 @@ bool structures::ArrayListString::contains(const char * data_ptr) const {
     }
   }
   return false;
+}
+
+char * structures::ArrayListString::alloc_data_ptr(const char * data_ptr) {
+  char * new_data_ptr = new char[strlen(data_ptr) + 1];
+  snprintf(new_data_ptr, strlen(data_ptr)+1, "%s", data_ptr);
+
+  return new_data_ptr;
 }
