@@ -56,17 +56,17 @@ void structures::ArrayQueue<T>::clear(void) {
 
 template <typename T>
 bool structures::ArrayQueue<T>::empty(void) const {
-  return (size_ == -1);
+  return size() == 0;
 }
 
 template <typename T>
 bool structures::ArrayQueue<T>::full(void) const {
-  return (size() == max_size_);
+  return size() == max_size_;
 }
 
 template <typename T>
 std::size_t structures::ArrayQueue<T>::size(void) const {
-  return (size_ + 1);
+  return size_ + 1;
 }
 
 template <typename T>
