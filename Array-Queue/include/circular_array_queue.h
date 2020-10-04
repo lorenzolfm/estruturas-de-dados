@@ -77,7 +77,7 @@ class CircularArrayQueue : public ArrayQueue<T> {
      \return true: Fila circular vazia (bool).
      \return false: Fila circular contém elementos (bool).
    */
-  bool empty(void);
+  bool empty(void) const;
 
   //! Método cheio
   /*!
@@ -87,7 +87,7 @@ class CircularArrayQueue : public ArrayQueue<T> {
      \return true: Fila circular cheia (bool).
      \return false: Fila circular não está cheia (bool).
    */
-  bool full(void);
+  bool full(void) const;
 
   //! Método tamanho
   /*!
@@ -95,7 +95,7 @@ class CircularArrayQueue : public ArrayQueue<T> {
 
      \return tamanho máximo da fila (size_t)
    */
-  std::size_t size(void);
+  std::size_t size(void) const;
 
   //! Método tamanho máximo
   /*!
@@ -103,7 +103,7 @@ class CircularArrayQueue : public ArrayQueue<T> {
 
      \return tamanho máximo da fila (size_t).
    */
-  std::size_t max_size(void);
+  std::size_t max_size(void) const;
 
  private:
   //! Conteúdo
