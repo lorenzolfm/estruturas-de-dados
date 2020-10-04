@@ -55,22 +55,22 @@ void structures::ArrayQueue<T>::clear(void) {
 }
 
 template <typename T>
-bool structures::ArrayQueue<T>::empty(void) {
+bool structures::ArrayQueue<T>::empty(void) const {
   return (size_ == -1);
 }
 
 template <typename T>
-bool structures::ArrayQueue<T>::full(void) {
+bool structures::ArrayQueue<T>::full(void) const {
   return (size() == max_size_);
 }
 
 template <typename T>
-std::size_t structures::ArrayQueue<T>::size(void) {
+std::size_t structures::ArrayQueue<T>::size(void) const {
   return (size_ + 1);
 }
 
 template <typename T>
-std::size_t structures::ArrayQueue<T>::max_size(void) {
+std::size_t structures::ArrayQueue<T>::max_size(void) const {
   return max_size_;
 }
 
