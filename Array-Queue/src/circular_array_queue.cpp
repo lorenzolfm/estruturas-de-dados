@@ -26,7 +26,7 @@ structures::CircularArrayQueue<T>::~CircularArrayQueue(void) {
 template <typename T>
 void structures::CircularArrayQueue<T>::enqueue(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Cannot enqueue on full queue"));
+    throw std::out_of_range("Cannot enqueue on full queue");
   } else {
     end_ = (end_ + 1) % max_size_;
     contents[end_] = data;
@@ -37,7 +37,7 @@ void structures::CircularArrayQueue<T>::enqueue(const T& data) {
 template <typename T>
 T structures::CircularArrayQueue<T>::dequeue(void) {
   if (empty()) {
-    throw(std::out_of_range("Cannot dequeue from empty queue"));
+    throw std::out_of_range("Cannot dequeue from empty queue");
   } else {
     T data = contents[begin_];
     begin_ = (begin_ + 1) % max_size_;
@@ -49,7 +49,7 @@ T structures::CircularArrayQueue<T>::dequeue(void) {
 template <typename T>
 T& structures::CircularArrayQueue<T>::back(void) {
   if (empty()) {
-    throw(std::out_of_range("Queue is empty"));
+    throw std::out_of_range("Queue is empty");
   } else {
     return contents[end_];
   }
