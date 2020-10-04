@@ -25,7 +25,7 @@ structures::ArrayStack<T>::~ArrayStack(void) {
 template <typename T>
 void structures::ArrayStack<T>::push(const T& data) {
   if (full()) {
-    throw(std::out_of_range("Stack Overflow"));
+    throw std::out_of_range("Stack Overflow");
   }
   contents[++top_] = data;
 }
@@ -33,7 +33,7 @@ void structures::ArrayStack<T>::push(const T& data) {
 template <typename T>
 T structures::ArrayStack<T>::pop(void) {
   if (empty()) {
-    throw(std::out_of_range("Can't pop from empty stack"));
+    throw std::out_of_range("Can't pop from empty stack");
   }
   return contents[top_--];
 }
@@ -41,7 +41,7 @@ T structures::ArrayStack<T>::pop(void) {
 template <typename T>
 T& structures::ArrayStack<T>::top(void) {
   if (empty()) {
-    throw(std::out_of_range("Can't pop from empty stack"));
+    throw std::out_of_range("Can't pop from empty stack");
   }
   return contents[top_];
 }
