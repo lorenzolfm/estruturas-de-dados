@@ -80,22 +80,12 @@ void structures::ArrayList<T>::insert_sorted(const T& data) {
 
 template <typename T>
 T structures::ArrayList<T>::pop_back(void) {
-  if (empty()) {
-    throw std::out_of_range("Cannot pop back from empty list");
-  }
-  return contents[size_--];
+  return pop(size_);
 }
 
 template <typename T>
 T structures::ArrayList<T>::pop_front(void) {
-  if (empty()) {
-    throw std::out_of_range("Cannot pop front from empty list");
-  } else {
-    T data = contents[0];
-    size_--;
-    move_forward(0);
-    return data;
-  }
+  return pop(0);
 }
 
 template <typename T>
@@ -138,12 +128,7 @@ bool structures::ArrayList<T>::full(void) const {
 
 template <typename T>
 bool structures::ArrayList<T>::contains(const T& data) const {
-  for (std::size_t index = 0; index < size_ + 1; index++) {
-    if (data == contents[index]) {
-      return true;
-    }
-  }
-  return false;
+  return !(find(data) == size_ + 1);
 }
 
 template <typename T>
@@ -182,10 +167,7 @@ T& structures::ArrayList<T>::at(std::size_t index) {
 
 template <typename T>
 T& structures::ArrayList<T>::operator[](std::size_t index) {
-  if (index < 0 || index >= size_ + 1) {
-    throw std::out_of_range("Error: invalid index");
-  }
-  return contents[index];
+  return at(index);
 }
 
 template <typename T>
@@ -198,10 +180,7 @@ const T& structures::ArrayList<T>::at(std::size_t index) const {
 
 template <typename T>
 const T& structures::ArrayList<T>::operator[](std::size_t index) const {
-  if (index < 0 || index >= size_ + 1) {
-    throw std::out_of_range("Error: invalid index");
-  }
-  return contents[index];
+  return at(index);
 }
 
 template <typename T>
