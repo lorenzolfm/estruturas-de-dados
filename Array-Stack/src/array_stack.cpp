@@ -47,12 +47,12 @@ T& structures::ArrayStack<T>::top() {
 }
 
 template <typename T>
-bool structures::ArrayStack<T>::empty(void) {
+bool structures::ArrayStack<T>::empty(void) const {
   return top_ == -1;
 }
 
 template <typename T>
-bool structures::ArrayStack<T>::full(void) {
+bool structures::ArrayStack<T>::full(void) const {
   return (size() == max_size_);
 }
 
@@ -62,12 +62,12 @@ void structures::ArrayStack<T>::clear(void) {
 }
 
 template <typename T>
-std::size_t structures::ArrayStack<T>::size(void) {
+std::size_t structures::ArrayStack<T>::size(void) const {
   return top_ + 1;
 }
 
 template <typename T>
-std::size_t structures::ArrayStack<T>::max_size(void) {
+std::size_t structures::ArrayStack<T>::max_size(void) const {
   return max_size_;
 }
 

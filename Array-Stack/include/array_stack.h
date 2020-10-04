@@ -70,7 +70,7 @@ class ArrayStack {
     \return true: Pilha vazia (bool).
     \return false: Pilha contém elementos (bool).
    */
-  bool empty(void);
+  bool empty(void) const;
 
   //! Método cheio
   /*!
@@ -80,7 +80,7 @@ class ArrayStack {
     \return true: Pilha cheia (bool)
     \return false: Pilha não está cheia (bool).
    */
-  bool full(void);
+  bool full(void) const;
 
   //! Método limpar.
   /*!
@@ -94,7 +94,7 @@ class ArrayStack {
 
     \return Tamanho da pilha (size_t).
    */
-  std::size_t size(void);
+  std::size_t size(void) const;
 
   //! Método tamanho máximo.
   /*!
@@ -102,7 +102,7 @@ class ArrayStack {
 
     \return tamanho máximo da pilha (size_t)
    */
-  std::size_t max_size(void);
+  std::size_t max_size(void) const;
 
  private:
   //! Conteúdo
