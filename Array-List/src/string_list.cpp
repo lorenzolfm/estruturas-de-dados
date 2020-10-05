@@ -34,14 +34,6 @@ void structures::ArrayListString::insert_sorted(const char * data_ptr) {
 
 }
 
-char * structures::ArrayListString::pop(std::size_t index) {
-  return ArrayList::pop(index);
-}
-
-char * structures::ArrayListString::pop_front(void) {
-  return ArrayList::pop_front();
-}
-
 void structures::ArrayListString::remove(const char * data_ptr) {
   if (empty()) {
     throw(std::out_of_range("Cannot remove from empty list"));

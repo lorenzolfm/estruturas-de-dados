@@ -72,26 +72,6 @@ class ArrayListString : public ArrayList<char *> {
    */
   void insert_sorted(const char *data_ptr);
 
-  //! Método remove da posição
-  /*!
-     Remove elemento na posição (index), se houver elementos e se a posição for
-     válida. Se não há elementos ou a posição não é válida lança exceção
-     (out_of_range).
-
-     \param index: Posição do elemento a ser removido (size_t).
-     \return Ponteiro para elemento removido (char *).
-   */
-  char *pop(std::size_t index);
-
-  //! Método remove na frente
-  /*!
-     Remove o elemento no início da lista, se houver elementos na lista. Se a
-     lista estiver vazia, lança exceção (out_of_range).
-
-     \return Ponteiro para elemento removido (char *).
-   */
-  char *pop_front(void);
-
   //! Método remove específico
   /*!
      Remove elemento (data_ptr) se estiver presente na lista. Se a lista estiver
