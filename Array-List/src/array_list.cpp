@@ -66,14 +66,14 @@ void structures::ArrayList<T>::insert_sorted(const T& data) {
   } else if (empty()) {
     contents[++size_] = data;
   } else {
-    std::size_t i = 0;
-    while (i != size() && contents[i] < data) {
-      i++;
+    std::size_t index = 0;
+    while (index != size() && contents[index] < data) {
+      index++;
     }
-    if (i == size()) {
+    if (index == size()) {
       push_back(data);
     } else {
-      insert(data, i);
+      insert(data, index);
     }
   }
 }
