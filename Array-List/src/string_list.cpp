@@ -23,11 +23,11 @@ void structures::ArrayListString::insert_sorted(const char * data_ptr) {
   } else if (empty()) {
     push_back(data_ptr);
   } else {
-    std::size_t i = 0;
-    while (i <= size() - 1 && strcmp(data_ptr, at(i)) > 0){
-      i++;
+    std::size_t index = 0;
+    while (index <= size() - 1 && strcmp(data_ptr, at(index)) > 0){
+      index++;
     }
-    insert(data_ptr, i);
+    insert(data_ptr, index);
   }
 
 }
