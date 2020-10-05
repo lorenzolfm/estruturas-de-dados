@@ -1,6 +1,12 @@
 #include <cstring>
 #include "string_list.h"
 
+structures::ArrayListString::~ArrayListString(void) {
+  for (auto index = 0; index != size(); index++) {
+    delete at(index);
+  }
+}
+
 void structures::ArrayListString::clear(void) {
   ArrayList::clear();
 }

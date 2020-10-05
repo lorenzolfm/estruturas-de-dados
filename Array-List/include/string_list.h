@@ -27,6 +27,12 @@ class ArrayListString : public ArrayList<char *> {
    */
   explicit ArrayListString(std::size_t max_size) : ArrayList(max_size) {}
 
+  //! Destrutor
+  /*!
+     Libera a memória alocada para cada elemento na chamada de alloc_data_ptr().
+   */
+  ~ArrayListString(void);
+
   //! Método limpa
   /*!
       Limpa a lista.
@@ -129,7 +135,7 @@ class ArrayListString : public ArrayList<char *> {
   /*!
      Aloca memória e copia conteúdo de data_ptr
    */
-  char * alloc_data_ptr(const char * data_ptr);
+  char *alloc_data_ptr(const char *data_ptr);
 };
 }  // namespace structures
 
