@@ -7,10 +7,6 @@ structures::ArrayListString::~ArrayListString(void) {
   }
 }
 
-void structures::ArrayListString::clear(void) {
-  ArrayList::clear();
-}
-
 void structures::ArrayListString::push_back(const char * data_ptr) {
   ArrayList::push_back(alloc_data_ptr(data_ptr));
 }

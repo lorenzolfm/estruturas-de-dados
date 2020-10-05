@@ -33,12 +33,6 @@ class ArrayListString : public ArrayList<char *> {
    */
   ~ArrayListString(void);
 
-  //! Método limpa
-  /*!
-      Limpa a lista.
-   */
-  void clear(void);
-
   //! Método adiciona no fim
   /*!
      Adiciona elemento (data_ptr) no fim da lista, se houver espaço. Caso não há
