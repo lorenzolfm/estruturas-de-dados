@@ -1,52 +1,74 @@
+# Silent make
 ifndef VERBOSE
 .SILENT:
 endif
 
-# Name of the component, used for the executable
-COMPONENT_NAME = TestArrayStack
-
 # Compiler
 CC = g++
 
-# Compiler flags
-C_FLAGS = -g -Werror
-
-TESTS_DIR = tests
-
-SRCS_DIR = src
-
-INCLUDE_DIRS = include
-
-BUILD_DIR = build
-
-# Gtest stuff
-GTEST_LIB = /usr/lib/
-GTEST = gtest
+# Compiler Flags
+CPP_FLAGS = -Werror
 
 # Linker flags
-LD_FLAGS = -L $(GTEST_LIB) -l $(GTEST) -l pthread
+LD_FLAGS = -L /usr/lib/ -l gtest -l pthread
 
-OBJECTS = $(BUILD_DIR)/array_stack.o $(BUILD_DIR)/test_array_stack.o
+# Build directory
+BUILD_DIR := build
+# Include directory (.h files)
+INCLUDE_DIR := include
+# Source directory (.cpp files)
+SRC_DIR := src
+# Test directory
+TEST_DIR := tests
 
-OBJECT_SOURCES = $(SRCS_DIR)/array_stack.cpp $(INCLUDE_DIRS)/array_stack.h
-TEST_OBJECT_SOURCES = $(TESTS_DIR)/test_array_stack.cpp $(INCLUDE_DIRS)/array_stack.h
+# Source objects directory (.o files)
+SRCS_OBJS_DIR := $(BUILD_DIR)/objs
 
-# Binary output option
-BUILD_OUTPUT = -o $(BUILD_DIR)/$(COMPONENT_NAME)
+# Tests objects directory (.o files)
+TESTS_OBJS_DIR := $(SRCS_OBJS_DIR)/tests
 
-# Build and execute tests
-test: $(OBJECTS)
-	$(CC) $(C_FLAGS) $? $(LD_FLAGS) $(BUILD_OUTPUT)
-	./$(BUILD_DIR)/$(COMPONENT_NAME)
+# List of all files matching this pattern (with directory)
+SRCS = $(wildcard src/*.cpp)
+TESTS = $(wildcard tests/*cpp)
+# List of all files matching this pattern (file only)
+SRCS_FILES = $(notdir $(SRCS))
+TESTS_FILES = $(notdir $(TESTS))
 
-build/array_stack.o: $(OBJECT_SOURCES)
+# Substitutes the file extension from %.cpp to %.o and sets the corrrect path
+OBJS := $(patsubst %.cpp, $(SRCS_OBJS_DIR)/%.o, $(SRCS_FILES))
+TEST_OBJS := $(patsubst %.cpp, $(TESTS_OBJS_DIR)/%.o, $(TESTS_FILES))
+
+# Dependencies directory
+DEPDIR = $(SRCS_OBJS_DIR)/.deps
+
+# Dependencies flags
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
+
+# Build object files
+COMPILE = $(CC) -I $(INCLUDE_DIR) $(DEPFLAGS) $(CPP_FLAGS) -c
+
+%.o : %.cpp
+
+$(SRCS_OBJS_DIR)/%.o : $(SRC_DIR)/%.cpp $(DEPDIR)/%.d | $(DEPDIR)
 	mkdir -p $(BUILD_DIR)
-	$(CC) -c $(SRCS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
+	$(COMPILE) $< -o $@
 
-build/test_array_stack.o: $(TEST_OBJECT_SOURCES)
-	mkdir -p $(BUILD_DIR)
-	$(CC) -c $(TESTS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
+$(TESTS_OBJS_DIR)/%.o : $(TEST_DIR)/%.cpp $(DEPDIR)/%.d | $(DEPDIR)
+	mkdir -p $(SRCS_OBJS_DIR)/tests
+	$(COMPILE) $< -o $@
 
-# Clean build and docs directories
+test: $(TEST_OBJS) $(OBJS)
+	$(CC) $(TESTS) $(SRCS) -I $(INCLUDE_DIR) $(LD_FLAGS) -o $(BUILD_DIR)/test
+	./build/test
+
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf build
+
+# Create dependencies directory
+$(DEPDIR): ; @mkdir -p $@
+
+# Creates dependencies
+DEPFILES := $(SRCS_FILES:%.cpp=$(DEPDIR)/%.d) $(TESTS_FILES:%.cpp=$(DEPDIR)/%.d)
+$(DEPFILES):
+
+include $(wildcard $(DEPFILES))
