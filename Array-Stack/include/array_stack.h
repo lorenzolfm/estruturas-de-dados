@@ -127,7 +127,7 @@ class ArrayStack {
   /*!
      Capacida máxima da pilha, usada pelo construtor padrão.
   */
-  static const auto DEFAULT_SIZE = 10u;
+  static const auto DEFAULT_MAX_SIZE = 10u;
 };
 }  // namespace structures
 
