@@ -5,7 +5,7 @@
 
 template <typename T>
 structures::ArrayStack<T>::ArrayStack(void) {
-  max_size_ = DEFAULT_SIZE;
+  max_size_ = DEFAULT_MAX_SIZE;
   top_ = -1;
   contents = new T[max_size_];
 }
