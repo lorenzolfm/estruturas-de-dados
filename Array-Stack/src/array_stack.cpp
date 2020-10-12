@@ -41,7 +41,7 @@ T structures::ArrayStack<T>::pop(void) {
 template <typename T>
 T& structures::ArrayStack<T>::top(void) {
   if (empty()) {
-    throw std::out_of_range("Can't pop from empty stack");
+    throw std::out_of_range("Stack is empty!");
   }
   return contents[top_];
 }
