@@ -1,3 +1,4 @@
+# Silent make
 ifndef VERBOSE
 .SILENT:
 endif
@@ -5,56 +6,69 @@ endif
 # Compiler
 CC = g++
 
-# Compiler flags
-C_FLAGS = -g -Werror
+# Compiler Flags
+CPP_FLAGS = -Werror
 
-LD_FLAGS = -L $(GTEST_LIB) -l $(GTEST) -l pthread
+# Linker flags
+LD_FLAGS = -L /usr/lib/ -l gtest -l pthread
 
-TESTS_DIR = tests
+# Build directory
+BUILD_DIR := build
+# Include directory (.h files)
+INCLUDE_DIR := include
+# Source directory (.cpp files)
+SRC_DIR := src
+# Test directory
+TEST_DIR := tests
 
-SRCS_DIR = src
+# Source objects directory (.o files)
+SRCS_OBJS_DIR := $(BUILD_DIR)/objs
 
-INCLUDE_DIRS = include
+# Tests objects directory (.o files)
+TESTS_OBJS_DIR := $(SRCS_OBJS_DIR)/tests
 
-BUILD_DIR = build
+# List of all files matching this pattern (with directory)
+SRCS = $(wildcard src/*.cpp)
+TESTS = $(wildcard tests/*cpp)
+# List of all files matching this pattern (file only)
+SRCS_FILES = $(notdir $(SRCS))
+TESTS_FILES = $(notdir $(TESTS))
 
-# Gtest stuff
-GTEST_LIB = /usr/lib/
-GTEST = gtest
+# Substitutes the file extension from %.cpp to %.o and sets the corrrect path
+OBJS := $(patsubst %.cpp, $(SRCS_OBJS_DIR)/%.o, $(SRCS_FILES))
+TEST_OBJS := $(patsubst %.cpp, $(TESTS_OBJS_DIR)/%.o, $(TESTS_FILES))
 
-BUILD_OUTPUT = -o $(BUILD_DIR)
-ARR_LIST_DEPS = $(BUILD_DIR)/array_list.o $(BUILD_DIR)/test_array_list.o
+# Dependencies directory
+DEPDIR = $(SRCS_OBJS_DIR)/.deps
 
+# Dependencies flags
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
 
-COMPILE_SRC_DEPS = $(CC) -c $(SRCS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
-COMPILE_TST_DEPS = $(CC) -c $(TESTS_DIR)/$(*F).cpp -I $(INCLUDE_DIRS) -o $@
+# Build object files
+COMPILE = $(CC) -I $(INCLUDE_DIR) $(DEPFLAGS) $(CPP_FLAGS) -c
 
-# Test ArrayList
-tal: $(ARR_LIST_DEPS)
-	$(CC) $(C_FLAGS) $? $(LD_FLAGS) $(BUILD_OUTPUT)/TestArrayList
-	./$(BUILD_DIR)/TestArrayList
+%.o : %.cpp
 
-build/array_list.o: $(SRCS_DIR)/array_list.cpp $(INCLUDE_DIRS)/array_list.h
+$(SRCS_OBJS_DIR)/%.o : $(SRC_DIR)/%.cpp $(DEPDIR)/%.d | $(DEPDIR)
 	mkdir -p $(BUILD_DIR)
-	$(COMPILE_SRC_DEPS)
+	$(COMPILE) $< -o $@
 
-build/test_array_list.o: $(TESTS_DIR)/test_array_list.cpp $(INCLUDE_DIRS)/array_list.h
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE_TST_DEPS)
+$(TESTS_OBJS_DIR)/%.o : $(TEST_DIR)/%.cpp $(DEPDIR)/%.d | $(DEPDIR)
+	mkdir -p $(SRCS_OBJS_DIR)/tests
+	$(COMPILE) $< -o $@
 
-STR_LIST_DEPS = $(BUILD_DIR)/array_list.o $(BUILD_DIR)/string_list.o $(BUILD_DIR)/test_string_list.o
-
-tsl: $(STR_LIST_DEPS)
-	$(CC) $(C_FLAGS) $? $(LD_FLAGS) $(BUILD_OUTPUT)/TestStringList
-	./$(BUILD_DIR)/TestStringList
-
-build/string_list.o: $(SRCS_DIR)/string_list.cpp $(INCLUDE_DIRS)/string_list.h
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE_SRC_DEPS)
-
-build/test_string_list.o: $(TESTS_DIR)/test_string_list.cpp $(INCLUDE_DIRS)/string_list.h
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE_TST_DEPS)
+test: $(TEST_OBJS) $(OBJS)
+	$(CC) $(TESTS) $(SRCS) -I $(INCLUDE_DIR) $(LD_FLAGS) -o $(BUILD_DIR)/test
+	./build/test
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf build
+
+# Create dependencies directory
+$(DEPDIR): ; @mkdir -p $@
+
+# Creates dependencies
+DEPFILES := $(SRCS_FILES:%.cpp=$(DEPDIR)/%.d) $(TESTS_FILES:%.cpp=$(DEPDIR)/%.d)
+$(DEPFILES):
+
+include $(wildcard $(DEPFILES))
