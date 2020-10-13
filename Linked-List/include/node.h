@@ -5,24 +5,24 @@ namespace structures {
 template <typename T>
 class Node {
  public:
-  explicit Node(const T& data);
+  explicit Node(T* data);
 
-  Node(const T& data, Node* next);
+  Node(T* data, Node* next);
 
-  T& data(void);
+  T* data(void);
 
-  const T& data(void) const;
+  const T* data(void) const;
 
-  const Node* next(void);
+  Node* next(void);
 
   const Node* next(void) const;
 
   void next(Node* node);
 
-  T data_;
-  Node* next_{nullptr};
- private:
 
+ private:
+  T* data_ptr_;
+  Node* next_ptr_;
 };
 }  // namespace structures
 
