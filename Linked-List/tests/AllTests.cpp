@@ -3,7 +3,6 @@
 
 #include "gtest/gtest.h"
 #include "linked_list.h"
-#include "node.h"
 
 int main(int argc, char* argv[]) {
   std::srand(std::time(NULL));
