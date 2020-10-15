@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_LINKED_LIST_H
 #define STRUCTURES_LINKED_LIST_H
 
+#include <cstdint>
+
 namespace structures {
 template <typename T>
 class LinkedList {
@@ -115,16 +117,6 @@ class LinkedList {
    */
   bool empty(void) const;
 
-  //! Método cheio
-  /*!
-     Verifica se a lista está cheia. Retorna verdadeiro se está cheia, caso
-     contrário retorna falso.
-
-     \return true: Lista cheia (bool).
-     \return false: Lista não está cheia (bool).
-   */
-  bool full(void) const;
-
   //! Método contém
   /*!
      Verifica se a lista contém o elemento (data). Retorna verdadeiro se contém,
@@ -153,14 +145,6 @@ class LinkedList {
      \return tamanho máximo da lista (size_t)
    */
   std::size_t size(void) const;
-
-  //! Método tamanho máximo
-  /*!
-     Getter do atributo max_size_, retorna o tamanho máximo da lista.
-
-     \return tamanho máximo da lista (size_t).
-   */
-  std::size_t max_size(void) const;
 
   //! Método "em"
   /*!
@@ -201,7 +185,7 @@ class LinkedList {
      \return Referência constante ao elemento na posição (const T&).
    */
   const T& operator[](std::size_t index) const;
- private:
+
   //! Classe Node
   /*!
      Classe nodo, com tipo genérico. Elemento da lista encadeada simples. Possui
@@ -295,8 +279,27 @@ class LinkedList {
     for (auto i = 1u; i < size(); i++) {
       it = it->next();
     }
+    return it;
   }
 
+  //! Método antes do índice
+  /*!
+      Retorna nodo anterior a um dado índice.
+
+      \param index: Índice para percorer até o anterior (size_t).
+      \return Retorna um ponteiro para o nodo anterior ao índice.
+   */
+  Node* before_index(std::size_t index) {
+    auto it = head;
+
+    for (auto i = 1u; i < index; i++) {
+      it = it->next();
+    }
+
+    return it;
+  }
+
+ private:
   //! Cabeça de Lista
   /*!
      Cabeça de lista. Ponteiro para node. Aponta para o primeiro elemento da
