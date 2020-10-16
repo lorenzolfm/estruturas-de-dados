@@ -11,7 +11,7 @@ class LinkedList {
   /*!
      Construtor da classe lista encadeada.
    */
-  LinkedList(void);
+  LinkedList(void) = default;
 
   //! Destrutor
   /*!
@@ -186,6 +186,17 @@ class LinkedList {
    */
   const T& operator[](std::size_t index) const;
 
+  void invert(void);
+
+  LinkedList<T> clone(void);
+
+  LinkedList<T> slicing(int start, int stop, int step);
+
+  void append(structures::LinkedList<T>& list_add);
+
+  LinkedList< LinkedList<T> *> halve(void);
+
+ private:
   //! Classe Node
   /*!
      Classe nodo, com tipo genérico. Elemento da lista encadeada simples. Possui
@@ -252,7 +263,6 @@ class LinkedList {
      */
     void next(Node* node) { next_ = node; }
 
-   private:
     //! Dado
     /*!
       Dado a ser armazenado. Tipo genérico T.
@@ -275,7 +285,7 @@ class LinkedList {
      \return Referência a Node. Último elemento da lista encadeada (Node *).
    */
   Node* end(void) {
-    auto it = head;
+    auto it = head_;
     for (auto i = 1u; i < size(); i++) {
       it = it->next();
     }
@@ -290,7 +300,7 @@ class LinkedList {
       \return Retorna um ponteiro para o nodo anterior ao índice.
    */
   Node* before_index(std::size_t index) {
-    auto it = head;
+    auto it = head_;
 
     for (auto i = 1u; i < index; i++) {
       it = it->next();
@@ -305,7 +315,7 @@ class LinkedList {
      Cabeça de lista. Ponteiro para node. Aponta para o primeiro elemento da
      lista. (Node *).
    */
-  Node* head{nullptr};
+  Node* head_{nullptr};
 
   //! Tamano
   /*!
