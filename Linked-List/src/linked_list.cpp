@@ -1,11 +1,5 @@
-#include "linked_list.h"
-
-#include <stdio.h>
-
 #include <stdexcept>
-
-// template <typename T>
-// structures::LinkedList<T>::LinkedList(void) {}
+#include "linked_list.h"
 
 template <typename T>
 structures::LinkedList<T>::~LinkedList(void) {
@@ -163,6 +157,11 @@ std::size_t structures::LinkedList<T>::find(const T& data) const {
 
 template <typename T>
 T& structures::LinkedList<T>::at(std::size_t index) {
+  return const_cast<T&>(static_cast<const LinkedList*>(this)->at(index));
+}
+
+template <typename T>
+const T& structures::LinkedList<T>::at(std::size_t index) const {
   if (empty()) {
     throw std::out_of_range("List is empty");
   } else if (index >= size_) {
@@ -179,88 +178,13 @@ T& structures::LinkedList<T>::at(std::size_t index) {
 }
 
 template <typename T>
-const T& structures::LinkedList<T>::at(std::size_t index) const {
-  return at(index);
-}
-
-template <typename T>
 T& structures::LinkedList<T>::operator[](std::size_t index) {
   return at(index);
 }
 
 template <typename T>
 const T& structures::LinkedList<T>::operator[](std::size_t index) const {
-  return at(index);
-}
-
-template <typename T>
-void structures::LinkedList<T>::invert(void) {
-  for (auto i = 0; i < size(); i++) {
-    insert(pop_back(), i);
-  }
-}
-
-template <typename T>
-structures::LinkedList<T> structures::LinkedList<T>::clone(void) {
-  LinkedList<T> list_clone;
-
-  for (auto i = 0; i < size(); i++) {
-    list_clone.insert(at(i), i);
-  }
-
-  return list_clone;
-}
-
-// template <typename T>
-// structures::LinkedList<T> structures::LinkedList<T>::slicing(int start,
-// if (start < 0 || start >= size_) {
-// throw std::out_of_range("Invalid start");
-//}
-// if (stop > size_ || stop < 0) {
-// throw std::out_of_range("Invalid stop");
-//}
-// LinkedList<T> list_slice;
-
-// for (auto index = start; index <= stop; index += step) {
-// list_slice.push_back(index);
-//}
-
-// return list_slice;
-//}
-
-template <typename T>
-void structures::LinkedList<T>::append(structures::LinkedList<T>& list_add) {
-  Node* begin = list_add.head_;
-  for (auto i = 0; i < list_add.size(); i++) {
-    push_back(list_add[i]);
-  }
-}
-
-template <typename T>
-structures::LinkedList<structures::LinkedList<T>*>
-structures::LinkedList<T>::halve(void) {
-  LinkedList<LinkedList<T>*> list_halve;
-
-  LinkedList<T>* par_list = new LinkedList();
-  LinkedList<T>* impar_list = new LinkedList();
-
-  Node* current = head_;
-
-  for (auto i = 0; i < size(); i++) {
-    T current_data = current->data();
-    if (i % 2 == 0) {
-      par_list->push_back(current_data);
-    } else {
-      impar_list->push_back(current_data);
-    }
-    current = current->next();
-  }
-
-  list_halve.push_back(par_list);
-  list_halve.push_back(impar_list);
-
-  return list_halve;
+  return const_cast<T&>(static_cast<const LinkedList*>(this)->at(index));
 }
 
 template class structures::LinkedList<int>;
-template class structures::LinkedList<structures::LinkedList<int>*>;

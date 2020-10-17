@@ -186,16 +186,6 @@ class LinkedList {
    */
   const T& operator[](std::size_t index) const;
 
-  void invert(void);
-
-  LinkedList<T> clone(void);
-
-  LinkedList<T> slicing(int start, int stop, int step);
-
-  void append(structures::LinkedList<T>& list_add);
-
-  LinkedList< LinkedList<T> *> halve(void);
-
  private:
   //! Classe Node
   /*!
@@ -285,11 +275,13 @@ class LinkedList {
      \return Referência a Node. Último elemento da lista encadeada (Node *).
    */
   Node* end(void) {
-    auto it = head_;
+    Node * last = head_;
+
     for (auto i = 1u; i < size(); i++) {
-      it = it->next();
+      last = last->next();
     }
-    return it;
+
+    return last;
   }
 
   //! Método antes do índice
@@ -300,13 +292,13 @@ class LinkedList {
       \return Retorna um ponteiro para o nodo anterior ao índice.
    */
   Node* before_index(std::size_t index) {
-    auto it = head_;
+    Node * before = head_;
 
     for (auto i = 1u; i < index; i++) {
-      it = it->next();
+      before = before->next();
     }
 
-    return it;
+    return before;
   }
 
  private:

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "gtest/gtest.h"
@@ -240,6 +239,26 @@ TEST_F(LinkedListTest, RemovePopsData) {
   ASSERT_FALSE(list.contains(9));
 }
 
+TEST_F(LinkedListTest, TestNonConstAt) {
+  for(auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
+
+  list.at(0) = 500;
+
+  ASSERT_EQ(list.at(0), 500);
+}
+
+TEST_F(LinkedListTest, TestConstAt) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
+
+  for (auto i = 0; i < 10; i++) {
+    ASSERT_EQ(list.at(i), i);
+  }
+}
+
 TEST_F(LinkedListTest, OperatorOverloaded) {
   for (auto i = 0; i < 10; i++) {
     list.push_back(i);
@@ -248,109 +267,4 @@ TEST_F(LinkedListTest, OperatorOverloaded) {
   ASSERT_EQ(list[0], 0);
   ASSERT_EQ(list[5], 5);
   ASSERT_EQ(list[9], 9);
-}
-
-TEST_F(LinkedListTest, Invert) {
-  for (auto i = 0; i < 10; i++) {
-    list.push_back(i);
-    ASSERT_EQ(list[i], i);
-  }
-
-  list.invert();
-
-  for (auto i = 0; i < 10; i++) {
-    ASSERT_EQ(list[i], 9 - i);
-  }
-}
-
-TEST_F(LinkedListTest, Copy) {
-  structures::LinkedList<int> list_clone_other = list.clone();
-  ASSERT_TRUE(list_clone_other.empty());
-
-  for (auto i = 0; i < 10; i++) {
-    list.push_back(i);
-  }
-
-  structures::LinkedList<int> list_clone = list.clone();
-
-  for(auto i = 0; i < 10; i++) {
-    ASSERT_EQ(list_clone[i], list[i]);
-  }
-
-}
-
-//TEST_F(LinkedListTest, SlicingThrowsErrorWhenInvalidStart) {
-  //for (auto i = 0; i < 10; i++) {
-    //list.push_back(i);
-  //}
-
-  //structures::LinkedList<int> list_slice;
-
-  //ASSERT_THROW(list.slicing(-1, 1, 1), std::out_of_range);
-  //ASSERT_THROW(list.slicing(10, 1, 1), std::out_of_range);
-
-  //ASSERT_THROW(list.slicing(0, -1, 1), std::out_of_range);
-//}
-
-//TEST_F(LinkedListTest, SlicingSlicesList) {
-  //for (auto i = 0; i < 9; i++) {
-    //list.push_back(i);
-  //}
-
-  //structures::LinkedList<int> list_slice = list.slicing(0, 9, 1);
-
-  //for (auto i = 0; i < 10; i++) {
-    //ASSERT_EQ(list_slice[i], i);
-  //}
-
-  //structures::LinkedList<int> list_slice_2 = list.slicing(0, 9, 2);
-
-  ////for (auto i = 0; i < list_slice_2.size(); i++) {
-    ////printf("%d ", list_slice_2[i]);
-  ////}
-
-  ////printf("\n");
-  //structures::LinkedList<int> list_slice_3 = list.slicing(2, 9, 3);
-
-  ////for (auto i = 0; i < list_slice_3.size(); i++) {
-    ////printf("%d ", list_slice_3[i]);
-  ////}
-  ////printf("\n");
-//}
-
-TEST_F(LinkedListTest, AppendApends) {
-  for (auto i = 0; i < 10; i++) {
-    list.push_back(i);
-  }
-  structures::LinkedList<int> append_this;
-  for(auto i = 10; i < 20; i++) {
-    append_this.push_back(i);
-  }
-  list.append(append_this);
-  for (auto i = 0; i < 10; i++) {
-    ASSERT_EQ(list[i], i);
-  }
-
-}
-
-//TEST_F(LinkedListTest, Halve) {
-  //for (auto i = 0; i < 10; i++) {
-    //list.push_back(i);
-  //}
-
-  //structures::LinkedList< structures::LinkedList<int> * > r = new structures::LinkedList< structures::LinkedList<int> *>::LinkedList();
-
-  //r = list.halve();
-
-//}
-//
-
-TEST_F(LinkedListTest, atLHSOperator) {
-  for (auto i = 0; i < 10; i++) {
-    list.push_back(i);
-  }
-
-  list.at(0) = 100;
-
-  ASSERT_EQ(list[0], 100);
 }
