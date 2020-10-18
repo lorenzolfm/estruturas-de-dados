@@ -309,7 +309,7 @@ class LinkedList {
    */
   Node* head_{nullptr};
 
-  //! Tamano
+  //! Tamanho
   /*!
      Tamanho da lista. Tipo size_t.
   */

@@ -22,7 +22,7 @@ class ArrayStackTest : public ::testing::Test {
   }
 };
 
-TEST_F(ArrayStackTest, DefaultStackReturnsDefaultMasSize) {
+TEST_F(ArrayStackTest, DefaultStackReturnsDefaultMaxSize) {
   ASSERT_EQ(10u, default_stack.max_size());
 }
 
