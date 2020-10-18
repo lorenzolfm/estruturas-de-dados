@@ -85,7 +85,7 @@ class LinkedStack {
  private:
   //! Classe Node
   /*!
-     Classe nodo, com tipo genérico. Elemento da lista encadeada simples. Possui
+     Classe nodo, com tipo genérico. Elemento da pilha encadeada simples. Possui
      um ponteiro que aponta para o próximo. Armazena dado de tipo genérico T.
   */
   class Node {
@@ -103,7 +103,7 @@ class LinkedStack {
         Construtor com parâmetros de dado e próximo.
 
         \param data: Referência constante ao dado a ser armazenado (const T&).
-        \param next: Próximo nodo da lista (Node*).
+        \param next: Próximo nodo da pilha (Node*).
      */
     Node(const T& data, Node* next) : data_{data}, next_{next} {}
 
@@ -158,7 +158,7 @@ class LinkedStack {
     //! Ponteiro para próximo
     /*!
       Ponteiro para o próximo nodo. De tipo ponteiro para Node. Quando é o
-      último nodo da lista aponta para nullptr.
+      último nodo da pilha aponta para nullptr.
     */
     Node* next_{nullptr};
   };
@@ -171,7 +171,7 @@ class LinkedStack {
 
   //! Tamanho
   /*!
-     Tamanho da lista. Tipo size_t.
+     Tamanho da pilha. Tipo size_t.
    */
   std::size_t size_{0u};
 };
