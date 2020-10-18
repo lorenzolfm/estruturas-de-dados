@@ -11,7 +11,7 @@ class LinkedStack {
   /*!
      Chamado na inicialização do objeto.
   */
-  //LinkedStack(void);
+  LinkedStack(void);
 
   //! Destrutor
   /*!
@@ -62,7 +62,7 @@ class LinkedStack {
      \return Referếncia ao dado de tipo genérico (T) contido no nodo do topo da
      pilha.
    */
-  T& top(void) const;
+  const T& top(void) const;
 
   //! Pilha Vazia
   /*!
