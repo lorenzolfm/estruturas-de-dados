@@ -8,22 +8,34 @@ class DoublyLinkedList {
  private:
   class Node {
    public:
-    Node(const T& data);
-    Node(const T& data, Node* next);
-    Node(const T& data, Node* previous, Node* next);
+    Node(const T& data) : data_{data}, previous_{nullptr}, next_{nullptr} {}
 
-    T& data(void);
-    const T& data(void) const;
+    Node(const T& data, Node* next)
+        : data_{data}, previous_{nullptr}, next_{next} {}
 
-    Node* previous(void);
-    const Node* previous(void) const;
+    Node(const T& data, Node* previous, Node* next)
+        : data_{data}, previous_{previous}, next_{next} {}
 
-    void previous(Node* node);
+    T& data(void) {
+      return const_cast<T&>(static_cast<const Node*>(this)->data());
+    };
 
-    Node* next(void);
-    const Node* next(void) const;
+    const T& data(void) const { return data_; }
 
-    void next(Node* node);
+    Node* previous(void) {
+      return const_cast<Node*>(static_cast<const Node*>(this)->previous());
+    }
+    const Node* previous(void) const { return previous_; }
+
+    void previous(Node* node) { previous_ = node; }
+
+    Node* next(void) {
+      return const_cast<Node*>(static_cast<const Node*>(this)->next());
+    }
+
+    const Node* next(void) const { return next_; }
+
+    void next(Node* node) { next_ = node; }
 
    private:
     T& data_;
