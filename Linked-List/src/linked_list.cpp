@@ -144,6 +144,10 @@ bool structures::LinkedList<T>::contains(const T& data) const {
 
 template <typename T>
 std::size_t structures::LinkedList<T>::find(const T& data) const {
+  if (empty()) {
+    throw std::out_of_range("Empty List");
+  }
+
   std::size_t index = 0u;
   Node* current = head_;
 

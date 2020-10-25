@@ -194,6 +194,18 @@ TEST_F(LinkedListTest, FindReturnsElementIndex) {
   ASSERT_EQ(list.find(9), 9);
 }
 
+TEST_F(LinkedListTest, FindReturnsSizePlusOneWhenNotThere) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
+
+  ASSERT_EQ(list.find(11), 10);
+}
+
+TEST_F(LinkedListTest, FindThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.find(0), std::out_of_range);
+}
+
 TEST_F(LinkedListTest, ContainsReturnsTrueWhenContains) {
   for (auto i = 0; i < 10; i++) {
     list.push_back(i);
