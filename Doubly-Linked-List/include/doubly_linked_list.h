@@ -48,7 +48,7 @@ class DoublyLinkedList {
  private:
   class Node {
    public:
-    Node(const T& data) : data_{data}, previous_{nullptr}, next_{nullptr} {}
+    explicit Node(const T& data) : data_{data}, previous_{nullptr}, next_{nullptr} {}
 
     Node(const T& data, Node* next)
         : data_{data}, previous_{nullptr}, next_{next} {}
@@ -73,7 +73,7 @@ class DoublyLinkedList {
     void next(Node* node) { next_ = node; }
 
    private:
-    T& data_;
+    T data_;
     Node* previous_;
     Node* next_;
   };
