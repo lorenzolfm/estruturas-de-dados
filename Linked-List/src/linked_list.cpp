@@ -71,7 +71,6 @@ void structures::LinkedList<T>::insert_sorted(const T& data) {
     push_front(data);
   } else {
     Node* current = head_;
-    Node* before = head_;
     std::size_t position = size_;
 
     for (auto index = 0; index < size_; index++) {
@@ -80,7 +79,6 @@ void structures::LinkedList<T>::insert_sorted(const T& data) {
         break;
       }
 
-      before = current;
       current = current->next();
     }
     insert(data, position);
