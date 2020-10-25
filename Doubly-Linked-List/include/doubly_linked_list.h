@@ -210,12 +210,14 @@ class DoublyLinkedList {
 
   Node* node(std::size_t index) {
     Node* node = head_;
+
     for (std::size_t i = 0; i < size(); i++) {
       if (i == index) {
         return node;
       }
       node = node->next();
     }
+
     return node;
   }
 

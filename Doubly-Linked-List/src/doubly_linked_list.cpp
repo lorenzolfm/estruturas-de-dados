@@ -44,13 +44,19 @@ void structures::DoublyLinkedList<T>::push_front(const T& data) {
 
 template<typename T>
 void structures::DoublyLinkedList<T>::insert(const T& data, std::size_t index) {
-  if (index == 0) {
-    push_front(data);
-  } else if (index > size_) {
+  if (index > size_) {
     throw std::out_of_range("Invalid Index");
+  } else if (index == 0) {
+    push_front(data);
   } else {
     Node* new_node = new Node(data);
     Node* before = node(index -1);
+
+    if (new_node == nullptr) {
+      throw std::out_of_range("Full list");
+    }
+
+
     new_node->next(before->next());
     before->next(new_node);
     new_node->previous(before);
@@ -96,10 +102,12 @@ T structures::DoublyLinkedList<T>::pop_front(void) {
 
   Node *out;
   out = head_;
+
   head_ = out->next();
   T data = out->data();
-  delete out;
   size_--;
+  delete out;
+
   return data;
 }
 
@@ -130,8 +138,9 @@ T structures::DoublyLinkedList<T>::pop(std::size_t index) {
   }
 
   T data = out->data();
-  delete out;
   size_--;
+  delete out;
+
   return data;
 }
 
@@ -162,13 +171,14 @@ const T& structures::DoublyLinkedList<T>::at(std::size_t index) const {
   } else if (index >= size_) {
     throw std::out_of_range("Index out of bounds");
   }
-
   Node* current = head_;
   auto i = 0;
+
   while (i != index) {
     current = current->next();
     i++;
   }
+
   return current->data();
 }
 
