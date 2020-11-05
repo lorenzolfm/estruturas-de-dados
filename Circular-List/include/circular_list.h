@@ -195,7 +195,7 @@ class CircularList {
   //}
 
   Node* before_index(std::size_t index) {
-    Node * before = head_;
+    Node * before = head_->next();
 
     for (auto i = 1u; i < index; i++) {
       before = before->next();

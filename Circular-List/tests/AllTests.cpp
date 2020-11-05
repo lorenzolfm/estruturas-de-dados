@@ -17,7 +17,6 @@ class CircularListTest: public ::testing::Test {
     structures::CircularList<int> list{};
 };
 
-
 TEST_F(CircularListTest, BasicPushBack) {
     list.push_back(0);
     ASSERT_EQ(1u, list.size());
@@ -50,6 +49,11 @@ TEST_F(CircularListTest, BasicPushFront) {
     ASSERT_EQ(2u, list.size());
     ASSERT_EQ(-1, list.at(0));
     ASSERT_EQ(0, list.at(1));
+}
+
+TEST_F(CircularListTest, PushFrontIncreasesSize) {
+  list.push_front(0);
+  ASSERT_EQ(list.size(), 1u);
 }
 
 TEST_F(CircularListTest, PushFront) {
@@ -99,6 +103,16 @@ TEST_F(CircularListTest, Contains) {
     ASSERT_TRUE(list.contains(0));
     ASSERT_TRUE(list.contains(5));
     ASSERT_FALSE(list.contains(10));
+}
+
+TEST_F(CircularListTest, TestConstAt) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
+
+  for (auto i = 0; i < 10; i++) {
+    ASSERT_EQ(list.at(i), i);
+  }
 }
 
 TEST_F(CircularListTest, AccessAt) {
@@ -171,7 +185,7 @@ TEST_F(CircularListTest, EmptyPopBack) {
     ASSERT_THROW(list.pop_back(), std::out_of_range);
 }
 
-TEST_F(CircularListTest, PopBack) {
+    TEST_F(CircularListTest, PopBack) {
     for (auto i = 0; i < 10; ++i) {
         list.push_back(i);
     }

@@ -43,7 +43,8 @@ void structures::CircularList<T>::push_front(const T& data) {
     throw std::out_of_range("Full list");
   }
 
-  head_->next(new Node(data, new_node));
+  head_->next(new_node);
+
   size_++;
 }
 
@@ -74,7 +75,7 @@ void structures::CircularList<T>::insert_sorted(const T& data) {
   if (empty()) {
     push_front(data);
   } else {
-    Node* current = head_;
+    Node* current = head_->next();
     std::size_t position = size_;
 
     for (auto index = 0; index < size_; index++) {
@@ -101,7 +102,7 @@ T structures::CircularList<T>::pop_front(void) {
   }
 
   Node* out = head_->next()->next();
-  T data = out->data();
+  T data = head_->next()->data();
 
   head_->next(out);
   size_--;
@@ -150,7 +151,7 @@ std::size_t structures::CircularList<T>::find(const T& data) const {
   }
 
   std::size_t index = 0u;
-  Node* current = head_;
+  Node* current = head_->next();
 
   while (index < size()) {
     if (current->data() == data) break;
@@ -173,7 +174,7 @@ const T& structures::CircularList<T>::at(std::size_t index) const {
     throw std::out_of_range("Index out of bounds");
   }
 
-  Node* current = head_;
+  Node* current = head_->next();
   auto i = 0;
   while (i != index) {
     current = current->next();
