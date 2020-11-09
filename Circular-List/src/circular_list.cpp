@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include "circular_list.h"
+
+#include <stdexcept>
 
 template <typename T>
 structures::CircularList<T>::CircularList() {
@@ -32,20 +33,22 @@ bool structures::CircularList<T>::empty(void) const {
 
 template <typename T>
 void structures::CircularList<T>::push_back(const T& data) {
-  insert(data, size_);
+  if (empty()) {
+    head = new Node(data);
+    head_->next = head;
+    head_->prev = head;
+  } else {
+    Node* new_node = new Node(data, head->prev, head);
+    new_node->prev->next = new_node;
+    head_->prev = new_node;
+  }
+  ++size_;
 }
 
 template <typename T>
 void structures::CircularList<T>::push_front(const T& data) {
-  Node* new_node = new Node(data, head_->next());
-
-  if (new_node == nullptr) {
-    throw std::out_of_range("Full list");
-  }
-
-  head_->next(new_node);
-
-  size_++;
+  push_back(data);
+  head_ = head_->prev;
 }
 
 template <typename T>
