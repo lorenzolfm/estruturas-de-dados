@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 template <typename T>
-structures::CircularList<T>::CircularList() {
+structures::CircularList<T>::CircularList(void) {
   size_ = 0u;
   head_ = new Node((T)0, nullptr);
   head_->next(head_);
@@ -33,22 +33,20 @@ bool structures::CircularList<T>::empty(void) const {
 
 template <typename T>
 void structures::CircularList<T>::push_back(const T& data) {
-  if (empty()) {
-    head = new Node(data);
-    head_->next = head;
-    head_->prev = head;
-  } else {
-    Node* new_node = new Node(data, head->prev, head);
-    new_node->prev->next = new_node;
-    head_->prev = new_node;
-  }
-  ++size_;
+  insert(data, size_);
 }
 
 template <typename T>
 void structures::CircularList<T>::push_front(const T& data) {
-  push_back(data);
-  head_ = head_->prev;
+  Node * new_node = new Node(data);
+
+  if (new_node == nullptr) {
+    throw std::out_of_range("Cannot push front. List is full");
+  }
+
+  new_node->next(head_->next());
+  head_->next(new_node);
+  size_++;
 }
 
 template <typename T>
@@ -63,7 +61,6 @@ void structures::CircularList<T>::insert(const T& data, std::size_t index) {
     Node* before = before_index(index);
 
     Node* new_node = new Node(data, before->next());
-
     if (new_node == nullptr) {
       throw std::out_of_range("Full list");
     }
@@ -104,11 +101,12 @@ T structures::CircularList<T>::pop_front(void) {
     throw std::out_of_range("Cannot pop_front from empty list");
   }
 
-  Node* out = head_->next()->next();
+  Node* out = head_->next();
   T data = head_->next()->data();
 
-  head_->next(out);
+  head_->next(out->next());
   size_--;
+  delete out;
 
   return data;
 }
@@ -157,7 +155,9 @@ std::size_t structures::CircularList<T>::find(const T& data) const {
   Node* current = head_->next();
 
   while (index < size()) {
-    if (current->data() == data) break;
+    if (current->data() == data) {
+      break;
+    }
     current = current->next();
     index++;
   }
@@ -184,6 +184,16 @@ const T& structures::CircularList<T>::at(std::size_t index) const {
     i++;
   }
   return current->data();
+}
+
+template <typename T>
+T& structures::CircularList<T>::operator[](std::size_t index) {
+  return const_cast<T&>(static_cast<const CircularList*>(this)->at(index));
+}
+
+template <typename T>
+const T& structures::CircularList<T>::operator[](std::size_t index) const {
+  return at(index);
 }
 
 template class structures::CircularList<int>;

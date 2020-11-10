@@ -6,49 +6,67 @@ int main(int argc, char* argv[]) {
     return RUN_ALL_TESTS();
 }
 
-/**
- * Teste unitário para lista circular
- */
 class CircularListTest: public ::testing::Test {
  protected:
-    /**
-     * Lista para os testes
-     */
     structures::CircularList<int> list{};
+
+    void fill(void) {
+      for (auto i = 0; i < 10; i++) {
+        list.push_front(i);
+      }
+    }
 };
 
-TEST_F(CircularListTest, BasicPushBack) {
-    list.push_back(0);
-    ASSERT_EQ(1u, list.size());
-    ASSERT_EQ(0, list.at(0));
-
-    list.push_back(-1);
-    ASSERT_EQ(2u, list.size());
-    ASSERT_EQ(0, list.at(0));
-    ASSERT_EQ(-1, list.at(1));
+TEST_F(CircularListTest, ConstructorSetsSizeTo0) {
+    ASSERT_EQ(list.size(), 0u);
 }
 
-TEST_F(CircularListTest, PushBack) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
+TEST_F(CircularListTest, OnInitSizeIsZero) { ASSERT_EQ(list.size(), 0u); }
 
-    ASSERT_EQ(10u, list.size());
+TEST_F(CircularListTest, SizeReturnsCorrectSize) {
+  ASSERT_EQ(list.size(), 0u);
 
-    for (auto i = 0u; i < 10u; ++i) {
-        ASSERT_EQ(i, list.at(i));
-    }
+  list.push_front(0);
+  ASSERT_EQ(list.size(), 1u);
 }
 
-TEST_F(CircularListTest, BasicPushFront) {
-    list.push_front(0);
-    ASSERT_EQ(1u, list.size());
-    ASSERT_EQ(0, list.at(0));
+TEST_F(CircularListTest, EmptyReturnsTrueWhenEmpty) {
+  ASSERT_EQ(list.empty(), true);
+}
 
-    list.push_front(-1);
-    ASSERT_EQ(2u, list.size());
-    ASSERT_EQ(-1, list.at(0));
-    ASSERT_EQ(0, list.at(1));
+TEST_F(CircularListTest, EmptyReturnsFalseWhenNotEmpty) {
+  list.push_front(0);
+  ASSERT_EQ(list.empty(), false);
+}
+
+TEST_F(CircularListTest, ClearDeletesAllNodes) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_front(i);
+  }
+
+  ASSERT_EQ(list.size(), 10);
+
+  list.clear();
+  ASSERT_EQ(list.size(), 0);
+}
+
+TEST_F(CircularListTest, AtThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.at(0), std::out_of_range);
+}
+
+TEST_F(CircularListTest, AtThrowsErrorWhenOutOfBounds) {
+  list.push_front(0);
+  ASSERT_THROW(list.at(1), std::out_of_range);
+}
+
+TEST_F(CircularListTest, AtReturnsDataAtIndex) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_front(i);
+  }
+
+  for (auto i = 0; i < 10; i++) {
+    ASSERT_EQ(list.at(i), 9 - i);
+  }
 }
 
 TEST_F(CircularListTest, PushFrontIncreasesSize) {
@@ -56,174 +74,168 @@ TEST_F(CircularListTest, PushFrontIncreasesSize) {
   ASSERT_EQ(list.size(), 1u);
 }
 
-TEST_F(CircularListTest, PushFront) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_front(i);
-    }
-
-    ASSERT_EQ(10u, list.size());
-    for (auto i = 0u; i < 10u; ++i) {
-        ASSERT_EQ(9-i, list.at(i));
-    }
+TEST_F(CircularListTest, PushFrontAddsNewNodeToTheBeginningOfTheList) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_front(i);
+    ASSERT_EQ(list.at(0), i);
+  }
 }
 
-TEST_F(CircularListTest, Empty) {
-    ASSERT_TRUE(list.empty());
+TEST_F(CircularListTest, FindReturnsElementIndex) {
+  fill();
+
+  ASSERT_EQ(list.find(0), 9);
+  ASSERT_EQ(list.find(5), 4);
+  ASSERT_EQ(list.find(9), 0);
 }
 
-TEST_F(CircularListTest, NotEmpty) {
-    ASSERT_TRUE(list.empty());
-    list.push_back(1);
-    ASSERT_FALSE(list.empty());
+TEST_F(CircularListTest, FindReturnsSizePlusOneWhenNotThere) {
+  fill();
+  ASSERT_EQ(list.find(11), 10);
 }
 
-TEST_F(CircularListTest, Clear) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    list.clear();
-    ASSERT_EQ(0u, list.size());
+TEST_F(CircularListTest, FindThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.find(0), std::out_of_range);
 }
 
-TEST_F(CircularListTest, Find) {
-    for (auto i = 0u; i < 10u; ++i) {
-        list.push_back(i);
-    }
+TEST_F(CircularListTest, ContainsReturnsTrueWhenContains) {
+  fill();
 
-    for (auto i = 0u; i < 10u; ++i) {
-        ASSERT_EQ(i, list.find(i));
-    }
-    ASSERT_EQ(list.size(), list.find(10));
+  ASSERT_TRUE(list.contains(0));
+  ASSERT_TRUE(list.contains(5));
+  ASSERT_TRUE(list.contains(9));
 }
 
-TEST_F(CircularListTest, Contains) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    ASSERT_TRUE(list.contains(0));
-    ASSERT_TRUE(list.contains(5));
-    ASSERT_FALSE(list.contains(10));
+TEST_F(CircularListTest, ContainsReturnsFalseWhenDontContain) {
+  fill();
+
+  ASSERT_FALSE(list.contains(-1));
+  ASSERT_FALSE(list.contains(10));
 }
 
-TEST_F(CircularListTest, TestConstAt) {
+TEST_F(CircularListTest, ContainsThrowsErrorOnEmptyList) {
+  ASSERT_THROW(list.contains(0), std::out_of_range);
+}
+
+
+TEST_F(CircularListTest, InsertThrowsErroWhenOutOfBounds) {
+  ASSERT_THROW(list.insert(1, -1), std::out_of_range);
+  ASSERT_THROW(list.insert(1, 1), std::out_of_range);
+}
+
+TEST_F(CircularListTest, InsertAt0PushesFront) {
+  list.insert(0, 0);
+  ASSERT_EQ(list.at(0), 0);
+
+  list.insert(1, 0);
+  ASSERT_EQ(list.at(0), 1);
+}
+
+TEST_F(CircularListTest, InsertIncreasesSize) {
+  list.insert(0, 0);
+  ASSERT_EQ(list.size(), 1);
+
+  list.insert(1, 1);
+  ASSERT_EQ(list.size(), 2);
+}
+
+TEST_F(CircularListTest, InsertInsertsAtIndex) {
+  for (auto i = 9; i >= 0; i--) {
+    list.push_front(i);
+  }
+
+  list.insert(-5, 1);
+  ASSERT_EQ(list.at(0), 0);
+  ASSERT_EQ(list.at(1), -5);
+  ASSERT_EQ(list.at(2), 1);
+}
+
+TEST_F(CircularListTest, InsertSortedInsertsAtTheCorrectPlace) {
+  list.push_back(0);
+  list.push_back(2);
+  list.push_back(4);
+
+  list.insert_sorted(-1);
+  ASSERT_EQ(list.at(0), -1);
+  list.insert_sorted(1);
+  ASSERT_EQ(list.at(2), 1);
+  list.insert_sorted(5);
+  ASSERT_EQ(list.at(5), 5);
+}
+
+TEST_F(CircularListTest, PopThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.pop(0), std::out_of_range);
+}
+
+TEST_F(CircularListTest, PopThrowsErrorWhenOutOfBounds) {
+  ASSERT_THROW(list.pop(-1), std::out_of_range);
+
+  list.push_front(0);
+  ASSERT_THROW(list.pop(1), std::out_of_range);
+}
+
+TEST_F(CircularListTest, PopDecreasesSize) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_front(i);
+  }
+
+  ASSERT_EQ(list.size(), 10);
+  list.pop(5);
+  ASSERT_EQ(list.size(), 9);
+}
+
+TEST_F(CircularListTest, PopIndexZeroPopsFront) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_front(i);
+  }
+
+  for (auto i = 9; i >= 0; i--) {
+    ASSERT_EQ(list.pop(0), i);
+  }
+}
+
+TEST_F(CircularListTest, PopPopsAtIndex) {
+  for (auto i = 9; i >= 0; i--) {
+    list.push_front(i);
+  }
+
+  ASSERT_EQ(list.pop(5), 5);
+  ASSERT_EQ(list.pop(0), 0);
+  ASSERT_EQ(list.pop(7), 9);
+}
+
+TEST_F(CircularListTest, PopBackRemovesLastNode) {
   for (auto i = 0; i < 10; i++) {
     list.push_back(i);
   }
 
-  for (auto i = 0; i < 10; i++) {
-    ASSERT_EQ(list.at(i), i);
+  for (auto i = 9; i >= 0; i--) {
+    ASSERT_EQ(list.pop_back(), i);
   }
 }
 
-TEST_F(CircularListTest, AccessAt) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    for (auto i = 0u; i < 10u; ++i) {
-        ASSERT_EQ(i, list.at(i));
-    }
-    list.clear();
-    for (auto i = 10; i > 0; --i) {
-        list.push_back(i);
-    }
-    for (auto i = 0u; i < 10u; ++i) {
-        ASSERT_EQ(10-i, list.at(i));
-    }
+TEST_F(CircularListTest, RemoveThrowsErrorWhenEmpty) {
+  ASSERT_THROW(list.remove(0), std::out_of_range);
 }
 
-TEST_F(CircularListTest, AccessAtBoundCheck) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    for (auto i = 0; i < 10; ++i) {
-        ASSERT_NO_THROW(list.at(i));
-    }
-    ASSERT_NO_THROW(list.at(0));
-    ASSERT_THROW(list.at(-1), std::out_of_range);
+TEST_F(CircularListTest, RemoveThrowsErrorWhenDoesntContains) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
+
+  ASSERT_THROW(list.remove(-1), std::out_of_range);
+  ASSERT_THROW(list.remove(10), std::out_of_range);
 }
 
-TEST_F(CircularListTest, Insert) {
-    for (auto i = 0; i < 5; ++i) {
-        list.push_back(i);
-    }
-    for (auto i = 6; i < 10; ++i) {
-        list.push_back(i);
-    }
-    list.insert(5, 5u);
+TEST_F(CircularListTest, RemovePopsData) {
+  for (auto i = 0; i < 10; i++) {
+    list.push_back(i);
+  }
 
-    for (auto i = 0; i < 10; ++i) {
-        ASSERT_EQ(i, list.at(i));
-    }
-}
-
-TEST_F(CircularListTest, InsertInOrder) {
-    for (auto i = 9; i >= 0; --i) {
-        list.insert_sorted(i);
-    }
-    for (auto i = 0; i < 10; ++i) {
-        ASSERT_EQ(i, list.at(i));
-    }
-
-    list.clear();
-
-    list.insert_sorted(10);
-    list.insert_sorted(-10);
-    list.insert_sorted(42);
-    list.insert_sorted(0);
-    ASSERT_EQ(-10, list.at(0));
-    ASSERT_EQ(0, list.at(1));
-    ASSERT_EQ(10, list.at(2));
-    ASSERT_EQ(42, list.at(3));
-}
-
-TEST_F(CircularListTest, InsertionBounds) {
-    ASSERT_THROW(list.insert(1u, 1), std::out_of_range);
-    ASSERT_THROW(list.insert(-1, 1), std::out_of_range);
-}
-
-TEST_F(CircularListTest, EmptyPopBack) {
-    ASSERT_THROW(list.pop_back(), std::out_of_range);
-}
-
-    TEST_F(CircularListTest, PopBack) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    for (auto i = 9; i >= 0; --i) {
-        ASSERT_EQ(i, list.pop_back());
-    }
-    ASSERT_TRUE(list.empty());
-}
-
-TEST_F(CircularListTest, EmptyPopFront) {
-    ASSERT_THROW(list.pop_front(), std::out_of_range);
-}
-
-TEST_F(CircularListTest, PopFront) {
-    for (auto i = 9; i >= 0; --i) {
-        list.push_front(i);
-    }
-    for (auto i = 0; i < 10; ++i) {
-        ASSERT_EQ(i, list.pop_front());
-    }
-    ASSERT_TRUE(list.empty());
-}
-
-TEST_F(CircularListTest, PopAt) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    ASSERT_EQ(5, list.pop(5));
-    ASSERT_EQ(6, list.pop(5));
-    ASSERT_EQ(8u, list.size());
-    ASSERT_THROW(list.pop(8), std::out_of_range);
-}
-
-TEST_F(CircularListTest, RemoveElement) {
-    for (auto i = 0; i < 10; ++i) {
-        list.push_back(i);
-    }
-    list.remove(4);
-    ASSERT_EQ(9u, list.size());
-    ASSERT_FALSE(list.contains(4));
+  list.remove(0);
+  ASSERT_FALSE(list.contains(0));
+  list.remove(5);
+  ASSERT_FALSE(list.contains(5));
+  list.remove(9);
+  ASSERT_FALSE(list.contains(9));
 }

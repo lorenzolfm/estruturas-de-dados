@@ -14,13 +14,13 @@ class CircularList {
  public:
   //! Construtor
   /*!
-     Construtor da classe lista encadeada dupla.
+     Construtor da classe lista circular encadeada.
    */
   CircularList(void);
 
   //! Destrutor
   /*!
-     Destrutor da lista encadeada.
+     Destrutor da lista circular encadeada.
    */
   ~CircularList(void);
 
@@ -84,6 +84,24 @@ class CircularList {
      \return Referência constante ao elemento na posição (const T&).
    */
   const T& at(std::size_t index) const;
+
+  //! Sobrecarga do operador []
+  /*!
+     Retorna referência ao elemento na posição (index). Caso o índice seja
+     inválido lança exceção (out_of_range).
+     \param index: Posição do elemento a ser retornado (size_t).
+     \return Referência ao elemento na posição (const T&).
+   */
+  T& operator[](std::size_t index);
+
+  //! Sobrecarga do operador []
+  /*!
+     Retorna referência constante ao elemento na posição (index). Caso o índice
+     seja inválido lança exceção (out_of_range).
+     \param index: Posição do elemento a ser retornado (size_t).
+     \return Referência constante ao elemento na posição (const T&).
+   */
+  const T& operator[](std::size_t index) const;
 
   //! Método remove da posição
   /*!
@@ -181,19 +199,6 @@ class CircularList {
     Node* next_{nullptr};
   };
 
-  //Node* node(std::size_t index) {
-    //Node* node = head_;
-
-    //for (std::size_t i = 0; i < size(); i++) {
-      //if (i == index) {
-        //return node;
-      //}
-      //node = node->next();
-    //}
-
-    //return node;
-  //}
-
   Node* before_index(std::size_t index) {
     Node * before = head_->next();
 
@@ -204,9 +209,17 @@ class CircularList {
     return before;
   }
 
-  Node* head_{nullptr};
+  //! Atributo privado Cabeça de Lista
+  /*!
+     Aponta para o "nodo sentinela" da lista circular encadeada.
+   */
+  Node* head_;
 
-  std::size_t size_{0u};
+  //! Atributo privado Tamanho
+  /*!
+     Armazena o tamanho da lista encadeada circular.
+   */
+  std::size_t size_;
 };
 
 }
