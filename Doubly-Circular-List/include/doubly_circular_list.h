@@ -8,19 +8,19 @@ namespace structures {
 template <typename T>
 //! Classe DoubleCircularList
 /*!
-   Classe lista circular encadeada.
+   Classe lista circular duplamente encadeada.
 */
 class DoublyCircularList {
  public:
   //! Construtor
   /*!
-     Construtor da classe lista encadeada dupla.
+     Construtor padrão. Inicializa o nodo sentinela e o tamanho da lista.
    */
   DoublyCircularList(void);
 
   //! Destrutor
   /*!
-     Destrutor da lista encadeada.
+     Destrutor da lista.
    */
   ~DoublyCircularList(void);
 
@@ -84,6 +84,24 @@ class DoublyCircularList {
      \return Referência constante ao elemento na posição (const T&).
    */
   const T& at(std::size_t index) const;
+
+  //! Sobrecarga do operador []
+  /*!
+     Retorna referência ao elemento na posição (index). Caso o índice seja
+     inválido lança exceção (out_of_range).
+     \param index: Posição do elemento a ser retornado (size_t).
+     \return Referência ao elemento na posição (const T&).
+   */
+  T& operator[](std::size_t index);
+
+  //! Sobrecarga do operador []
+  /*!
+     Retorna referência constante ao elemento na posição (index). Caso o índice
+     seja inválido lança exceção (out_of_range).
+     \param index: Posição do elemento a ser retornado (size_t).
+     \return Referência constante ao elemento na posição (const T&).
+   */
+  const T& operator[](std::size_t index) const;
 
   //! Método remove da posição
   /*!
@@ -191,19 +209,22 @@ class DoublyCircularList {
     Node* next_;
   };
 
-  Node* before_index(std::size_t index) {
-    Node* before = head_->next();
+  Node* node(std::size_t index) {
+    Node* node = head_->next();
 
-    for (auto i = 1u; i < index; i++) {
-      before = before->next();
+    for (std::size_t i = 0; i < size(); i++) {
+      if (i == index) {
+        return node;
+      }
+      node = node->next();
     }
 
-    return before;
+    return node;
   }
 
-  Node* head_{nullptr};
+  Node* head_;
 
-  std::size_t size_{0u};
+  std::size_t size_;
 };
 
 }  // namespace structures

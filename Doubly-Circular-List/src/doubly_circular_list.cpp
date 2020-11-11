@@ -3,10 +3,11 @@
 #include <stdexcept>
 
 template <typename T>
-structures::DoublyCircularList<T>::DoublyCircularList() {
+structures::DoublyCircularList<T>::DoublyCircularList(void) {
   size_ = 0u;
-  head_ = new Node((T)0, nullptr);
+  head_ = new Node((T)0);
   head_->next(head_);
+  head_->previous(head_);
 }
 
 template <typename T>
@@ -22,57 +23,57 @@ void structures::DoublyCircularList<T>::clear(void) {
 }
 
 template <typename T>
-std::size_t structures::DoublyCircularList<T>::size(void) const {
-  return size_;
-}
-
-template <typename T>
-bool structures::DoublyCircularList<T>::empty(void) const {
-  return size_ == 0;
-}
-
-template <typename T>
 void structures::DoublyCircularList<T>::push_back(const T& data) {
-  insert(data, size_);
+  if (empty()) {
+    push_front(data);
+  } else {
+    Node* new_node = new Node(data, head_->previous(), head_);
+    if (new_node == nullptr) {
+      throw std::out_of_range("Cannot push to full list");
+    }
+    head_->previous()->next(new_node);
+    head_->previous(new_node);
+    size_++;
+  }
 }
 
 template <typename T>
 void structures::DoublyCircularList<T>::push_front(const T& data) {
-  Node* new_node = new Node(data, head_->next());
+  Node* new_node = new Node(data, head_, head_->next());
 
   if (new_node == nullptr) {
-    throw std::out_of_range("Full list");
+    delete new_node;
+    throw std::out_of_range("Cannot push front on full list");
   }
 
-  if (empty()) {
-    head_ = new_node;
-    head_->next(head_);
-    head_->previous(head_);
-  } else {
-    new_node->next(head_);
-    new_node->previous(head_->previous());
-    head_->previous()->next(new_node);
-    head_->previous(new_node);
-  }
+  head_->next()->previous(new_node);
+  head_->next(new_node);
+
   size_++;
 }
 
 template <typename T>
 void structures::DoublyCircularList<T>::insert(const T& data,
                                                std::size_t index) {
-  if (index > size_) throw std::out_of_range("Invalid index");
+  if (index > size_) {
+    throw std::out_of_range("Invalid index");
+  }
 
   if (index == 0) {
     push_front(data);
+  } else if (index == size_) {
+    push_back(data);
   } else {
-    Node* new_node = new Node(data);
-    if (new_node == nullptr) throw std::out_of_range("List is full");
+    Node* before = node(index - 1);
+    Node* new_node = new Node(data, before, before->next());
 
-    Node* current = before_index(index);
-    new_node->next(current);
-    new_node->previous(current->previous());
-    current->previous()->next(new_node);
-    current->previous(new_node);
+    if (new_node == nullptr) {
+      throw std::out_of_range("Cannot insert on full list");
+    }
+
+    before->next()->previous(new_node);
+    before->next(new_node);
+
     size_++;
   }
 }
@@ -99,7 +100,23 @@ void structures::DoublyCircularList<T>::insert_sorted(const T& data) {
 
 template <typename T>
 T structures::DoublyCircularList<T>::pop_back(void) {
-  return pop(size_ - 1u);
+  if (empty()) {
+    throw std::out_of_range("Cannot pop from empty list");
+  }
+
+  if (size_ == 1) {
+    return pop_front();
+  }
+
+  Node* out = node(size_ - 1);
+  T data = out->data();
+
+  out->previous()->next(out->next());
+  out->next()->previous(out->previous());
+  size_--;
+  delete out;
+
+  return data;
 }
 
 template <typename T>
@@ -108,40 +125,39 @@ T structures::DoublyCircularList<T>::pop_front(void) {
     throw std::out_of_range("Cannot pop from empty list");
   }
 
-  Node* out = head_;
-  T data = head_->data();
-  head_->previous()->next(head_->next());
-  head_->next()->previous(head_->previous());
-  head_ = head_->next();
+  Node* out = head_->next();
+  T data = out->data();
+  head_->next(out->next());
+  delete out;
   size_--;
 
-  delete out;
-
-  if (empty()) {
-    head_ = nullptr;
-  }
   return data;
 }
 
 template <typename T>
 T structures::DoublyCircularList<T>::pop(std::size_t index) {
   if (empty()) {
-    throw std::out_of_range("Empty list");
+    throw std::out_of_range("Empty List");
   }
-  if (index >= size()) {
-    throw std::out_of_range("Invalid index!");
+
+  if (index > size_ - 1) {
+    throw std::out_of_range("Invalid Index");
   }
 
   if (index == 0) {
     return pop_front();
   }
 
-  Node* out = before_index(index);
+  if (index == size_ - 1) {
+    return pop_back();
+  }
+
+  Node* out = node(index);
   T data = out->data();
   out->previous()->next(out->next());
   out->next()->previous(out->previous());
-  size_--;
   delete out;
+  size_--;
 
   return data;
 }
@@ -152,25 +168,13 @@ void structures::DoublyCircularList<T>::remove(const T& data) {
 }
 
 template <typename T>
-bool structures::DoublyCircularList<T>::contains(const T& data) const {
-  return find(data) != size();
+bool structures::DoublyCircularList<T>::empty(void) const {
+  return size_ == 0u;
 }
 
 template <typename T>
-std::size_t structures::DoublyCircularList<T>::find(const T& data) const {
-  if (empty()) {
-    throw std::out_of_range("Empty List");
-  }
-
-  std::size_t index = 0u;
-  Node* current = head_->next();
-
-  while (index < size()) {
-    if (current->data() == data) break;
-    current = current->next();
-    index++;
-  }
-  return index;
+bool structures::DoublyCircularList<T>::contains(const T& data) const {
+  return find(data) != size();
 }
 
 template <typename T>
@@ -186,14 +190,52 @@ const T& structures::DoublyCircularList<T>::at(std::size_t index) const {
   } else if (index >= size_) {
     throw std::out_of_range("Index out of bounds");
   }
-
   Node* current = head_->next();
   auto i = 0;
+
   while (i != index) {
     current = current->next();
     i++;
   }
+
   return current->data();
+}
+
+template <typename T>
+T& structures::DoublyCircularList<T>::operator[](std::size_t index) {
+  return at(index);
+}
+
+template <typename T>
+const T& structures::DoublyCircularList<T>::operator[](
+    std::size_t index) const {
+  return const_cast<T&>(
+      static_cast<const DoublyCircularList*>(this)->at(index));
+}
+
+template <typename T>
+std::size_t structures::DoublyCircularList<T>::find(const T& data) const {
+  if (empty()) {
+    throw std::out_of_range("List is empty");
+  }
+
+  std::size_t index = 0u;
+  Node* current = head_->next();
+
+  while (index < size()) {
+    if (current->data() == data) {
+      break;
+    }
+    current = current->next();
+    index++;
+  }
+
+  return index;
+}
+
+template <typename T>
+std::size_t structures::DoublyCircularList<T>::size(void) const {
+  return size_;
 }
 
 template class structures::DoublyCircularList<int>;
