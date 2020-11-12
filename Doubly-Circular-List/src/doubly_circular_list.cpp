@@ -127,6 +127,7 @@ T structures::DoublyCircularList<T>::pop_front(void) {
 
   Node* out = head_->next();
   T data = out->data();
+  out->next()->previous(head_);
   head_->next(out->next());
   delete out;
   size_--;
