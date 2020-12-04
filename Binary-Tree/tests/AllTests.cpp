@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 #include "binary_tree.h"
+#include "../../Array-List/include/array_list.h"
 
 namespace {
 
