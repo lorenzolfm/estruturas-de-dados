@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_BINARY_TREE_H
 #define STRUCTURES_BINARY_TREE_H
 
+#include "array_list.h"
+
 namespace structures {
 template <typename T>
 //! Árvore Binária
@@ -8,8 +10,50 @@ template <typename T>
    Implementação da árvore binária de busca com percussos.
  */
 class BinaryTree {
+ private:
+  struct Node {
+    explicit Node(const T& data)
+        : data_{data}, left_node{nullptr}, right_node{nullptr} {}
+
+    T data_;
+    Node* left_node;
+    Node* right_node;
+
+    void insert(const T& data);
+
+    bool remove(const T& data);
+
+    bool contains(const T& data) const;
+
+    void pre_order(ArrayList<T> array) const {
+      if (this != nullptr) {
+        array.push_back(data_);
+        left_node->pre_order(array);
+        right_node->pre_order(array);
+      }
+    }
+
+    void in_order(ArrayList<T> array) const {
+      if (this != nullptr) {
+        left_node->in_order(array);
+        array.push_back(data_);
+        right_node->in_order(array);
+      }
+    }
+
+    void post_order(ArrayList<T> array) const {
+      if (this != nullptr) { left_node->post_order(array);
+        right_node->post_order(array);
+        array.push_back(data_);
+      }
+    }
+
+  };
+
+  Node* root{nullptr};
+
  public:
-  //~BinaryTree(void);
+  ~BinaryTree(void);
 
   //! Inserir Dado
   /*!
@@ -35,7 +79,7 @@ class BinaryTree {
      buscar. \return true: Dado está contido na árvore. \return false: Dado não
      está contido na árvore.
    */
-  //bool contains(const T& data) const;
+  bool contains(const T& data) const;
 
   //! Árvore Vazia
   /*!
@@ -44,7 +88,7 @@ class BinaryTree {
      \return true: Árvore vazia.
      \return false: Árvore não está vazia.
    */
-  //bool empty(void) const;
+  bool empty(void) const;
 
   //! Tamanho da Árvore
   /*!
@@ -52,7 +96,7 @@ class BinaryTree {
 
      \return tamanho: Tamanho da árvore (size_t).
    */
-  //std::size_t size(void) const;
+  std::size_t size(void) const;
 
   //! Pré-ordem
   /*!
@@ -62,7 +106,7 @@ class BinaryTree {
      \return lista: Lista (ArrayList<T>) com os elementos na ordem em que foram
      percorridos.
    */
-  //ArrayList<T> pre_order(void) const;
+  ArrayList<T> pre_order(void) const;
 
   //! Pós-ordem
   /*!
@@ -72,7 +116,7 @@ class BinaryTree {
      \return lista: Lista (ArrayList<T>) com os elementos na ordem em que foram
      percorridos.
    */
-  //ArrayList<T> post_order(void) const;
+  ArrayList<T> post_order(void) const;
 
   //! Em-ordem
   /*!
@@ -82,116 +126,13 @@ class BinaryTree {
      \return lista: Lista (ArrayList<T>) com os elementos na ordem em que foram
      percorridos.
    */
-  //ArrayList<T> in_order(void) const;
+  ArrayList<T> in_order(void) const;
 
- private:
-  //struct Node {
-    //explicit Node(const T& data)
-        //: data_{data}, left_node_{nullptr}, right_node_{nullptr} {}
-
-    //T data_;
-    //Node* left_node_;
-    //Node* right_node_;
-
-    //void insert(const T& data) {
-      //Node* new_node;
-      //if (data < data_) {
-        //if (left_node_ == nullptr) {
-          //new_node = new Node(data);
-          //left_node_ = new_node;
-        //} else {
-          //left_node_->insert(data);
-        //}
-      //} else {
-        //if (right_node_ == nullptr) {
-          //new_node = new Node(data);
-          //right_node_ = new_node;
-        //} else {
-          //right_node_->insert(data);
-        //}
-      //}
-    //}
-
-    //bool remove(const T& data) {
-      //if (data == data_) {
-        //if ((left_node_ != nullptr) && (right_node_ != nullptr)) {
-          //Node* node = right_node_;
-          //while (node->left_node_ != nullptr) {
-            //node = node->left_node_;
-          //}
-          //data_ = node->data_;
-          //return right_node_->remove(data_);
-        //} else {
-          //if (right_node_ != nullptr) {
-            //data_ = right_node_->data_;
-            //return right_node_->remove(data_);
-          //} else {
-            //if (left_node_ != nullptr) {
-              //data_ = left_node_->data_;
-              //return left_node_->remove(data_);
-            //} else {
-              //delete this;
-              //return true;
-            //}
-          //}
-        //}
-      //} else {
-        //if ((right_node_ != nullptr) && (data_ < data)) {
-          //return right_node_->remove(data);
-        //}
-        //if ((left_node_ != nullptr) && (data_ > data)) {
-          //return left_node_->remove(data);
-        //}
-      //}
-      //return false;
-    //}
-
-    //bool contains(const T& data) const {
-      //if (data == data_) {
-        //return true;
-      //} else {
-        //if ((left_node_ != nullptr) && (data_ > data)) {
-          //return left_node_->contains(data);
-        //} else if ((right_node_ != nullptr) && (data_ < data)) {
-          //return right_node_->contains(data);
-        //}
-      //}
-      //return false;
-    //}
-
-    //void pre_order(ArrayList<T>& array) const {
-      //array.push_back(data_);
-      //if (left_node_ != nullptr) {
-        //left_node_->pre_order(array);
-      //}
-      //if (right_node_ != nullptr) {
-        //right_node_->pre_order(array);
-      //}
-    //}
-
-    //void in_order(ArrayList<T>& array) const {
-      //if (left_node_ != nullptr) {
-        //left_node_->in_order(array);
-      //}
-      //array.push_back(data_);
-      //if (right_node_ != nullptr) {
-        //right_node_->in_order(array);
-      //}
-    //}
-
-    //void post_order(ArrayList<T>& array) const {
-      //if (left_node_ != nullptr) {
-        //left_node_->post_order(array);
-      //}
-      //if (right_node_ != nullptr) {
-        //right_node_->post_order(array);
-      //}
-      //array.push_back(data_);
-    //}
-  //};
-
-  //Node* root_{nullptr};
-  //std::size_t size_{0u};
+  // Aux method for testing
+  Node* get_root(void) const { return root; }
+  // Público por causa do teste (alterar no final)
+  std::size_t size_{0u};
 };
 }  // namespace structures
+
 #endif
