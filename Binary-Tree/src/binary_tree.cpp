@@ -6,19 +6,38 @@ structures::BinaryTree<T>::~BinaryTree(void) {
 }
 
 template<typename T>
-bool structures::BinaryTree<T>::contains(const T& data) const {
-  Node* node = root;
+void structures::BinaryTree<T>::insert(const T& data) {
+  if (empty())
+    root = new Node(data);
+  else
+    root->insert(data);
 
-  while ((node != nullptr) && (node->data_ != data)) {
-    if (data > root->data_)
-      node = node->right_node;
-    else
-      node = node->left_node;
+  size_++;
+}
+
+template<typename T>
+void structures::BinaryTree<T>::remove(const T& data) {
+  if (empty())
+    throw std::out_of_range("Cannot remove from empty tree");
+
+  if (size() != 1u) {
+    if (root->remove(data))
+      size_--;
+  } else {
+    if (root->data_ == data) {
+      delete root;
+      root = nullptr;
+      size_--;
+    }
   }
+}
 
-  if (node == nullptr) return false;
+template<typename T>
+bool structures::BinaryTree<T>::contains(const T& data) const {
+  if (empty())
+    return false;
 
-  return true;
+  return root->contains(data);
 }
 
 template<typename T>
@@ -33,7 +52,7 @@ std::size_t structures::BinaryTree<T>::size(void) const {
 
 template<typename T>
 structures::ArrayList<T> structures::BinaryTree<T>::pre_order(void) const {
-  structures::ArrayList<T> array{};
+  structures::ArrayList<T> array{size_};
   if (!empty())
     root->pre_order(array);
 
@@ -42,7 +61,7 @@ structures::ArrayList<T> structures::BinaryTree<T>::pre_order(void) const {
 
 template<typename T>
 structures::ArrayList<T> structures::BinaryTree<T>::in_order(void) const {
-  structures::ArrayList<T> array{};
+  structures::ArrayList<T> array{size_};
   if (!empty())
     root->in_order(array);
 
@@ -51,7 +70,7 @@ structures::ArrayList<T> structures::BinaryTree<T>::in_order(void) const {
 
 template<typename T>
 structures::ArrayList<T> structures::BinaryTree<T>::post_order(void) const {
-  structures::ArrayList<T> array{};
+  structures::ArrayList<T> array{size_};
   if (!empty())
     root->post_order(array);
 
