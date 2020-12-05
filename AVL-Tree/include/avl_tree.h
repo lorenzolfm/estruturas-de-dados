@@ -103,170 +103,40 @@ class AVLTree {
 
  private:
   struct Node {
-    explicit Node(const T& data)
-        : data_{data}, height_{0}, left_node{nullptr}, right_node{nullptr} {}
+    explicit Node(const T& data) : data_{data} {}
 
     T data_;
-    int height_;
-    Node* left_node;
-    Node* right_node;
+    int height_{0};
+    Node* left_child{nullptr};
+    Node* right_child{nullptr};
 
-    void insert(const T& data) {
-      Node* new_node;
-      Node* tree_rotate;
+    void insert(const T& data);
 
-      if (this == nullptr) {
-        new_node = new Node(data);
-        if (new_node == nullptr)
-          throw std::out_of_range("AVL Tree is full");
-      } else {
-        if (data_ < data) {
-          left_node->insert(data);
-          if (left_node->height() - right_node->height() > 1) {
-            if (data < left_node->data_)
-              tree_rotate = simpleLeft();
-            else
-              tree_rotate = doubleLeft();
+    bool remove(const T& data);
 
-            if (left_node == this)
-              left_node = tree_rotate;
-            else
-              right_node = tree_rotate;
-          } else {
-            new_node->updateHeight(max_height(left_node, right_node) + 1);
-          }
-        } else {
-          if (data > data_) {
-            right_node->insert(data);
+    bool contains(const T& data) const;
 
-            if (right_node->height() - left_node->height() > 1) {
-              if (data < right_node->data_)
-                tree_rotate = simpleRight();
-              else
-                tree_rotate = doubleRight();
+    void updateHeight(void) {}
 
-              if (right_node == this)
-                right_node = tree_rotate;
-              else
-                left_node = tree_rotate;
-            } else {
-              new_node->updateHeight(max_height(left_node, right_node) + 1);
-            }
-          } else {
-            throw std::out_of_range("Key already on tree");
-          }
-        }
-      }
-    }
+    Node* simpleLeft(void);
 
-    bool remove(const T& data) {
+    Node* simpleRight(void);
 
-    }
+    Node* doubleLeft(void);
 
-    bool contains(const T& data) const {
-      if (data_ == data) {
-        return true;
-      } else {
-        if (data_ < data) {
-          if (right_node == nullptr) return false;
+    Node* doubleRight(void);
 
-          return right_node->contains(data);
-        } else {
-          if (left_node == nullptr) return false;
+    void pre_order(ArrayList<T>& array) const;
 
-          return left_node->contains(data);
-        }
-      }
-    }
+    void in_order(ArrayList<T>& array) const;
 
-    void updateHeight(int height) { height_ = height; }
+    void post_order(ArrayList<T>& array) const;
 
-    Node* simpleLeft() {
-      Node* new_root;
-
-      new_root = left_node;
-      left_node = new_root->left_node;
-      new_root->right_node = this;
-
-      updateHeight(max_height(left_node, right_node) + 1);
-      new_root->updateHeight(max_height(new_root->left_node, right_node) + 1);
-
-      return new_root;
-    }
-
-    Node* simpleRight(void) {
-      Node* new_root;
-
-      new_root = left_node;
-      left_node = new_root->right_node;
-      new_root->left_node = this;
-
-      updateHeight(max_height(right_node, left_node) + 1);
-      new_root->updateHeight(max_height(new_root->right_node, this) + 1);
-    }
-
-    Node* doubleLeft(void) {
-      left_node = left_node->simpleRight();
-      return simpleLeft();
-    }
-
-    Node* doubleRight(void) {
-      right_node = right_node->simpleLeft();
-      return simpleRight();
-    }
-
-    void pre_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        array.push_back(data_);
-        left_node->pre_order(array);
-        right_node->post_order(array);
-      }
-    }
-
-    void in_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        left_node->in_order(array);
-        array.push_back(data_);
-        right_node->in_order(array);
-      }
-    }
-
-    void post_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        left_node->post_order(array);
-        right_node->post_order(array);
-        array.push_back(data_);
-      }
-    }
-
-    int height() {
-      if (this == nullptr) return -1;
-
-      return height_;
-    }
-
-    int max_height(Node* sub_tree_a, Node* sub_tree_b) {
-      int height_a, height_b;
-
-      if (sub_tree_a == nullptr)
-        height_a = -1;
-      else
-        height_a = sub_tree_a->height_;
-
-      if (sub_tree_b == nullptr)
-        height_b = -1;
-      else
-        height_b = sub_tree_b->height_;
-
-      if (height_a > height_b)
-        return height_a;
-      else
-        return height_b;
-    }
+    int height() { return height_; }
   };
 
-  Node* root;
-  std::size_t size_;
+  Node* root{nullptr};
+  std::size_t size_{0u};
 };
 
 }  // namespace structures
