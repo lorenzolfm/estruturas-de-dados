@@ -29,8 +29,17 @@ TEST_F(BinaryTreeTest, EmptyReturnsTrueWhenEmpty) {
 }
 
 TEST_F(BinaryTreeTest, EmptyReturnsFalseWhenNotEmpty) {
-    tree.size_ = 1;
+    tree.size_ = 1u;
     ASSERT_FALSE(tree.empty());
+}
+
+// Test Size Getter
+TEST_F(BinaryTreeTest, SizeReturnsCorrectSize) {
+    ASSERT_EQ(tree.size(), 0u);
+    tree.size_ = 1u;
+    ASSERT_EQ(tree.size(), 1u);
+    tree.size_ = 10u;
+    ASSERT_EQ(tree.size(), 10u);
 }
 
 // Contains
