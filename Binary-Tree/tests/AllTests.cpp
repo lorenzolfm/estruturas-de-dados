@@ -133,3 +133,36 @@ TEST_F(BinaryTreeTest, PostOrderTest) {
   ASSERT_EQ(array[5], 7);
   ASSERT_EQ(array[6], 5);
 }
+
+// Test Remove
+TEST_F(BinaryTreeTest, RemoveDecreasesSize) {
+  tree.insert(5);
+  tree.remove(5);
+  ASSERT_EQ(tree.size(), 0u);
+}
+
+TEST_F(BinaryTreeTest, RemoveDeletesData) {
+  tree.insert(5);
+  tree.insert(3);
+  tree.insert(7);
+  tree.insert(2);
+  tree.insert(1);
+  tree.insert(6);
+  tree.insert(8);
+
+  tree.remove(5);
+  tree.remove(3);
+  tree.remove(7);
+  tree.remove(2);
+  tree.remove(1);
+  tree.remove(6);
+  tree.remove(8);
+
+  ASSERT_FALSE(tree.contains(5));
+  ASSERT_FALSE(tree.contains(3));
+  ASSERT_FALSE(tree.contains(7));
+  ASSERT_FALSE(tree.contains(2));
+  ASSERT_FALSE(tree.contains(1));
+  ASSERT_FALSE(tree.contains(6));
+  ASSERT_FALSE(tree.contains(8));
+}
