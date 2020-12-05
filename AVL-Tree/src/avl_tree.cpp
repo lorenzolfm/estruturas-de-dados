@@ -6,6 +6,14 @@ structures::AVLTree<T>::~AVLTree(void) {
 }
 
 template<typename T>
+bool structures::AVLTree<T>::contains(const T& data) const {
+  if (empty())
+    return false;
+
+  return root->contains(data);
+}
+
+template<typename T>
 std::size_t structures::AVLTree<T>::size(void) const {
     return size_;
 }

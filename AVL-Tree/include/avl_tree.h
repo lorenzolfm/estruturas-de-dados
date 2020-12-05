@@ -114,7 +114,21 @@ class AVLTree {
 
     bool remove(const T& data);
 
-    bool contains(const T& data) const;
+    bool contains(const T& data) const {
+      if (data < data_) {
+        if (left_child == nullptr)
+          return false;
+        else
+          return left_child->contains(data);
+      } else if (data > data_) {
+        if (right_child == nullptr)
+          return false;
+        else
+          return right_child->contains(data);
+      } else {
+        return true;
+      }
+    }
 
     void updateHeight(void) {}
 
@@ -150,7 +164,16 @@ class AVLTree {
       }
     }
 
-    int height() { return height_; }
+    int height(void) {
+      if (this == nullptr) return -1;
+
+      return height_;
+    }
+
+    Node* minimum(void) {
+      if (left_child == nullptr) return this;
+      return left_child->minimum();
+    }
   };
 
   Node* root{nullptr};
