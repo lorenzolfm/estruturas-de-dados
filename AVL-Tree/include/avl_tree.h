@@ -1,7 +1,7 @@
 #ifndef STRUCTURES_AVL_TREE_H
 #define STRUCTURES_AVL_TREE_H
 
-#include "../../Array-List/include/array_list.h"
+#include "array_list.h"
 
 namespace structures {
 
@@ -126,11 +126,29 @@ class AVLTree {
 
     Node* doubleRight(void);
 
-    void pre_order(ArrayList<T>& array) const;
+    void pre_order(ArrayList<T>& array) const {
+      if (this != nullptr) {
+        array.push_back(data_);
+        left_child->pre_order(array);
+        right_child->pre_order(array);
+      }
+    }
 
-    void in_order(ArrayList<T>& array) const;
+    void in_order(ArrayList<T>& array) const {
+      if (this != nullptr) {
+        left_child->in_order(array);
+        array.push_back(data_);
+        right_child->in_order(array);
+      }
+    }
 
-    void post_order(ArrayList<T>& array) const;
+    void post_order(ArrayList<T>& array) const {
+      if (this != nullptr) {
+        left_child->post_order(array);
+        right_child->post_order(array);
+        array.push_back(data_);
+      }
+    }
 
     int height() { return height_; }
   };
