@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_AVL_TREE_H
 #define STRUCTURES_AVL_TREE_H
 
+#include <algorithm>
+
 #include "array_list.h"
 
 namespace structures {
@@ -110,6 +112,11 @@ class AVLTree {
     Node* left_child{nullptr};
     Node* right_child{nullptr};
 
+    ~Node(void) {
+      delete left_child;
+      delete right_child;
+    }
+
     void insert(const T& data);
 
     bool remove(const T& data);
@@ -130,15 +137,47 @@ class AVLTree {
       }
     }
 
-    void updateHeight(void) {}
+    void updateHeight(void);
 
-    Node* simpleLeft(void);
+    /* Rotações:
+     *
+     *     a    simpleLeft    b
+     *    / \     ----->     / \
+     *   x   b              a   z
+     *      / \    right   / \
+     *     y   z  <-----  x   y
+     */
+    Node* simpleLeft(void) {
+      Node* new_root = left_child;
+      left_child = new_root->right_child;
+      new_root->right_child = this;
 
-    Node* simpleRight(void);
+      height_ = std::max(height(left_child), height(right_child) + 1);
+      new_root->height_ =
+          std::max(height(new_root - left_child), height(this)) + 1;
 
-    Node* doubleLeft(void);
+      return new_root;
+    }
 
-    Node* doubleRight(void);
+    Node* simpleRight(void) {
+      Node* new_root = right_child;
+      right_child = new_root->left_child;
+      new_root->left_child = this;
+
+      height_ = std::max(height(right_child), height(left_child) + 1);
+      new_root->height_ =
+          std::max(height(new_root->right_child), height(this)) + 1;
+    }
+
+    Node* doubleLeft(void) {
+      left_child = left_child->simpleRight();
+      return simpleLeft();
+    }
+
+    Node* doubleRight(void) {
+      right_child = right_child->simpleLeft();
+      return simpleRight();
+    }
 
     void pre_order(ArrayList<T>& array) const {
       if (this != nullptr) {
