@@ -107,19 +107,81 @@ class AVLTree {
   struct Node {
     explicit Node(const T& data) : data_{data} {}
 
-    T data_;
-    int height_{0};
-    Node* left_child{nullptr};
-    Node* right_child{nullptr};
-
     ~Node(void) {
       delete left_child;
       delete right_child;
     }
 
-    void insert(const T& data);
+    T data_;
+    int height_{0};
+    Node* left_child{nullptr};
+    Node* right_child{nullptr};
 
-    bool remove(const T& data);
+    void insert(const T& data) {
+      if (data < data_) {
+        if (left_child == nullptr) {
+          left_child = new Node(data);
+          if (left_child == nullptr)
+            throw std::out_of_range("Cannot insert on full tree");
+        } else {
+          left_child->insert(data);
+        }
+      } else {
+        if (right_child == nullptr) {
+          right_child = new Node(data);
+          if (right_child == nullptr)
+            throw std::out_of_range("Cannot insert on full tree");
+        } else {
+          right_child->insert(data);
+        }
+      }
+    }
+
+    bool remove(const T& data) {
+      bool removed = false;
+
+      if (data < data_ && left_child != nullptr) {
+        left_child = remove(data, left_child, removed);
+
+      } else if (data > data_ && right_child != nullptr) {
+        right_child = remove(data, right_child, removed);
+
+      } else if (data == data_) {
+        if (left_child != nullptr && right_child != nullptr) {
+          Node* tmp = right_child->minimum();
+          data_ = tmp->data_;
+          right_child = remove(data_, right_child, removed);
+
+        } else if (left_child != nullptr) {
+          Node* tmp = left_child;
+
+          data_ = tmp->data_;
+          left_child = tmp->left_child;
+          right_child = tmp->right_child;
+
+          tmp->left_child = nullptr;
+          tmp->right_child = nullptr;
+
+          delete tmp;
+
+          removed = true;
+        } else if (right_child != nullptr) {
+          Node* tmp = right_child;
+
+          data_ = tmp->data_;
+          left_child = tmp->left_child;
+          right_child = tmp->right_child;
+
+          tmp->left_child = nullptr;
+          tmp->right_child = nullptr;
+
+          delete tmp;
+
+          removed = true;
+        }
+      }
+      return removed;
+    }
 
     bool contains(const T& data) const {
       if (data < data_) {
@@ -137,24 +199,81 @@ class AVLTree {
       }
     }
 
-    void updateHeight(void);
+    void updateHeight(void) {
+      int height_left, height_right;
+      if (left_child == nullptr && right_child == nullptr) {
+        height_ = 0;
+      } else {
+        // Balança o filho da esquerda
+        if (left_child != nullptr) {
+          left_child->updateHeight();
+          switch (left_child->type_balance()) {
+            case 0:  // balanceado
+              height_left = left_child->left_child->height();
+              height_right = left_child->right_child->height();
+              left_child->height_ = std::max(height_left, height_right) + 1;
+              break;
+            case 1:  // Esquerda-esquerda
+              left_child = left_child->simpleLeft();
+              break;
+            case 2:  // Esquerda-direita
+              left_child = left_child->doubleLeft();
+              break;
+            case 3:  // Direita-direita
+              left_child = left_child->simpleRight();
+              break;
+            case 4:  // Direita-direita
+              left_child = left_child->doubleRight();
+              break;
+            default:
+              break;
+          }
+        }
+        if (right_child != nullptr) {
+          right_child->updateHeight();
+          switch (right_child->type_balance()) {
+            case 0:  // balanceado
+              height_left = right_child->left_child->height();
+              height_right = right_child->right_child->height();
+              right_child->height_ = std::max(height_left, height_right) + 1;
+              break;
+            case 1:  // Esquerda-esquerda
+              right_child = right_child->simpleLeft();
+              break;
+            case 2:  // Esquerda-direita
+              right_child = right_child->doubleLeft();
+              break;
+            case 3:  // Direita-direita
+              right_child = right_child->simpleRight();
+              break;
+            case 4:  // Direita-esquerda
+              right_child = right_child->doubleRight();
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
 
-    /* Rotações:
-     *
-     *     a    simpleLeft    b
-     *    / \     ----->     / \
-     *   x   b              a   z
-     *      / \    right   / \
-     *     y   z  <-----  x   y
+    /* Rotações Simples:
+       k1 e k2 são nodos. A, B e C são subárvores
+
+           k2                 k1
+          /  \  à esquerda   /  \
+         k1   A ----------> B   k2
+        /  \    <---------     /  \
+       B    C   à direita     C    A
+
      */
     Node* simpleLeft(void) {
       Node* new_root = left_child;
       left_child = new_root->right_child;
       new_root->right_child = this;
 
-      height_ = std::max(height(left_child), height(right_child) + 1);
+      height_ = std::max(left_child->height(), right_child->height() + 1);
       new_root->height_ =
-          std::max(height(new_root - left_child), height(this)) + 1;
+          std::max(new_root->left_child->height(), height()) + 1;
 
       return new_root;
     }
@@ -164,11 +283,25 @@ class AVLTree {
       right_child = new_root->left_child;
       new_root->left_child = this;
 
-      height_ = std::max(height(right_child), height(left_child) + 1);
+      height_ = std::max(right_child->height(), left_child->height() + 1);
       new_root->height_ =
-          std::max(height(new_root->right_child), height(this)) + 1;
+          std::max(new_root->right_child->height(), height()) + 1;
+
+      return new_root;
     }
 
+    /* Rotações Duplas:
+      k1, k2 e k3 são nodos. A, B, C e D são subárvores
+      k3 e k1 é a direção da onde ocorreu o desequilíbrio.
+
+             k3                   k2
+            /  \                 /  \
+           A   k1   ------->    k3  k1
+              /  \             / \  / \
+             k2   D           A  B  C  D
+            /  \
+           B    C
+    */
     Node* doubleLeft(void) {
       left_child = left_child->simpleRight();
       return simpleLeft();
@@ -209,9 +342,60 @@ class AVLTree {
       return height_;
     }
 
+    std::size_t type_balance(void) {
+      if (left_child->height() - right_child->height() > 1) {
+        if (left_child->left_child->height() >
+            left_child->right_child->height())
+          return 1;
+        else
+          return 2;
+      } else if (right_child->height() - left_child->height() > 1) {
+        if (right_child->right_child->height() >
+            right_child->left_child->height())
+          return 3;
+        else
+          return 4;
+      }
+      return 0;
+    }
+
+   private:
     Node* minimum(void) {
       if (left_child == nullptr) return this;
       return left_child->minimum();
+    }
+
+    Node* remove(const T& data, Node* tree, bool& removed) {
+      removed = false;
+      if (tree == nullptr) return tree;
+
+      if (data < data_) {
+        tree->left_child = remove(data, tree->left_child, removed);
+        return tree;
+      }
+
+      if (data > data_) {
+        tree->right_child = remove(data, tree->right_child, removed);
+      }
+
+      if (tree->left_child != nullptr && tree->right_child != nullptr) {
+        Node* tmp = tree->right_child->minimum();
+        tree->data_ = tmp->data_;
+        tree->right_child = remove(data, tree->right_child, removed);
+      }
+
+      Node* tmp;
+      if (tree->right_child == nullptr)
+        tmp = tree->right_child;
+      else
+        tmp = tree->left_child;
+
+      tree->left_child = nullptr;
+      tree->right_child = nullptr;
+
+      delete tree;
+      removed = true;
+      return tmp;
     }
   };
 
