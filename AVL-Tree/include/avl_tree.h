@@ -7,6 +7,51 @@
 
 namespace structures {
 
+class Dummy {
+public:
+    Dummy() = default;
+    explicit Dummy(double value):
+        value_{value}
+    {}
+
+    /**
+     * Valor encapsulado
+     */
+    double value() const {
+        return value_;
+    }
+
+    bool operator<(const Dummy& other) const {
+        return value() < other.value();
+    }
+
+    bool operator<=(const Dummy& other) const {
+        return value() <= other.value();
+    }
+
+    bool operator>(const Dummy& other) const {
+        return value() > other.value();
+    }
+
+    bool operator>=(const Dummy& other) const {
+        return value() >= other.value();
+    }
+
+    bool operator==(const Dummy& other) const {
+        return value() == other.value();
+    }
+
+    bool operator!=(const Dummy& other) const {
+        return value() != other.value();
+    }
+
+private:
+    /**
+     * Valor encapsulado
+     */
+    double value_{0.};
+};
+
 template <typename T>
 //! Árvore AVL
 /*!
@@ -256,102 +301,98 @@ class AVLTree {
       }
     }
 
-    /* Rotações Simples:
-       k1 e k2 são nodos. A, B e C são subárvores
+  /* Rotações Simples:
+     k1 e k2 são nodos. A, B e C são subárvores
 
-           k2                 k1
-          /  \  à esquerda   /  \
-         k1   A ----------> B   k2
-        /  \    <---------     /  \
-       B    C   à direita     C    A
+         k2                 k1
+        /  \  à esquerda   /  \
+       k1   A ----------> B   k2
+      /  \    <---------     /  \
+     B    C   à direita     C    A
 
-     */
-    Node* simpleLeft(void) {
-      Node* new_root = left_child;
-      left_child = new_root->right_child;
-      new_root->right_child = this;
+   */
+  Node* simpleLeft(void) {
+    Node* new_root = left_child;
+    left_child = new_root->right_child;
+    new_root->right_child = this;
 
-      height_ = std::max(left_child->height(), right_child->height() + 1);
-      new_root->height_ =
-          std::max(new_root->left_child->height(), height()) + 1;
+    height_ = std::max(left_child->height(), right_child->height() + 1);
+    new_root->height_ = std::max(new_root->left_child->height(), height()) + 1;
 
-      return new_root;
+    return new_root;
+  }
+
+  Node* simpleRight(void) {
+    Node* new_root = right_child;
+    right_child = new_root->left_child;
+    new_root->left_child = this;
+
+    height_ = std::max(right_child->height(), left_child->height() + 1);
+    new_root->height_ = std::max(new_root->right_child->height(), height()) + 1;
+
+    return new_root;
+  }
+
+  /* Rotações Duplas:
+    k1, k2 e k3 são nodos. A, B, C e D são subárvores
+    k3 e k1 é a direção da onde ocorreu o desequilíbrio.
+
+           k3                   k2
+          /  \                 /  \
+         A   k1   ------->    k3  k1
+            /  \             / \  / \
+           k2   D           A  B  C  D
+          /  \
+         B    C
+  */
+  Node* doubleLeft(void) {
+    left_child = left_child->simpleRight();
+    return simpleLeft();
+  }
+
+  Node* doubleRight(void) {
+    right_child = right_child->simpleLeft();
+    return simpleRight();
+  }
+
+  void pre_order(ArrayList<T>& array) const {
+    if (this != nullptr) {
+      array.push_back(data_);
+      left_child->pre_order(array);
+      right_child->pre_order(array);
     }
+  }
 
-    Node* simpleRight(void) {
-      Node* new_root = right_child;
-      right_child = new_root->left_child;
-      new_root->left_child = this;
-
-      height_ = std::max(right_child->height(), left_child->height() + 1);
-      new_root->height_ =
-          std::max(new_root->right_child->height(), height()) + 1;
-
-      return new_root;
+  void in_order(ArrayList<T>& array) const {
+    if (this != nullptr) {
+      left_child->in_order(array);
+      array.push_back(data_);
+      right_child->in_order(array);
     }
+  }
 
-    /* Rotações Duplas:
-      k1, k2 e k3 são nodos. A, B, C e D são subárvores
-      k3 e k1 é a direção da onde ocorreu o desequilíbrio.
-
-             k3                   k2
-            /  \                 /  \
-           A   k1   ------->    k3  k1
-              /  \             / \  / \
-             k2   D           A  B  C  D
-            /  \
-           B    C
-    */
-    Node* doubleLeft(void) {
-      left_child = left_child->simpleRight();
-      return simpleLeft();
+  void post_order(ArrayList<T>& array) const {
+    if (this != nullptr) {
+      left_child->post_order(array);
+      right_child->post_order(array);
+      array.push_back(data_);
     }
+  }
 
-    Node* doubleRight(void) {
-      right_child = right_child->simpleLeft();
-      return simpleRight();
-    }
+  int height(void) {
+    if (this == nullptr) return -1;
 
-    void pre_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        array.push_back(data_);
-        left_child->pre_order(array);
-        right_child->pre_order(array);
-      }
-    }
-
-    void in_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        left_child->in_order(array);
-        array.push_back(data_);
-        right_child->in_order(array);
-      }
-    }
-
-    void post_order(ArrayList<T>& array) const {
-      if (this != nullptr) {
-        left_child->post_order(array);
-        right_child->post_order(array);
-        array.push_back(data_);
-      }
-    }
-
-    int height(void) {
-      if (this == nullptr) return -1;
-
-      return height_;
-    }
+    return height_;
+  }
 
     std::size_t type_balance(void) {
       if (left_child->height() - right_child->height() > 1) {
-        if (left_child->left_child->height() >
-            left_child->right_child->height())
+        if (left_child->left_child->height() > left_child->right_child->height())
           return 1;
         else
           return 2;
       } else if (right_child->height() - left_child->height() > 1) {
-        if (right_child->right_child->height() >
-            right_child->left_child->height())
+        if (right_child->right_child->height() > right_child->left_child->height())
           return 3;
         else
           return 4;
@@ -359,50 +400,49 @@ class AVLTree {
       return 0;
     }
 
-   private:
-    Node* minimum(void) {
-      if (left_child == nullptr) return this;
-      return left_child->minimum();
-    }
 
-    Node* remove(const T& data, Node* tree, bool& removed) {
+ private:
+  Node* minimum(void) {
+    if (left_child == nullptr) return this;
+    return left_child->minimum();
+  }
+
+     Node* remove(const T& data, Node* tree, bool& removed) {
       removed = false;
       if (tree == nullptr) return tree;
-
-      if (data < data_) {
+      if (data < tree->data_) {
         tree->left_child = remove(data, tree->left_child, removed);
         return tree;
       }
-
-      if (data > data_) {
+      if (data > tree->data_) {
         tree->right_child = remove(data, tree->right_child, removed);
+        return tree;
       }
-
-      if (tree->left_child != nullptr && tree->right_child != nullptr) {
+      if (tree->right_child != nullptr && tree->left_child != nullptr) {
         Node* tmp = tree->right_child->minimum();
         tree->data_ = tmp->data_;
         tree->right_child = remove(data, tree->right_child, removed);
+        return tree;
       }
-
-      Node* tmp;
-      if (tree->right_child == nullptr)
+      Node* tmp = nullptr;
+      if (tree->right_child != nullptr)
         tmp = tree->right_child;
       else
         tmp = tree->left_child;
 
-      tree->left_child = nullptr;
-      tree->right_child = nullptr;
-
+      tree->right_child = tree->left_child = nullptr;
       delete tree;
       removed = true;
       return tmp;
     }
-  };
 
-  Node* root{nullptr};
-  std::size_t size_{0u};
+
+ };
+
+Node* root{nullptr};
+std::size_t size_{0u};
 };
 
-}  // namespace structures
+}// namespace structures
 
 #endif

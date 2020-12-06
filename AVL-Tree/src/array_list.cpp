@@ -1,5 +1,8 @@
-#include "array_list.h"
+#include "../include/array_list.h"
+
 #include <stdio.h>
+
+#include "../include/avl_tree.h"
 
 template <typename T>
 structures::ArrayList<T>::ArrayList(void) {
@@ -199,3 +202,6 @@ void structures::ArrayList<T>::move_backward(std::size_t index) {
 
 template class structures::ArrayList<int>;
 template class structures::ArrayList<char*>;
+template class structures::ArrayList<std::__cxx11::basic_string<
+    char, std::char_traits<char>, std::allocator<char>>>;
+template class structures::ArrayList<structures::Dummy>;

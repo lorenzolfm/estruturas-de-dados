@@ -9,7 +9,7 @@ template <typename T>
 void structures::AVLTree<T>::insert(const T& data) {
   if (empty()) {
     root = new Node(data);
-    if (root == nullptr) throw std::out_of_range("Full tree!");
+    if (root == nullptr) throw std::out_of_range("Cannot insert on full tree");
   } else {
     root->insert(data);
   }
@@ -18,21 +18,21 @@ void structures::AVLTree<T>::insert(const T& data) {
   int h_left, h_right;
   root->updateHeight();
   switch (root->type_balance()) {
-    case 0:  // balanceado
+    case 0:
       h_left = root->left_child->height();
       h_right = root->right_child->height();
       root->height_ = std::max(h_left, h_right) + 1;
       break;
-    case 1:  // Esquerda-esquerda
+    case 1:
       root = root->simpleLeft();
       break;
-    case 2:  // Esquerda-direita
+    case 2:
       root = root->doubleLeft();
       break;
-    case 3:  // Direita-direita
+    case 3:
       root = root->simpleRight();
       break;
-    case 4:  // Direita-esquerda
+    case 4:
       root = root->doubleRight();
       break;
     default:
@@ -42,18 +42,18 @@ void structures::AVLTree<T>::insert(const T& data) {
 
 template <typename T>
 void structures::AVLTree<T>::remove(const T& data) {
-  if (empty()) throw std::out_of_range("Empty tree!");
+  if (empty()) throw std::out_of_range("Cannot remove from empty tree");
 
   if (size() != 1u) {
     if (root->remove(data)) {
-      size_--;
-      int height_left, height_right;
+      --size_;
+      int h_left, h_right;
       root->updateHeight();
       switch (root->type_balance()) {
-        case 0:
-          height_left = root->left_child->height();
-          height_right = root->right_child->height();
-          root->height_ = std::max(height_left, height_right) + 1;
+        case 0:  // balanceado
+          h_left = root->left_child->height();
+          h_right = root->right_child->height();
+          root->height_ = std::max(h_left, h_right) + 1;
           break;
         case 1:
           root = root->simpleLeft();
@@ -75,7 +75,7 @@ void structures::AVLTree<T>::remove(const T& data) {
     if (root->data_ == data) {
       delete root;
       root = nullptr;
-      size_--;
+      --size_;
     }
   }
 }
@@ -127,3 +127,5 @@ int structures::AVLTree<T>::height() const {
 }
 
 template class structures::AVLTree<int>;
+template class structures::AVLTree<std::string>;
+template class structures::AVLTree<structures::Dummy>;
