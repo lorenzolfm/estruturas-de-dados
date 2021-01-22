@@ -3,13 +3,6 @@
 #include "../include/array_stack.h"
 #include "gtest/gtest.h"
 
-int main(int argc, char* argv[]) {
-  std::srand(std::time(NULL));
-  ::testing::InitGoogleTest(&argc, argv);
-  ::testing::FLAGS_gtest_death_test_style = "fast";
-  return RUN_ALL_TESTS();
-}
-
 class ArrayStackTest : public ::testing::Test {
  protected:
   structures::ArrayStack<int> stack{20u};
